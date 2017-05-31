@@ -1,0 +1,29 @@
+{
+  "name": "erdesigner",
+  "version": "1.0.0",
+  "description": "er diagram creation",
+  "main": "./out/index.js",
+  "scripts": {
+    "dev": "NODE_ENV=development npm start",
+    "start": "./node_modules/.bin/electron .",
+    "clean": "rimraf out",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Filip Vitas",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^1.7.2",
+    "electron-builder": "^18.2.2",
+    "electron-packager": "^8.7.0",
+    "jest": "^20.0.4",
+    "onchange": "^3.2.1",
+    "rimraf": "^2.6.1",
+    "rollup": "^0.41.6",
+    "standard": "^10.0.2"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "immutable": "^3.8.1",
+    "preact": "^8.1.0"
+  }
+}
