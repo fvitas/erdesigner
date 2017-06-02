@@ -1,0 +1,54 @@
+$mainColor = #3F51B5
+$white = #fff
+
+*
+  box-sizing: border-box
+  margin: 0
+
+html
+  margin: 0 10px
+
+body
+  font: 14px/1.5 'Lato', sans-serif
+  padding: 0
+  margin: 0
+  position: fixed
+  top: 9px
+  overflow-x: hidden
+  width: calc(100vw - 20px)
+  height: calc(100vh - 30px)
+//cursor: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/106114/cursor.png) 32 32, move
+
+  &:before
+    content: ""
+    position: absolute
+    left: 50%
+    margin-left: -8px
+    margin-top: -8px
+    display: block
+    width: 0
+    height: 0
+    border-left: 8px solid transparent
+    border-right: 8px solid transparent
+    border-bottom: 8px solid $mainColor
+    z-index: 1
+
+  &:after
+    content: ''
+    width: inherit
+    height: inherit
+    position: absolute
+    top: 0
+    left: 0
+    border-radius: 5px
+    box-shadow: 0px 1px 8px -1px black
+    z-index: 0
+    pointer-events: none
+
+
+@keyframes fade-in
+  from
+    opacity: 0
+  to
+    opacity: 1
+
