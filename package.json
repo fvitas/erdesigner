@@ -7,12 +7,12 @@
     "dev": "NODE_ENV=development npm run build && npm run electron",
     "electron": "./node_modules/.bin/electron .",
     "clean:out": "rimraf out",
-    "make:out": "./node_modules/.bin/mkdirp out",
-    "build": "npm run clean:out && npm run make:out && npm run build:styles && npm run build:js",
+    "make:folder:assets": "./node_modules/.bin/mkdirp out/browser/assets",
+    "build": "npm run clean:out && npm run make:folder:assets && npm run build:styles && npm run build:js",
     "build:js": "NODE_ENV=development rollup -c",
-    "build:styles": "stylus src/browser/assets/main.styl -m -c -o out",
-    "watch:js": "rollup -c",
-    "watch:styles": "stylus src/browser/assets/main.styl -m -c -w -o out",
+    "build:styles": "stylus src/browser/assets/main.styl -m -c -o out/browser/assets",
+    "watch:js": "onchange 'src/**/*.js' -- npm run build:js",
+    "watch:styles": "stylus src/browser/assets/main.styl -m -c -w -o out/browser/assets",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
     "precommit": "npm run lint",
@@ -48,6 +48,7 @@
   "dependencies": {
     "bluebird": "^3.5.0",
     "immutable": "^3.8.1",
-    "preact": "^8.1.0"
+    "preact": "^8.1.0",
+    "redux": "^3.6.0"
   }
 }
