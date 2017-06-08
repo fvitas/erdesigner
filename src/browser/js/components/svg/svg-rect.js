@@ -3,15 +3,18 @@
 import { h, Component } from 'preact'
 
 class SvgRect extends Component {
-    constructor () {
+    constructor ({x, y}) {
         super()
+
+        let xCoord = x - 25
+        let yCoord = y - 50
 
         this.state = {
             shouldMove: false,
-            x: 100,
-            y: 100,
-            dragX: 100,
-            dragY: 100
+            x: xCoord,
+            y: yCoord,
+            dragX: xCoord,
+            dragY: yCoord
         }
     }
 
