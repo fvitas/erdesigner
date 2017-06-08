@@ -1,6 +1,8 @@
 {
   "plugins": [
-    ["transform-react-jsx", { "pragma": "h" }]
+    ["transform-react-jsx", { "pragma": "h" }],
+    "transform-decorators-legacy",
+    "external-helpers"
   ],
   "presets": [
     ["es2015", {"modules": false}]
