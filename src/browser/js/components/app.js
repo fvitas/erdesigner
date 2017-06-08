@@ -3,7 +3,7 @@
 import { h, Component } from 'preact'
 import { createStore } from 'redux'
 import Counter from './counter'
-import counter from '../reducers/counter'
+import counter from '../stores/counter'
 
 const store = createStore(counter)
 

@@ -1,30 +1,50 @@
+/* eslint-disable one-var */
 'use strict'
 
 import { h, Component } from 'preact'
-import { createStore } from 'redux'
+import { bind } from 'decko'
 
 import NodePicker from './node-picker'
-import SvgRect from './svg/svg-rect'
-import nodeReducer from '../reducers/node-reducer'
+import Node from './svg/node'
 
-const store = createStore(nodeReducer)
+import nodeStore from './../stores/node-store'
 
 class AppCanvas extends Component {
+    componentWillMount () {
+        this.updateCanvasDimensions()
+    }
+
+    componentDidMount () {
+        window.addEventListener('resize', this.updateCanvasDimensions)
+    }
+
+    componentWillUnmount () {
+        window.removeEventListener('resize', this.updateCanvasDimensions)
+    }
+
+    @bind
+    updateCanvasDimensions () {
+        this.setState({
+            canvasWidth: window.innerWidth,
+            canvasHeight: window.innerHeight
+        })
+    }
+
     render () {
-        this.setState({ nodes: store.getState() })
+        this.setState({ nodes: nodeStore.getState() })
 
         return (
             <div>
-                <NodePicker store={store} />
+                <NodePicker />
 
-                <svg id='SvgjsSvg1001' width='500' height='500' xmlns='http://www.w3.org/2000/svg' version='1.1'
+                <svg id='SvgjsSvg1001' width={this.state.canvasWidth} height={this.state.canvasHeight} xmlns='http://www.w3.org/2000/svg' version='1.1'
                     onDragOver={event => event.preventDefault()}
                 >
                     <defs id='SvgjsDefs1002' />
 
                     {
                         this.state.nodes.map((value, index) => (
-                            <SvgRect
+                            <Node
                                 key={index}
                                 x={value.x}
                                 y={value.y}
