@@ -12,12 +12,12 @@ const template = [
             {
                 label: 'Open...',
                 accelerator: 'CmdOrCtrl+O',
-                click () {}
+                click() {}
             },
             {
                 label: 'Save...',
                 accelerator: 'CmdOrCtrl+S',
-                click () {
+                click() {
                     // We can't call saveFile(content) directly because we need to get
                     // the content from the renderer process. So, send a message to the
                     // renderer, telling it we want to save the file.
@@ -72,7 +72,7 @@ const template = [
                 accelerator: process.platform === 'darwin'
                     ? 'Alt+Command+I'
                     : 'Ctrl+Shift+I',
-                click () { mainWindow.webContents.toggleDevTools() }
+                click() { mainWindow.webContents.toggleDevTools() }
             }
         ]
     }
@@ -118,7 +118,7 @@ if (process.platform === 'darwin') {
             {
                 label: 'Quit',
                 accelerator: 'Command+Q',
-                click () { app.quit() }
+                click() { app.quit() }
             }
         ]
     })

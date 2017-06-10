@@ -7,12 +7,14 @@ export default {
     globals: {
         preact: 'preact',
         redux: 'redux',
-        decko: 'decko'
+        decko: 'decko',
+        uuid: 'uuid'
     },
     external: [
         'preact',
         'redux',
-        'decko'
+        'decko',
+        'uuid'
     ],
     plugins: [
         babel()

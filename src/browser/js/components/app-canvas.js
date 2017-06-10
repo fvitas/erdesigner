@@ -10,27 +10,27 @@ import Node from './svg/node'
 import nodeStore from './../stores/node-store'
 
 class AppCanvas extends Component {
-    componentWillMount () {
+    componentWillMount() {
         this.updateCanvasDimensions()
     }
 
-    componentDidMount () {
+    componentDidMount() {
         window.addEventListener('resize', this.updateCanvasDimensions)
     }
 
-    componentWillUnmount () {
+    componentWillUnmount() {
         window.removeEventListener('resize', this.updateCanvasDimensions)
     }
 
     @bind
-    updateCanvasDimensions () {
+    updateCanvasDimensions() {
         this.setState({
             canvasWidth: window.innerWidth,
             canvasHeight: window.innerHeight
         })
     }
 
-    render () {
+    render() {
         this.setState({ nodes: nodeStore.getState() })
 
         return (
@@ -43,13 +43,7 @@ class AppCanvas extends Component {
                     <defs id='SvgjsDefs1002' />
 
                     {
-                        this.state.nodes.map((value, index) => (
-                            <Node
-                                key={index}
-                                x={value.x}
-                                y={value.y}
-                            />
-                        ))
+                        this.state.nodes.map(value => (<Node key={value.nodeId} {...value} />))
                     }
                 </svg>
             </div>

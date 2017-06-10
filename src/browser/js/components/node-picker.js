@@ -7,14 +7,14 @@ import nodeStore from './../stores/node-store'
 
 class NodePicker extends Component {
     @bind
-    addNode (event) {
+    addNode(event) {
         nodeStore.dispatch({
             type: 'ADD_NODE',
             value: {x: event.clientX, y: event.clientY}
         })
     }
 
-    render () {
+    render() {
         return (
             <div class='node-picker'>
                 <label class='toggle-label' htmlFor='toggle'>open/close</label>
