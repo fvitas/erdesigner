@@ -1,6 +1,3 @@
-/* eslint-disable one-var */
-'use strict'
-
 import { h, Component } from 'preact'
 import { bind } from 'decko'
 
@@ -8,6 +5,7 @@ import NodePicker from './node-picker'
 import Node from './svg/node'
 
 import nodeStore from './../stores/node-store'
+import { IconTrash } from './svg/icon-trash'
 
 class AppCanvas extends Component {
     componentWillMount() {
@@ -45,7 +43,10 @@ class AppCanvas extends Component {
                     {
                         this.state.nodes.map(value => (<Node key={value.nodeId} {...value} />))
                     }
+
                 </svg>
+
+                <IconTrash onClick={() => { nodeStore.dispatch({type: 'REMOVE_ALL_NODE'}) }} />
             </div>
         )
     }

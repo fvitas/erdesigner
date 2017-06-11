@@ -1,5 +1,3 @@
-'use strict'
-
 import { createStore } from 'redux'
 import { v4 } from 'uuid'
 
@@ -23,10 +21,13 @@ const removeNode = (previousNodes, value) => {
     ]
 }
 
+const removeAllNode = () => []
+
 const nodeReducer = (state = [], action) => {
     switch (action.type) {
         case 'ADD_NODE': return addNode(state, action.value)
         case 'REMOVE_NODE': return removeNode(state, action.value)
+        case 'REMOVE_ALL_NODE': return removeAllNode(state)
         default: return state
     }
 }
