@@ -6,6 +6,7 @@ import Node from './svg/node'
 
 import nodeStore from './../stores/node-store'
 import { IconTrash } from './svg/icon-trash'
+import { NodeConnector } from './node-connector'
 
 class AppCanvas extends Component {
     componentWillMount() {
@@ -29,24 +30,26 @@ class AppCanvas extends Component {
     }
 
     render() {
-        this.setState({ nodes: nodeStore.getState() })
+        this.setState({ nodes: nodeStore.getState().nodes })
 
         return (
             <div>
                 <NodePicker />
 
-                <svg id='SvgjsSvg1001' width={this.state.canvasWidth} height={this.state.canvasHeight} xmlns='http://www.w3.org/2000/svg' version='1.1'
-                    onDragOver={event => event.preventDefault()}
-                >
+                <svg id='SvgjsSvg1001' width={this.state.canvasWidth} height={this.state.canvasHeight} xmlns='http://www.w3.org/2000/svg' onDragOver={event => event.preventDefault()} >
                     <defs id='SvgjsDefs1002' />
 
                     {
-                        this.state.nodes.map(value => (<Node key={value.nodeId} {...value} />))
+                        this.state.nodes.map(value => <Node key={value.nodeId} {...value} />)
                     }
 
                 </svg>
 
-                <IconTrash onClick={() => { nodeStore.dispatch({type: 'REMOVE_ALL_NODE'}) }} />
+                <div class='controls'>
+                    <NodeConnector />
+
+                    <IconTrash onClick={() => nodeStore.dispatch({type: 'REMOVE_ALL_NODE'})} />
+                </div>
             </div>
         )
     }

@@ -12,6 +12,18 @@ class NodePicker extends Component {
         })
     }
 
+    @bind
+    selectNodes() {
+        this.setState({connectNodes: false})
+        nodeStore.dispatch({type: 'SELECT_NODE'})
+    }
+
+    @bind
+    connectNodes() {
+        this.setState({connectNodes: true})
+        nodeStore.dispatch({type: 'CONNECT_NODE'})
+    }
+
     render() {
         return (
             <div class='node-picker'>
@@ -24,6 +36,19 @@ class NodePicker extends Component {
                     <li class='node' draggable='true' onDragEnd={this.addNode} />
                     <li class='node' draggable='true' onDragEnd={this.addNode} />
                 </ul>
+
+                <div style='
+                position: absolute;
+                top: 0;
+                left: 190px;
+                width: 130px;
+                margin: 10px;
+                '>
+                    <input class='' type='radio' name='choose' id='select-nodes' onClick={this.selectNodes} checked={!this.state.connectNodes} />
+                    <label htmlFor='select-nodes'>Select</label>
+                    <input class='' type='radio' name='choose' id='connect-nodes' onClick={this.connectNodes} checked={this.state.connectNodes} />
+                    <label htmlFor='connect-nodes'>Connect</label>
+                </div>
             </div>
         )
     }

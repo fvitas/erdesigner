@@ -69,15 +69,21 @@ li
     transition: opacity 0.3s 0.1s linear
 
 
-#SvgRect
-  cursor: move
-  
-#i-trash
+.controls
   position: absolute
+  display: flex
   float: right
   z-index: 10
   right: 10px
   top: 10px
-  cursor: pointer
 
+  & > *
+    margin: 5px
+    cursor: pointer
+
+  & svg
+    vertical-align: middle
+
+#SvgRect
+  cursor: move
   

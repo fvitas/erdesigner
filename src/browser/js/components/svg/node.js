@@ -3,13 +3,13 @@ import { bind } from 'decko'
 import nodeStore from './../../stores/node-store'
 
 class Node extends Component {
-    constructor({nodeId, x, y}) {
+    constructor(props) {
         super()
 
-        let xCoord = x - 25
-        let yCoord = y - 50
+        let xCoord = props.x - 25
+        let yCoord = props.y - 50
 
-        this.nodeId = nodeId
+        this.nodeId = props.nodeId
 
         this.state = {
             shouldMove: false,
@@ -23,18 +23,24 @@ class Node extends Component {
     @bind
     onMouseDown(event) {
         event.preventDefault()
-        this.setState({
-            shouldMove: true,
-            startDragX: event.clientX,
-            startDragY: event.clientY
-        })
 
-        window.addEventListener('mousemove', this.onMouseMove)
-        window.addEventListener('mouseup', this.onMouseUp)
+        if (nodeStore.getState().shouldConnectNodes) {
+            window.addEventListener('mousemove', this.drawConnection)
+            window.addEventListener('mouseup', this.connectNodes)
+        } else {
+            this.setState({
+                shouldMove: true,
+                startDragX: event.clientX,
+                startDragY: event.clientY
+            })
+
+            window.addEventListener('mousemove', this.moveNode)
+            window.addEventListener('mouseup', this.releaseNode)
+        }
     }
 
     @bind
-    onMouseMove(event) {
+    moveNode(event) {
         if (this.state.shouldMove) {
             this.setState({
                 dragX: this.state.x + event.clientX - this.state.startDragX,
@@ -44,9 +50,9 @@ class Node extends Component {
     }
 
     @bind
-    onMouseUp() {
-        window.removeEventListener('mousemove', this.onMouseMove)
-        window.removeEventListener('mouseup', this.onMouseUp)
+    releaseNode() {
+        window.removeEventListener('mousemove', this.moveNode)
+        window.removeEventListener('mouseup', this.releaseNode)
 
         this.setState({
             shouldMove: false,
@@ -61,6 +67,19 @@ class Node extends Component {
             type: 'REMOVE_NODE',
             value: {nodeId: this.nodeId}
         })
+    }
+
+    @bind
+    drawConnection(event) {
+        // get mouse x and y and draw connection from source node to mouse
+        // + on other node hover make it green or red if it can connect !!!
+        console.log(event)
+    }
+
+    @bind
+    connectNodes() {
+        window.removeEventListener('mousemove', this.drawConnection)
+        window.removeEventListener('mouseup', this.connectNodes)
     }
 
     render() {
