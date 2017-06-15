@@ -65,6 +65,16 @@ class AppCanvas extends Component {
     }
 
     @bind
+    removeConnectionDestination(destinationNode) {
+        if (!!this.state.temporaryConnection.destination && this.state.temporaryConnection.destination.nodeId === destinationNode.nodeId) {
+            this.setState({ temporaryConnection: {
+                source: this.state.temporaryConnection.source,
+                destination: null
+            }})
+        }
+    }
+
+    @bind
     drawConnectionEnd() {
         if (!this.state.temporaryConnection.source || !this.state.temporaryConnection.destination) {
             this.setState({temporaryConnection: null, temporaryConnectionLine: null})
@@ -114,7 +124,7 @@ class AppCanvas extends Component {
                                 onDrawConnectionMove={this.drawConnection}
                                 onDrawConnectionEnd={this.drawConnectionEnd}
                                 onNodeEnter={this.addConnectionDestination}
-                                // onNodeLeave={this.removeConnectionDestination}
+                                onNodeLeave={this.removeConnectionDestination}
                             />
                         ))
                     }</g>

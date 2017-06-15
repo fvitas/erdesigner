@@ -112,7 +112,13 @@ class Node extends Component {
 
     @bind
     onConnectionLeaveDestination() {
-        console.log('leave ', this.nodeId)
+        if (nodeStore.getState().isDrawingConnection && nodeStore.getState().shouldConnectNodes) {
+            let destinationNode = nodeStore.getState()
+                .nodes
+                .find(node => node.nodeId === this.nodeId)
+
+            this.props.onNodeLeave(destinationNode)
+        }
     }
 
     render() {
