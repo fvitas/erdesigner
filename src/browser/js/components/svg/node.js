@@ -3,20 +3,19 @@ import { bind } from 'decko'
 import nodeStore from './../../stores/node-store'
 
 class Node extends Component {
-    constructor(props) {
+    constructor({nodeId, x, y}) {
         super()
 
-        let xCoord = props.x - 25
-        let yCoord = props.y - 50
-
-        this.nodeId = props.nodeId
+        this.nodeId = nodeId
 
         this.state = {
             shouldMove: false,
-            x: xCoord,
-            y: yCoord,
-            dragX: xCoord,
-            dragY: yCoord
+            x: x,
+            y: y,
+            dragX: x,
+            dragY: y,
+            width: 100,
+            height: 50
         }
     }
 
@@ -25,8 +24,16 @@ class Node extends Component {
         event.preventDefault()
 
         if (nodeStore.getState().shouldConnectNodes) {
+            let sourceNode = nodeStore.getState()
+                .nodes
+                .find(node => node.nodeId === this.nodeId)
+
+            this.props.onDrawConnectionStart(sourceNode)
+
+            nodeStore.dispatch({type: 'START_DRAWING'})
+
             window.addEventListener('mousemove', this.drawConnection)
-            window.addEventListener('mouseup', this.connectNodes)
+            window.addEventListener('mouseup', this.drawConnectionFinished)
         } else {
             this.setState({
                 shouldMove: true,
@@ -35,7 +42,7 @@ class Node extends Component {
             })
 
             window.addEventListener('mousemove', this.moveNode)
-            window.addEventListener('mouseup', this.releaseNode)
+            window.addEventListener('mouseup', this.modeNodeFinished)
         }
     }
 
@@ -50,14 +57,23 @@ class Node extends Component {
     }
 
     @bind
-    releaseNode() {
+    modeNodeFinished() {
         window.removeEventListener('mousemove', this.moveNode)
-        window.removeEventListener('mouseup', this.releaseNode)
+        window.removeEventListener('mouseup', this.modeNodeFinished)
 
         this.setState({
             shouldMove: false,
             x: this.state.dragX,
             y: this.state.dragY
+        })
+
+        nodeStore.dispatch({
+            type: 'UPDATE_NODE',
+            value: {
+                nodeId: this.nodeId,
+                x: this.state.dragX,
+                y: this.state.dragY
+            }
         })
     }
 
@@ -71,15 +87,32 @@ class Node extends Component {
 
     @bind
     drawConnection(event) {
-        // get mouse x and y and draw connection from source node to mouse
-        // + on other node hover make it green or red if it can connect !!!
-        console.log(event)
+        this.props.onDrawConnectionMove(event)
     }
 
     @bind
-    connectNodes() {
+    drawConnectionFinished() {
         window.removeEventListener('mousemove', this.drawConnection)
-        window.removeEventListener('mouseup', this.connectNodes)
+        window.removeEventListener('mouseup', this.drawConnectionFinished)
+
+        this.props.onDrawConnectionEnd()
+        nodeStore.dispatch({type: 'STOP_DRAWING'})
+    }
+
+    @bind
+    onConnectionEnterDestination() {
+        if (nodeStore.getState().isDrawingConnection && nodeStore.getState().shouldConnectNodes) {
+            let destinationNode = nodeStore.getState()
+                                           .nodes
+                                           .find(node => node.nodeId === this.nodeId)
+
+            this.props.onNodeEnter(destinationNode)
+        }
+    }
+
+    @bind
+    onConnectionLeaveDestination() {
+        console.log('leave ', this.nodeId)
     }
 
     render() {
@@ -91,7 +124,11 @@ class Node extends Component {
                     <circle cx='0' cy='0' r='14' fill='#ebebeb' stroke='#c8c8c8' style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);' />
                     <circle cx='0' cy='0' r='10' fill='#ef4836' stroke='none' style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);' onClick={this.removeNode} />
                 </g>
-                <rect id='SvgRect' width='100' height='50' fill='#ff807f' onMouseDown={this.onMouseDown} />
+                <rect id='SvgRect' width={this.state.width} height={this.state.height} fill='#ff807f'
+                    onMouseDown={this.onMouseDown}
+                    onMouseEnter={this.onConnectionEnterDestination}
+                    onMouseLeave={this.onConnectionLeaveDestination}
+                />
             </g>
         )
     }

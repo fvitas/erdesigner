@@ -29,8 +29,67 @@ class AppCanvas extends Component {
         })
     }
 
+    @bind
+    drawConnectionStart(sourceNode) {
+        let nodeId = sourceNode.nodeId
+        let x = sourceNode.x + sourceNode.width / 2
+        let y = sourceNode.y + sourceNode.height / 2
+
+        this.setState({ temporaryConnection: {source: {nodeId, x, y}} })
+    }
+
+    @bind
+    drawConnection(mouseDestination) {
+        let line = {
+            x1: this.state.temporaryConnection.source.x,
+            y1: this.state.temporaryConnection.source.y,
+            x2: mouseDestination.clientX,
+            y2: mouseDestination.clientY
+        }
+
+        this.setState({temporaryConnectionLine: line})
+    }
+
+    @bind
+    addConnectionDestination(destinationNode) {
+        if (this.state.temporaryConnection.source.nodeId !== destinationNode.nodeId) {
+            let nodeId = destinationNode.nodeId
+            let x = destinationNode.x + destinationNode.width / 2
+            let y = destinationNode.y + destinationNode.height / 2
+
+            this.setState({ temporaryConnection: {
+                source: this.state.temporaryConnection.source,
+                destination: {nodeId, x, y}
+            }})
+        }
+    }
+
+    @bind
+    drawConnectionEnd() {
+        if (!this.state.temporaryConnection.source || !this.state.temporaryConnection.destination) {
+            this.setState({temporaryConnection: null, temporaryConnectionLine: null})
+            return
+        }
+
+        let connection = {
+            sourceNodeId: this.state.temporaryConnection.source.nodeId,
+            destinationNodeId: this.state.temporaryConnection.destination.nodeId,
+            x1: this.state.temporaryConnection.source.x,
+            y1: this.state.temporaryConnection.source.y,
+            x2: this.state.temporaryConnection.destination.x,
+            y2: this.state.temporaryConnection.destination.y
+        }
+
+        nodeStore.dispatch({
+            type: 'ADD_CONNECTION',
+            value: {...connection}
+        })
+
+        this.setState({temporaryConnection: null, temporaryConnectionLine: null})
+    }
+
     render() {
-        this.setState({ nodes: nodeStore.getState().nodes })
+        this.setState({ nodes: nodeStore.getState().nodes, connections: nodeStore.getState().connections })
 
         return (
             <div>
@@ -39,9 +98,26 @@ class AppCanvas extends Component {
                 <svg id='SvgjsSvg1001' width={this.state.canvasWidth} height={this.state.canvasHeight} xmlns='http://www.w3.org/2000/svg' onDragOver={event => event.preventDefault()} >
                     <defs id='SvgjsDefs1002' />
 
-                    {
-                        this.state.nodes.map(value => <Node key={value.nodeId} {...value} />)
-                    }
+                    <g>{ this.state.connections.map(connection => <line {...connection} stroke-width='2' stroke='black' />) }</g>
+
+                    <g>
+                        {
+                            this.state.temporaryConnectionLine &&
+                            <line class='node-connection' {...this.state.temporaryConnectionLine} stroke-width='2' stroke='black' />
+                        }
+                    </g>
+
+                    <g>{
+                        this.state.nodes.map(value => (
+                            <Node key={value.nodeId} {...value}
+                                onDrawConnectionStart={this.drawConnectionStart}
+                                onDrawConnectionMove={this.drawConnection}
+                                onDrawConnectionEnd={this.drawConnectionEnd}
+                                onNodeEnter={this.addConnectionDestination}
+                                // onNodeLeave={this.removeConnectionDestination}
+                            />
+                        ))
+                    }</g>
 
                 </svg>
 

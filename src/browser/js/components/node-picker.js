@@ -5,6 +5,11 @@ import nodeStore from './../stores/node-store'
 
 class NodePicker extends Component {
     @bind
+    dragStarted(event) {
+        event.dataTransfer.setDragImage(document.getElementById('node-drag-tween'), 25, 25)
+    }
+
+    @bind
     addNode(event) {
         nodeStore.dispatch({
             type: 'ADD_NODE',
@@ -30,12 +35,15 @@ class NodePicker extends Component {
                 <label class='toggle-label' htmlFor='toggle'>open/close</label>
                 <input class='toggle-button' id='toggle' type='checkbox' />
                 <ul class='node-picker-list'>
-                    <li class='node' draggable='true' onDragEnd={this.addNode} />
-                    <li class='node' draggable='true' onDragEnd={this.addNode} />
-                    <li class='node' draggable='true' onDragEnd={this.addNode} />
-                    <li class='node' draggable='true' onDragEnd={this.addNode} />
-                    <li class='node' draggable='true' onDragEnd={this.addNode} />
+                    <li class='node' draggable='true' onDragStart={this.dragStarted} onDragEnd={this.addNode} />
+                    <li class='node' draggable='true' onDragStart={this.dragStarted} onDragEnd={this.addNode} />
+                    <li class='node' draggable='true' onDragStart={this.dragStarted} onDragEnd={this.addNode} />
+                    <li class='node' draggable='true' onDragStart={this.dragStarted} onDragEnd={this.addNode} />
+                    <li class='node' draggable='true' onDragStart={this.dragStarted} onDragEnd={this.addNode} />
                 </ul>
+
+                {/* show dragging element tween / every node type should have own dragging tween */}
+                <div class='node' id='node-drag-tween' style='position:absolute;left: -1000px' />
 
                 <div style='
                 position: absolute;

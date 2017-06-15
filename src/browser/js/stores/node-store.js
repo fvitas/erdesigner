@@ -1,22 +1,29 @@
 import { createStore } from 'redux'
 import { v4 } from 'uuid'
 
-const addNode = (state, value) => {
+const INITIAL_STATE = {
+    nodes: [],
+    connections: []
+}
+
+const addNode = (state, action) => {
     return {
         ...state,
         nodes: [
             ...state.nodes,
             {
                 nodeId: v4(),
-                x: value.x,
-                y: value.y
+                x: action.value.x - 25,
+                y: action.value.y - 50,
+                width: 100,
+                height: 50
             }
         ]
     }
 }
 
-const removeNode = (state, value) => {
-    let indexOfNodeForDeletion = state.nodes.findIndex(node => node.nodeId === value.nodeId)
+const removeNode = (state, action) => {
+    let indexOfNodeForDeletion = state.nodes.findIndex(node => node.nodeId === action.value.nodeId)
 
     return {
         ...state,
@@ -48,13 +55,48 @@ const removeAllNode = (state) => {
     }
 }
 
-const nodeReducer = (state = {nodes: []}, action) => {
+function addConnection(state, action) {
+    return {
+        ...state,
+        connections: [
+            ...state.connections,
+            {
+                connectionId: v4(),
+                sourceNodeId: action.value.sourceNodeId,
+                destinationNodeId: action.value.destinationNodeId,
+                x1: action.value.x1,
+                y1: action.value.y1,
+                x2: action.value.x2,
+                y2: action.value.y2
+            }
+        ]
+    }
+}
+
+function startDrawing(state) {
+    return {
+        ...state,
+        isDrawingConnection: true
+    }
+}
+
+function stopDrawing(state) {
+    return {
+        ...state,
+        isDrawingConnection: false
+    }
+}
+
+const nodeReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case 'ADD_NODE': return addNode(state, action.value)
-        case 'REMOVE_NODE': return removeNode(state, action.value)
+        case 'ADD_NODE': return addNode(state, action)
+        case 'REMOVE_NODE': return removeNode(state, action)
         case 'REMOVE_ALL_NODE': return removeAllNode(state)
         case 'SELECT_NODE': return selectNodes(state)
         case 'CONNECT_NODE': return connectNodes(state)
+        case 'ADD_CONNECTION': return addConnection(state, action)
+        case 'START_DRAWING': return startDrawing(state)
+        case 'STOP_DRAWING': return stopDrawing(state)
         default: return state
     }
 }

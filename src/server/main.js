@@ -130,7 +130,8 @@ app.on('ready', () => {
     mainWindow = new BrowserWindow({
         width: 1000,
         height: 600,
-        nodeIntegration: false,
+        useContentSize: true,
+        nodeIntegration: true,
         webPreferences: {
             experimentalFeatures: true
         }
