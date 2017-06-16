@@ -49,9 +49,30 @@ class Node extends Component {
     @bind
     moveNode(event) {
         if (this.state.shouldMove) {
+            let newPositionX = this.state.x + event.clientX - this.state.startDragX
+            let newPositionY = this.state.y + event.clientY - this.state.startDragY
+
             this.setState({
-                dragX: this.state.x + event.clientX - this.state.startDragX,
-                dragY: this.state.y + event.clientY - this.state.startDragY
+                dragX: newPositionX,
+                dragY: newPositionY
+            })
+
+            let allNodeConnections = [...nodeStore.getState().connections]
+
+            allNodeConnections.forEach(connection => {
+                if (connection.sourceNodeId === this.nodeId) {
+                    connection.x1 = newPositionX + this.state.width / 2
+                    connection.y1 = newPositionY + this.state.height / 2
+                }
+                if (connection.destinationNodeId === this.nodeId) {
+                    connection.x2 = newPositionX + this.state.width / 2
+                    connection.y2 = newPositionY + this.state.height / 2
+                }
+            })
+
+            nodeStore.dispatch({
+                type: 'UPDATE_CONNECTIONS',
+                value: allNodeConnections
             })
         }
     }

@@ -87,6 +87,13 @@ function stopDrawing(state) {
     }
 }
 
+function updateConnections(state, action) {
+    return {
+        ...state,
+        connections: [...action.value]
+    }
+}
+
 const nodeReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case 'ADD_NODE': return addNode(state, action)
@@ -97,6 +104,7 @@ const nodeReducer = (state = INITIAL_STATE, action) => {
         case 'ADD_CONNECTION': return addConnection(state, action)
         case 'START_DRAWING': return startDrawing(state)
         case 'STOP_DRAWING': return stopDrawing(state)
+        case 'UPDATE_CONNECTIONS': return updateConnections(state, action)
         default: return state
     }
 }
