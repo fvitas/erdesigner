@@ -40,11 +40,16 @@ class AppCanvas extends Component {
 
     @bind
     drawConnection(mouseDestination) {
-        let line = {
-            x1: this.state.temporaryConnection.source.x,
-            y1: this.state.temporaryConnection.source.y,
-            x2: mouseDestination.clientX,
-            y2: mouseDestination.clientY
+        let line = {}
+        line.x1 = this.state.temporaryConnection.source.x
+        line.y1 = this.state.temporaryConnection.source.y
+
+        if (this.state.temporaryConnection.destination) {
+            line.x2 = this.state.temporaryConnection.destination.x
+            line.y2 = this.state.temporaryConnection.destination.y
+        } else {
+            line.x2 = mouseDestination.clientX
+            line.y2 = mouseDestination.clientY
         }
 
         this.setState({temporaryConnectionLine: line})

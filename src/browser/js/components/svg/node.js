@@ -131,7 +131,9 @@ class Node extends Component {
                                            .nodes
                                            .find(node => node.nodeId === this.nodeId)
 
-            this.props.onNodeEnter(destinationNode)
+            if (destinationNode) {
+                this.props.onNodeEnter(destinationNode)
+            }
         }
     }
 
@@ -142,7 +144,9 @@ class Node extends Component {
                 .nodes
                 .find(node => node.nodeId === this.nodeId)
 
-            this.props.onNodeLeave(destinationNode)
+            if (destinationNode) {
+                this.props.onNodeLeave(destinationNode)
+            }
         }
     }
 
