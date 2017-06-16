@@ -23,14 +23,17 @@ const addNode = (state, action) => {
 }
 
 const removeNode = (state, action) => {
-    let indexOfNodeForDeletion = state.nodes.findIndex(node => node.nodeId === action.value.nodeId)
+    let newNodes = state.nodes.filter(node => node.nodeId !== action.value.nodeId)
+
+    let newConnections = state.connections.filter(connection => {
+        return connection.sourceNodeId !== action.value.nodeId &&
+            connection.destinationNodeId !== action.value.nodeId
+    })
 
     return {
         ...state,
-        nodes: [
-            ...state.nodes.slice(0, indexOfNodeForDeletion),
-            ...state.nodes.slice(indexOfNodeForDeletion + 1)
-        ]
+        nodes: [...newNodes],
+        connections: [...newConnections]
     }
 }
 
@@ -51,7 +54,8 @@ function connectNodes(state) {
 const removeAllNode = (state) => {
     return {
         ...state,
-        nodes: []
+        nodes: [],
+        connections: []
     }
 }
 
@@ -87,6 +91,15 @@ function stopDrawing(state) {
     }
 }
 
+function updateNode(state, action) {
+    let newNodes = [...state.nodes].map(node => node.nodeId === action.value.nodeId ? action.value : node)
+
+    return {
+        ...state,
+        nodes: newNodes
+    }
+}
+
 function updateConnections(state, action) {
     return {
         ...state,
@@ -104,6 +117,7 @@ const nodeReducer = (state = INITIAL_STATE, action) => {
         case 'ADD_CONNECTION': return addConnection(state, action)
         case 'START_DRAWING': return startDrawing(state)
         case 'STOP_DRAWING': return stopDrawing(state)
+        case 'UPDATE_NODE': return updateNode(state, action)
         case 'UPDATE_CONNECTIONS': return updateConnections(state, action)
         default: return state
     }

@@ -42,7 +42,7 @@ class Node extends Component {
             })
 
             window.addEventListener('mousemove', this.moveNode)
-            window.addEventListener('mouseup', this.modeNodeFinished)
+            window.addEventListener('mouseup', this.moveNodeFinished)
         }
     }
 
@@ -78,9 +78,9 @@ class Node extends Component {
     }
 
     @bind
-    modeNodeFinished() {
+    moveNodeFinished() {
         window.removeEventListener('mousemove', this.moveNode)
-        window.removeEventListener('mouseup', this.modeNodeFinished)
+        window.removeEventListener('mouseup', this.moveNodeFinished)
 
         this.setState({
             shouldMove: false,
@@ -88,10 +88,14 @@ class Node extends Component {
             y: this.state.dragY
         })
 
+        let node = nodeStore.getState()
+            .nodes
+            .find(node => node.nodeId === this.nodeId)
+
         nodeStore.dispatch({
             type: 'UPDATE_NODE',
             value: {
-                nodeId: this.nodeId,
+                ...node,
                 x: this.state.dragX,
                 y: this.state.dragY
             }
