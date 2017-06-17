@@ -140,6 +140,10 @@ const actions = {
     },
 
     undo() {
+        if (HISTORY.past.length === 0) {
+            return HISTORY.present
+        }
+
         const previous = HISTORY.past[HISTORY.past.length - 1]
 
         HISTORY = {
@@ -152,6 +156,10 @@ const actions = {
     },
 
     redo() {
+        if (HISTORY.future.length === 0) {
+            return HISTORY.present
+        }
+
         const nextState = HISTORY.future[0]
 
         HISTORY = {
