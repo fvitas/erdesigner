@@ -29,6 +29,16 @@ class NodePicker extends Component {
         nodeStore.dispatch({type: 'CONNECT_NODE'})
     }
 
+    @bind
+    undo() {
+        nodeStore.dispatch({type: 'UNDO'})
+    }
+
+    @bind
+    redo() {
+        nodeStore.dispatch({type: 'REDO'})
+    }
+
     render() {
         return (
             <div class='node-picker'>
@@ -56,6 +66,9 @@ class NodePicker extends Component {
                     <label htmlFor='select-nodes'>Select</label>
                     <input class='' type='radio' name='choose' id='connect-nodes' onClick={this.connectNodes} checked={this.state.connectNodes} />
                     <label htmlFor='connect-nodes'>Connect</label>
+
+                    <button onClick={this.undo} >Undo</button>
+                    <button onClick={this.redo} >Redo</button>
                 </div>
             </div>
         )
