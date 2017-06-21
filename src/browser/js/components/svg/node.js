@@ -1,6 +1,7 @@
 import { h, Component } from 'preact'
 import { bind } from 'decko'
-import nodeStore from './../../stores/node-store'
+import nodeStore from '../../redux/store'
+import {ACTION} from '../../redux/actions'
 
 class Node extends Component {
     constructor({nodeId, x, y}) {
@@ -23,14 +24,14 @@ class Node extends Component {
     onMouseDown(event) {
         event.preventDefault()
 
-        if (nodeStore.getState().shouldConnectNodes) {
+        if (nodeStore.getState().settings.shouldConnectNodes) {
             let sourceNode = nodeStore.getState()
                 .nodes
                 .find(node => node.nodeId === this.nodeId)
 
             this.props.onDrawConnectionStart(sourceNode)
 
-            nodeStore.dispatch({type: 'START_DRAWING'})
+            nodeStore.dispatch({type: ACTION.START_DRAWING})
 
             window.addEventListener('mousemove', this.drawConnection)
             window.addEventListener('mouseup', this.drawConnectionFinished)
@@ -71,7 +72,7 @@ class Node extends Component {
             })
 
             nodeStore.dispatch({
-                type: 'UPDATE_CONNECTIONS',
+                type: ACTION.UPDATE_CONNECTIONS,
                 value: allNodeConnections
             })
         }
@@ -93,7 +94,7 @@ class Node extends Component {
             .find(node => node.nodeId === this.nodeId)
 
         nodeStore.dispatch({
-            type: 'UPDATE_NODE',
+            type: ACTION.UPDATE_NODE,
             value: {
                 ...node,
                 x: this.state.dragX,
@@ -105,7 +106,7 @@ class Node extends Component {
     @bind
     removeNode() {
         nodeStore.dispatch({
-            type: 'REMOVE_NODE',
+            type: ACTION.REMOVE_NODE,
             value: {nodeId: this.nodeId}
         })
     }
@@ -121,12 +122,12 @@ class Node extends Component {
         window.removeEventListener('mouseup', this.drawConnectionFinished)
 
         this.props.onDrawConnectionEnd()
-        nodeStore.dispatch({type: 'STOP_DRAWING'})
+        nodeStore.dispatch({type: ACTION.STOP_DRAWING})
     }
 
     @bind
     onConnectionEnterDestination() {
-        if (nodeStore.getState().isDrawingConnection && nodeStore.getState().shouldConnectNodes) {
+        if (nodeStore.getState().settings.isDrawingConnection && nodeStore.getState().settings.shouldConnectNodes) {
             let destinationNode = nodeStore.getState()
                                            .nodes
                                            .find(node => node.nodeId === this.nodeId)
@@ -139,7 +140,7 @@ class Node extends Component {
 
     @bind
     onConnectionLeaveDestination() {
-        if (nodeStore.getState().isDrawingConnection && nodeStore.getState().shouldConnectNodes) {
+        if (nodeStore.getState().settings.isDrawingConnection && nodeStore.getState().settings.shouldConnectNodes) {
             let destinationNode = nodeStore.getState()
                 .nodes
                 .find(node => node.nodeId === this.nodeId)
@@ -147,6 +148,18 @@ class Node extends Component {
             if (destinationNode) {
                 this.props.onNodeLeave(destinationNode)
             }
+        }
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (nextState.x !== nextProps.x || nextState.x !== nextProps.x) {
+            this.setState({
+                ...nextState,
+                x: nextProps.x,
+                y: nextProps.y,
+                dragX: nextProps.x,
+                dragY: nextProps.y
+            })
         }
     }
 

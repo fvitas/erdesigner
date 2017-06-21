@@ -8,13 +8,15 @@ export default {
         preact: 'preact',
         redux: 'redux',
         decko: 'decko',
-        uuid: 'uuid'
+        uuid: 'uuid',
+        lodash: 'lodash'
     },
     external: [
         'preact',
         'redux',
         'decko',
-        'uuid'
+        'uuid',
+        'lodash'
     ],
     plugins: [
         babel()

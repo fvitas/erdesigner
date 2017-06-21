@@ -3,8 +3,10 @@ import { bind } from 'decko'
 
 import NodePicker from './node-picker'
 import Node from './svg/node'
+import Connection from './svg/connection'
 
-import nodeStore from './../stores/node-store'
+import nodeStore from '../redux/store'
+import {ACTION} from '../redux/actions'
 import { IconTrash } from './svg/icon-trash'
 import { NodeConnector } from './node-connector'
 
@@ -96,7 +98,7 @@ class AppCanvas extends Component {
         }
 
         nodeStore.dispatch({
-            type: 'ADD_CONNECTION',
+            type: ACTION.ADD_CONNECTION,
             value: {...connection}
         })
 
@@ -113,12 +115,11 @@ class AppCanvas extends Component {
                 <svg id='SvgjsSvg1001' width={this.state.canvasWidth} height={this.state.canvasHeight} xmlns='http://www.w3.org/2000/svg' onDragOver={event => event.preventDefault()} >
                     <defs id='SvgjsDefs1002' />
 
-                    <g>{ this.state.connections.map(connection => <line {...connection} stroke-width='2' stroke='black' />) }</g>
+                    <g>{ this.state.connections.map(connection => <Connection {...connection} />) }</g>
 
                     <g>
                         {
-                            this.state.temporaryConnectionLine &&
-                            <line class='node-connection' {...this.state.temporaryConnectionLine} stroke-width='2' stroke='black' />
+                            this.state.temporaryConnectionLine && <Connection {...this.state.temporaryConnectionLine} />
                         }
                     </g>
 
@@ -139,7 +140,7 @@ class AppCanvas extends Component {
                 <div class='controls'>
                     <NodeConnector />
 
-                    <IconTrash onClick={() => nodeStore.dispatch({type: 'REMOVE_ALL_NODE'})} />
+                    <IconTrash onClick={() => nodeStore.dispatch({type: ACTION.REMOVE_ALL_NODE})} />
                 </div>
             </div>
         )

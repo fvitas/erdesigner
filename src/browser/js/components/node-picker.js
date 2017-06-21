@@ -1,7 +1,8 @@
 import { h, Component } from 'preact'
 import { bind } from 'decko'
+import {ACTION} from '../redux/actions'
 
-import nodeStore from './../stores/node-store'
+import nodeStore from '../redux/store'
 
 class NodePicker extends Component {
     @bind
@@ -12,7 +13,7 @@ class NodePicker extends Component {
     @bind
     addNode(event) {
         nodeStore.dispatch({
-            type: 'ADD_NODE',
+            type: ACTION.ADD_NODE,
             value: {x: event.clientX, y: event.clientY}
         })
     }
@@ -20,23 +21,23 @@ class NodePicker extends Component {
     @bind
     selectNodes() {
         this.setState({connectNodes: false})
-        nodeStore.dispatch({type: 'SELECT_NODE'})
+        nodeStore.dispatch({type: ACTION.SELECT_NODE})
     }
 
     @bind
     connectNodes() {
         this.setState({connectNodes: true})
-        nodeStore.dispatch({type: 'CONNECT_NODE'})
+        nodeStore.dispatch({type: ACTION.CONNECT_NODE})
     }
 
     @bind
     undo() {
-        nodeStore.dispatch({type: 'UNDO'})
+        nodeStore.dispatch({type: ACTION.UNDO})
     }
 
     @bind
     redo() {
-        nodeStore.dispatch({type: 'REDO'})
+        nodeStore.dispatch({type: ACTION.REDO})
     }
 
     render() {
