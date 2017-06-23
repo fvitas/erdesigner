@@ -8,6 +8,7 @@ const actions = {
 
         newState.push({
             nodeId: v4(),
+            nodeName: 'Entity',
             x: action.value.x - 25,
             y: action.value.y - 50,
             width: 100,

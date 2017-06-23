@@ -51,6 +51,7 @@
   },
   "dependencies": {
     "bluebird": "^3.5.0",
+    "linkstate": "^1.0.1",
     "lodash": "^4.17.4",
     "preact": "^8.1.0",
     "redux": "^3.6.0",

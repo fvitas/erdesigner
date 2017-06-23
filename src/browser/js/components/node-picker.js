@@ -42,7 +42,7 @@ class NodePicker extends Component {
 
     render() {
         return (
-            <div class='node-picker'>
+            <div class='node-picker' style='position: absolute'>
                 <label class='toggle-label' htmlFor='toggle'>open/close</label>
                 <input class='toggle-button' id='toggle' type='checkbox' />
                 <ul class='node-picker-list'>

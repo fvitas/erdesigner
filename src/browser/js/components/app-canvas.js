@@ -110,10 +110,9 @@ class AppCanvas extends Component {
 
         return (
             <div>
-                <NodePicker />
-
-                <svg id='SvgjsSvg1001' width={this.state.canvasWidth} height={this.state.canvasHeight} xmlns='http://www.w3.org/2000/svg' onDragOver={event => event.preventDefault()} >
-                    <defs id='SvgjsDefs1002' />
+                <svg id='svg' width={this.state.canvasWidth} height={this.state.canvasHeight} onDragOver={event => event.preventDefault()} xmlns='http://www.w3.org/2000/svg'
+                    style='position: absolute'>
+                    <defs id='svg-defs' />
 
                     <g>{ this.state.connections.map(connection => <Connection {...connection} />) }</g>
 
@@ -122,8 +121,10 @@ class AppCanvas extends Component {
                             this.state.temporaryConnectionLine && <Connection {...this.state.temporaryConnectionLine} />
                         }
                     </g>
+                </svg>
 
-                    <g>{
+                <div style='position: absolute; width:100vw; height: 100vh'>
+                    {
                         this.state.nodes.map(value => (
                             <Node key={value.nodeId} {...value}
                                 onDrawConnectionStart={this.drawConnectionStart}
@@ -133,9 +134,10 @@ class AppCanvas extends Component {
                                 onNodeLeave={this.removeConnectionDestination}
                             />
                         ))
-                    }</g>
+                    }
+                </div>
 
-                </svg>
+                <NodePicker />
 
                 <div class='controls'>
                     <NodeConnector />

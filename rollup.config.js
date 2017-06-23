@@ -9,14 +9,16 @@ export default {
         redux: 'redux',
         decko: 'decko',
         uuid: 'uuid',
-        lodash: 'lodash'
+        lodash: 'lodash',
+        linkState: 'linkState'
     },
     external: [
         'preact',
         'redux',
         'decko',
         'uuid',
-        'lodash'
+        'lodash',
+        'linkState'
     ],
     plugins: [
         babel()

@@ -2,15 +2,17 @@ import { h, Component } from 'preact'
 import { bind } from 'decko'
 import nodeStore from '../../redux/store'
 import {ACTION} from '../../redux/actions'
+import linkState from 'linkState'
 
 class Node extends Component {
-    constructor({nodeId, x, y}) {
+    constructor({nodeId, nodeName, x, y}) {
         super()
 
         this.nodeId = nodeId
 
         this.state = {
             shouldMove: false,
+            nodeName,
             x: x,
             y: y,
             dragX: x,
@@ -163,21 +165,25 @@ class Node extends Component {
         }
     }
 
-    render() {
-        let translate = `translate(${this.state.dragX}, ${this.state.dragY})`
+    render(props, state) {
+        var rootStyle = {
+            transform: `translate(${state.dragX}px, ${state.dragY}px)`
+        }
 
         return (
-            <g transform={translate}>
-                <g transform=' translate(110 -15)' class='node-buttons'>
-                    <circle cx='0' cy='0' r='14' fill='#ebebeb' stroke='#c8c8c8' style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);' />
-                    <circle cx='0' cy='0' r='10' fill='#ef4836' stroke='none' style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);' onClick={this.removeNode} />
-                </g>
-                <rect id='SvgRect' width={this.state.width} height={this.state.height} fill='#ff807f'
+            <div class='canvas-node' style={rootStyle}>
+                <div style={{transform: 'translate(110px, -15px)'}} class='node-buttons'>
+                    {/* <circle cx='0' cy='0' r='14' fill='#ebebeb' stroke='#c8c8c8' style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);' /> */}
+                    {/* <circle cx='0' cy='0' r='10' fill='#ef4836' stroke='none' style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);' onClick={this.removeNode} /> */}
+                </div>
+                <div id='svg-rect' style={{width: state.width, height: state.height, backgroundColor: '#ff807f'}}
                     onMouseDown={this.onMouseDown}
                     onMouseEnter={this.onConnectionEnterDestination}
                     onMouseLeave={this.onConnectionLeaveDestination}
-                />
-            </g>
+                 />
+                <div contentEditable='true'>Entity</div>
+                <input type='text' value={state.nodeName} onInput={linkState(this, 'state.nodeName')} style='border: 0;outline: 0' />
+            </div>
         )
     }
 }
