@@ -54,8 +54,8 @@
     "linkstate": "^1.0.1",
     "lodash": "^4.17.4",
     "preact": "^8.1.0",
+    "preact-redux": "^2.0.1",
     "redux": "^3.6.0",
-    "svg.js": "^2.6.1",
     "uuid": "^3.0.1"
   }
 }

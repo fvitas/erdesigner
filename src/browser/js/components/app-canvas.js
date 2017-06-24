@@ -1,15 +1,18 @@
 import { h, Component } from 'preact'
 import { bind } from 'decko'
+import { connect } from 'preact-redux'
 
 import NodePicker from './node-picker'
 import Node from './svg/node'
 import Connection from './svg/connection'
 
-import nodeStore from '../redux/store'
-import {ACTION} from '../redux/actions'
+import { ACTION } from '../redux/actions'
 import { IconTrash } from './svg/icon-trash'
 import { NodeConnector } from './node-connector'
 
+@connect(
+    state => ({ nodes: state.nodes, connections: state.connections })
+)
 class AppCanvas extends Component {
     componentWillMount() {
         this.updateCanvasDimensions()
@@ -97,7 +100,7 @@ class AppCanvas extends Component {
             y2: this.state.temporaryConnection.destination.y
         }
 
-        nodeStore.dispatch({
+        this.props.dispatch({
             type: ACTION.ADD_CONNECTION,
             value: {...connection}
         })
@@ -105,16 +108,14 @@ class AppCanvas extends Component {
         this.setState({temporaryConnection: null, temporaryConnectionLine: null})
     }
 
-    render() {
-        this.setState({ nodes: nodeStore.getState().nodes, connections: nodeStore.getState().connections })
-
+    render(props) {
         return (
             <div>
                 <svg id='svg' width={this.state.canvasWidth} height={this.state.canvasHeight} onDragOver={event => event.preventDefault()} xmlns='http://www.w3.org/2000/svg'
                     style='position: absolute'>
                     <defs id='svg-defs' />
 
-                    <g>{ this.state.connections.map(connection => <Connection {...connection} />) }</g>
+                    <g>{ props.connections.map(connection => <Connection {...connection} />) }</g>
 
                     <g>
                         {
@@ -125,7 +126,7 @@ class AppCanvas extends Component {
 
                 <div style='position: absolute; width:100vw; height: 100vh'>
                     {
-                        this.state.nodes.map(value => (
+                        props.nodes.map(value => (
                             <Node key={value.nodeId} {...value}
                                 onDrawConnectionStart={this.drawConnectionStart}
                                 onDrawConnectionMove={this.drawConnection}
@@ -142,7 +143,7 @@ class AppCanvas extends Component {
                 <div class='controls'>
                     <NodeConnector />
 
-                    <IconTrash onClick={() => nodeStore.dispatch({type: ACTION.REMOVE_ALL_NODE})} />
+                    <IconTrash onClick={() => props.dispatch({type: ACTION.REMOVE_ALL_NODE})} />
                 </div>
             </div>
         )
