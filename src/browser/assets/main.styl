@@ -87,6 +87,23 @@ li
 .canvas-node
   position: absolute
 
-#SvgRect
-  cursor: move
+
+#svg-rect
+  position: relative
+  background-color: #ff807f
+
+.node-name
+  position: absolute
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+  user-select: none
+  cursor: text
+
+#svg-rect:hover
+  cursor: -webkit-grab
+#svg-rect:active
+  cursor: -webkit-grabbing
+
+
   

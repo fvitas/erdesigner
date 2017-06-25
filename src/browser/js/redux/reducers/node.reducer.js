@@ -32,6 +32,15 @@ const actions = {
         let newState = _.cloneDeep(state)
 
         return newState.map(node => (node.nodeId === action.value.nodeId) ? action.value : node)
+    },
+
+    updateNodeName(state, action) {
+        let newState = _.cloneDeep(state)
+
+        let nodeForUpdate = newState.find(node => node.nodeId === action.value.nodeId)
+        nodeForUpdate.nodeName = action.value.nodeName
+
+        return newState
     }
 }
 
@@ -41,6 +50,7 @@ export default function nodeReducer(state = [], action) {
         case ACTION.REMOVE_NODE: return actions.removeNode(state, action)
         case ACTION.REMOVE_ALL_NODE: return actions.removeAllNode(state)
         case ACTION.UPDATE_NODE: return actions.updateNode(state, action)
+        case ACTION.NODE_CHANGE_NAME: return actions.updateNodeName(state, action)
         default: return state
     }
 }

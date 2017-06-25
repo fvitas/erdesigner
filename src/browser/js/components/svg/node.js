@@ -2,7 +2,6 @@ import { h, Component } from 'preact'
 import { bind } from 'decko'
 import nodeStore from '../../redux/store'
 import {ACTION} from '../../redux/actions'
-import linkState from 'linkState'
 
 class Node extends Component {
     constructor({nodeId, nodeName, x, y}) {
@@ -12,7 +11,8 @@ class Node extends Component {
 
         this.state = {
             shouldMove: false,
-            nodeName,
+            contentEditable: 'false',
+            nodeName: nodeName,
             x: x,
             y: y,
             dragX: x,
@@ -24,8 +24,6 @@ class Node extends Component {
 
     @bind
     onMouseDown(event) {
-        event.preventDefault()
-
         if (nodeStore.getState().settings.shouldConnectNodes) {
             let sourceNode = nodeStore.getState()
                 .nodes
@@ -56,6 +54,7 @@ class Node extends Component {
             let newPositionY = this.state.y + event.clientY - this.state.startDragY
 
             this.setState({
+                contentEditable: 'false',
                 dragX: newPositionX,
                 dragY: newPositionY
             })
@@ -116,6 +115,7 @@ class Node extends Component {
     @bind
     drawConnection(event) {
         this.props.onDrawConnectionMove(event)
+        this.setState({ contentEditable: 'false' })
     }
 
     @bind
@@ -165,8 +165,65 @@ class Node extends Component {
         }
     }
 
+    componentWillReceiveProps({nodeName}) {
+        if (this.state.nodeName !== nodeName) {
+            this.setState({
+                ...this.state,
+                nodeName: nodeName
+            })
+        }
+    }
+
+    @bind
+    disableEnterKey(e) {
+        let pressedKey = e.which
+        let ENTER = 13
+        if (pressedKey === ENTER) {
+            e.preventDefault()
+        }
+    }
+
+    @bind
+    makeNameChange(e) {
+        let pressedKey = e.which
+        let ENTER = 13
+        let ESCAPE = 27
+
+        if (pressedKey === ENTER) {
+            this.saveName(e.target.textContent)
+        }
+        if (pressedKey === ENTER || pressedKey === ESCAPE) {
+            this.setState({ contentEditable: 'false' })
+        }
+    }
+
+    @bind
+    enableEdit() {
+        this.setState({ contentEditable: 'true' })
+    }
+
+    @bind
+    onBlur(e) {
+        this.saveName(e.target.textContent)
+        this.setState({ contentEditable: 'false' })
+    }
+
+    saveName(name) {
+        if (this.state.nodeName === name) {
+            return
+        }
+
+        nodeStore.dispatch({
+            type: ACTION.NODE_CHANGE_NAME,
+            value: {
+                nodeId: this.nodeId,
+                nodeName: name
+            }
+        })
+    }
+
     render(props, state) {
-        var rootStyle = {
+        let rootStyle = {
             transform: `translate(${state.dragX}px, ${state.dragY}px)`
         }
 
@@ -176,13 +233,20 @@ class Node extends Component {
                     {/* <circle cx='0' cy='0' r='14' fill='#ebebeb' stroke='#c8c8c8' style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);' /> */}
                     {/* <circle cx='0' cy='0' r='10' fill='#ef4836' stroke='none' style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);' onClick={this.removeNode} /> */}
                 </div>
-                <div id='svg-rect' style={{width: state.width, height: state.height, backgroundColor: '#ff807f'}}
+                <div id='svg-rect' style={{width: state.width, height: state.height}}
                     onMouseDown={this.onMouseDown}
                     onMouseEnter={this.onConnectionEnterDestination}
                     onMouseLeave={this.onConnectionLeaveDestination}
-                 />
-                <div contentEditable='true'>Entity</div>
-                <input type='text' value={state.nodeName} onInput={linkState(this, 'state.nodeName')} style='border: 0;outline: 0' />
+                >
+                    <div class='node-name' contentEditable={state.contentEditable}
+                        onMouseDown={this.enableEdit}
+                        onKeyDown={this.disableEnterKey}
+                        onKeyUp={this.makeNameChange}
+                        onBlur={this.onBlur}
+                    >
+                        { state.nodeName }
+                    </div>
+                </div>
             </div>
         )
     }

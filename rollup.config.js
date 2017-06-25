@@ -10,6 +10,7 @@ export default {
         decko: 'decko',
         uuid: 'uuid',
         lodash: 'lodash',
+        'preact-redux': 'preact-redux',
         linkState: 'linkState'
     },
     external: [
@@ -18,6 +19,7 @@ export default {
         'decko',
         'uuid',
         'lodash',
+        'preact-redux',
         'linkState'
     ],
     plugins: [
