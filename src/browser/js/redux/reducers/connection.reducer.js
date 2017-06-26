@@ -30,7 +30,20 @@ const actions = {
     },
 
     updateConnections(state, action) {
-        return [...action.value]
+        let newConnections = _.cloneDeep(state)
+
+        newConnections.forEach(connection => {
+            if (connection.sourceNodeId === action.value.nodeId) {
+                connection.x1 = action.value.x + action.value.width / 2
+                connection.y1 = action.value.y + action.value.height / 2
+            }
+            if (connection.destinationNodeId === action.value.nodeId) {
+                connection.x2 = action.value.x + action.value.width / 2
+                connection.y2 = action.value.y + action.value.height / 2
+            }
+        })
+
+        return newConnections
     },
 
     updateNodeConnection(state, action) {

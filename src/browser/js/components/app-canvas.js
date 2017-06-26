@@ -62,7 +62,7 @@ class AppCanvas extends Component {
 
     @bind
     addConnectionDestination(destinationNode) {
-        if (this.state.temporaryConnection.source.nodeId !== destinationNode.nodeId) {
+        if (this.state.temporaryConnection.source && this.state.temporaryConnection.source.nodeId !== destinationNode.nodeId) {
             let nodeId = destinationNode.nodeId
             let x = destinationNode.x + destinationNode.width / 2
             let y = destinationNode.y + destinationNode.height / 2

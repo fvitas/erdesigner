@@ -31,13 +31,17 @@ const actions = {
     updateNode(state, action) {
         let newState = _.cloneDeep(state)
 
-        return newState.map(node => (node.nodeId === action.value.nodeId) ? action.value : node)
+        let nodeForUpdate = _.find(newState, { nodeId: action.value.nodeId })
+        nodeForUpdate.x = action.value.x
+        nodeForUpdate.y = action.value.y
+
+        return newState
     },
 
     updateNodeName(state, action) {
         let newState = _.cloneDeep(state)
 
-        let nodeForUpdate = newState.find(node => node.nodeId === action.value.nodeId)
+        let nodeForUpdate = _.find(newState, { nodeId: action.value.nodeId })
         nodeForUpdate.nodeName = action.value.nodeName
 
         return newState

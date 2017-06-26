@@ -57,7 +57,8 @@ let historyStateActions = [
     ACTION.REMOVE_ALL_NODE,
     ACTION.ADD_CONNECTION,
     ACTION.ADD_NODE,
-    ACTION.UPDATE_NODE
+    ACTION.UPDATE_NODE,
+    ACTION.NODE_CHANGE_NAME
 ]
 
 // const store = createStore(rootReducer, applyMiddleware(historyMiddleware))

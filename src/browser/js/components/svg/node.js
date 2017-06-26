@@ -59,22 +59,15 @@ class Node extends Component {
                 dragY: newPositionY
             })
 
-            let allNodeConnections = [...nodeStore.getState().connections]
-
-            allNodeConnections.forEach(connection => {
-                if (connection.sourceNodeId === this.nodeId) {
-                    connection.x1 = newPositionX + this.state.width / 2
-                    connection.y1 = newPositionY + this.state.height / 2
-                }
-                if (connection.destinationNodeId === this.nodeId) {
-                    connection.x2 = newPositionX + this.state.width / 2
-                    connection.y2 = newPositionY + this.state.height / 2
-                }
-            })
-
             nodeStore.dispatch({
                 type: ACTION.UPDATE_CONNECTIONS,
-                value: allNodeConnections
+                value: {
+                    nodeId: this.nodeId,
+                    x: newPositionX,
+                    y: newPositionY,
+                    width: this.state.width,
+                    height: this.state.height
+                }
             })
         }
     }
@@ -84,24 +77,27 @@ class Node extends Component {
         window.removeEventListener('mousemove', this.moveNode)
         window.removeEventListener('mouseup', this.moveNodeFinished)
 
-        this.setState({
-            shouldMove: false,
-            x: this.state.dragX,
-            y: this.state.dragY
-        })
+        if (this.state.x !== this.state.dragX || this.state.y !== this.state.dragY) {
+            console.log('finished')
+            nodeStore.dispatch({
+                type: ACTION.UPDATE_NODE,
+                value: {
+                    nodeId: this.nodeId,
+                    x: this.state.dragX,
+                    y: this.state.dragY,
+                    width: this.state.width,
+                    height: this.state.height
+                }
+            })
 
-        let node = nodeStore.getState()
-            .nodes
-            .find(node => node.nodeId === this.nodeId)
-
-        nodeStore.dispatch({
-            type: ACTION.UPDATE_NODE,
-            value: {
-                ...node,
+            this.setState({
+                shouldMove: false,
                 x: this.state.dragX,
                 y: this.state.dragY
-            }
-        })
+            })
+        } else {
+            this.setState({ shouldMove: false })
+        }
     }
 
     @bind
@@ -153,23 +149,15 @@ class Node extends Component {
         }
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        if (nextState.x !== nextProps.x || nextState.x !== nextProps.x) {
-            this.setState({
-                ...nextState,
-                x: nextProps.x,
-                y: nextProps.y,
-                dragX: nextProps.x,
-                dragY: nextProps.y
-            })
-        }
-    }
-
-    componentWillReceiveProps({nodeName}) {
-        if (this.state.nodeName !== nodeName) {
+    componentWillReceiveProps({nodeName, x, y}) {
+        if (this.state.nodeName !== nodeName || this.state.x !== x || this.state.y !== y) {
             this.setState({
                 ...this.state,
-                nodeName: nodeName
+                nodeName: nodeName,
+                x: x,
+                y: y,
+                dragX: x,
+                dragY: y
             })
         }
     }
