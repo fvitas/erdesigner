@@ -8,7 +8,7 @@ const actions = {
 
         newState.push({
             nodeId: v4(),
-            nodeName: 'Entity',
+            nodeName: action.value.type.replace(/-/, ' '),
             type: action.value.type,
             x: action.value.x - 25,
             y: action.value.y - 50,
