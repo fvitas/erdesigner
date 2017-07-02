@@ -20,6 +20,7 @@
     "indent": ["error", 4, { "SwitchCase": 1 }],
     "no-unused-vars": ["error", { "varsIgnorePattern": "h" }],
     "space-before-function-paren": ["error", "never"],
+    "operator-linebreak": ["error", "after", { "overrides": { "?": "ignore", ":": "ignore" } }],
     "react/jsx-indent": ["error", 4],
     "react/jsx-indent-props": ["error", 4]
   }

@@ -2,6 +2,10 @@ import { h, Component } from 'preact'
 import { bind } from 'decko'
 import nodeStore from '../../redux/store'
 import {ACTION} from '../../redux/actions'
+import NODE_TYPE from './../../constants/node-type'
+
+import Entity from './node-types/node-entity'
+import Attribute from './node-types/node-attribute'
 
 class Node extends Component {
     constructor({nodeId, nodeName, x, y}) {
@@ -210,6 +214,17 @@ class Node extends Component {
         })
     }
 
+    getNodeTypeComponent(type) {
+        switch (type) {
+            case NODE_TYPE.ENTITY:
+                return <Entity />
+            case NODE_TYPE.ATTRIBUTE:
+                return <Attribute />
+            default:
+                return ''
+        }
+    }
+
     render(props, state) {
         let rootStyle = {
             transform: `translate(${state.dragX}px, ${state.dragY}px)`
@@ -226,6 +241,9 @@ class Node extends Component {
                     onMouseEnter={this.onConnectionEnterDestination}
                     onMouseLeave={this.onConnectionLeaveDestination}
                 >
+
+                    { this.getNodeTypeComponent(props.type) }
+
                     <div class='node-name' contentEditable={state.contentEditable}
                         onMouseDown={this.enableEdit}
                         onKeyDown={this.disableEnterKey}
