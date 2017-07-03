@@ -79,7 +79,6 @@ class Node extends Component {
         window.removeEventListener('mouseup', this.moveNodeFinished)
 
         if (this.state.x !== this.state.dragX || this.state.y !== this.state.dragY) {
-            console.log('finished')
             nodeStore.dispatch({
                 type: ACTION.UPDATE_NODE,
                 value: {
@@ -222,7 +221,7 @@ class Node extends Component {
                     {/* <circle cx='0' cy='0' r='14' fill='#ebebeb' stroke='#c8c8c8' style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);' /> */}
                     {/* <circle cx='0' cy='0' r='10' fill='#ef4836' stroke='none' style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);' onClick={this.removeNode} /> */}
                 </div>
-                <div id='svg-rect' style={{width: state.width, height: state.height}}
+                <div id='svg-rect' style={{width: state.width, height: state.height, backgroundColor: props.color ? props.color : 'white'}}
                     onMouseDown={this.onMouseDown}
                     onMouseEnter={this.onConnectionEnterDestination}
                     onMouseLeave={this.onConnectionLeaveDestination}

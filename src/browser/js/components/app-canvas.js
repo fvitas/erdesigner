@@ -8,7 +8,8 @@ import Connection from './svg/connection'
 
 import { ACTION } from '../redux/actions'
 import { IconTrash } from './svg/icon-trash'
-import { NodeConnector } from './node-connector'
+
+import NODE_COLORS from './../constants/node-colors'
 
 @connect(
     state => ({ nodes: state.nodes, connections: state.connections })
@@ -41,6 +42,8 @@ class AppCanvas extends Component {
         let y = sourceNode.y + sourceNode.height / 2
 
         this.setState({ temporaryConnection: {source: {nodeId, x, y}} })
+
+        this.props.dispatch({type: ACTION.NODE_ADD_COLOR, value: {nodeId: sourceNode.nodeId, color: NODE_COLORS.GREEN}})
     }
 
     @bind
@@ -71,6 +74,9 @@ class AppCanvas extends Component {
                 source: this.state.temporaryConnection.source,
                 destination: {nodeId, x, y}
             }})
+
+            // set color to destination
+            this.props.dispatch({type: ACTION.NODE_ADD_COLOR, value: {nodeId: destinationNode.nodeId, color: NODE_COLORS.GREEN}})
         }
     }
 
@@ -81,11 +87,17 @@ class AppCanvas extends Component {
                 source: this.state.temporaryConnection.source,
                 destination: null
             }})
+
+            // remove color from node
+            this.props.dispatch({type: ACTION.NODE_ADD_COLOR, value: {nodeId: destinationNode.nodeId, color: null}})
         }
     }
 
     @bind
     drawConnectionEnd() {
+        // reset colors
+        this.props.dispatch({type: ACTION.NODE_REMOVE_COLOR})
+
         if (!this.state.temporaryConnection.source || !this.state.temporaryConnection.destination) {
             this.setState({temporaryConnection: null, temporaryConnectionLine: null})
             return
@@ -141,8 +153,6 @@ class AppCanvas extends Component {
                 <NodePicker />
 
                 <div class='controls'>
-                    <NodeConnector />
-
                     <IconTrash onClick={() => props.dispatch({type: ACTION.REMOVE_ALL_NODE})} />
                 </div>
             </div>

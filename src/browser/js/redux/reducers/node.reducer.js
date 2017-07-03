@@ -46,6 +46,23 @@ const actions = {
         nodeForUpdate.nodeName = action.value.nodeName
 
         return newState
+    },
+
+    addColorToNode(state, action) {
+        let newState = _.cloneDeep(state)
+
+        let nodeForUpdate = _.find(newState, { nodeId: action.value.nodeId })
+        nodeForUpdate.color = action.value.color
+
+        return newState
+    },
+
+    removeColorFromNodes(state) {
+        let newState = _.cloneDeep(state)
+
+        _.forEach(newState, node => { node.color = null })
+
+        return newState
     }
 }
 
@@ -56,6 +73,8 @@ export default function nodeReducer(state = [], action) {
         case ACTION.REMOVE_ALL_NODE: return actions.removeAllNode(state)
         case ACTION.UPDATE_NODE: return actions.updateNode(state, action)
         case ACTION.NODE_CHANGE_NAME: return actions.updateNodeName(state, action)
+        case ACTION.NODE_ADD_COLOR: return actions.addColorToNode(state, action)
+        case ACTION.NODE_REMOVE_COLOR: return actions.removeColorFromNodes(state, action)
         default: return state
     }
 }
