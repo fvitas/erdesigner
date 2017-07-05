@@ -1,5 +1,6 @@
 import { h, Component } from 'preact'
 import { bind } from 'decko'
+import _ from 'lodash'
 import { connect } from 'preact-redux'
 
 import NodePicker from './node-picker'
@@ -10,6 +11,7 @@ import { ACTION } from '../redux/actions'
 import { IconTrash } from './svg/icon-trash'
 
 import NODE_COLORS from './../constants/node-colors'
+import NODE_COMPATIBILITY from './../constants/node-compatibility'
 
 @connect(
     state => ({ nodes: state.nodes, connections: state.connections })
@@ -37,11 +39,10 @@ class AppCanvas extends Component {
 
     @bind
     drawConnectionStart(sourceNode) {
-        let nodeId = sourceNode.nodeId
         let x = sourceNode.x + sourceNode.width / 2
         let y = sourceNode.y + sourceNode.height / 2
 
-        this.setState({ temporaryConnection: {source: {nodeId, x, y}} })
+        this.setState({ temporaryConnection: {source: {nodeId: sourceNode.nodeId, type: sourceNode.type, x, y}} })
 
         this.props.dispatch({type: ACTION.NODE_ADD_COLOR, value: {nodeId: sourceNode.nodeId, color: NODE_COLORS.GREEN}})
     }
@@ -65,18 +66,23 @@ class AppCanvas extends Component {
 
     @bind
     addConnectionDestination(destinationNode) {
-        if (this.state.temporaryConnection.source && this.state.temporaryConnection.source.nodeId !== destinationNode.nodeId) {
-            let nodeId = destinationNode.nodeId
+        let sourceNode = this.state.temporaryConnection.source
+
+        if (sourceNode && sourceNode.nodeId !== destinationNode.nodeId) {
             let x = destinationNode.x + destinationNode.width / 2
             let y = destinationNode.y + destinationNode.height / 2
 
             this.setState({ temporaryConnection: {
-                source: this.state.temporaryConnection.source,
-                destination: {nodeId, x, y}
+                source: sourceNode,
+                destination: {nodeId: destinationNode.nodeId, type: destinationNode.type, x, y}
             }})
 
             // set color to destination
-            this.props.dispatch({type: ACTION.NODE_ADD_COLOR, value: {nodeId: destinationNode.nodeId, color: NODE_COLORS.GREEN}})
+            if (this.destinationIsCompatible(sourceNode, destinationNode)) {
+                this.props.dispatch({type: ACTION.NODE_ADD_COLOR, value: {nodeId: destinationNode.nodeId, color: NODE_COLORS.GREEN}})
+            } else {
+                this.props.dispatch({type: ACTION.NODE_ADD_COLOR, value: {nodeId: destinationNode.nodeId, color: NODE_COLORS.RED}})
+            }
         }
     }
 
@@ -95,21 +101,29 @@ class AppCanvas extends Component {
 
     @bind
     drawConnectionEnd() {
+        let sourceNode = this.state.temporaryConnection.source
+        let destinationNode = this.state.temporaryConnection.destination
+
         // reset colors
         this.props.dispatch({type: ACTION.NODE_REMOVE_COLOR})
 
-        if (!this.state.temporaryConnection.source || !this.state.temporaryConnection.destination) {
+        if (
+            !sourceNode ||
+            !destinationNode ||
+            !this.destinationIsCompatible(sourceNode, destinationNode)
+            // check if connection alreacy exists
+        ) {
             this.setState({temporaryConnection: null, temporaryConnectionLine: null})
             return
         }
 
         let connection = {
-            sourceNodeId: this.state.temporaryConnection.source.nodeId,
-            destinationNodeId: this.state.temporaryConnection.destination.nodeId,
-            x1: this.state.temporaryConnection.source.x,
-            y1: this.state.temporaryConnection.source.y,
-            x2: this.state.temporaryConnection.destination.x,
-            y2: this.state.temporaryConnection.destination.y
+            sourceNodeId: sourceNode.nodeId,
+            destinationNodeId: destinationNode.nodeId,
+            x1: sourceNode.x,
+            y1: sourceNode.y,
+            x2: destinationNode.x,
+            y2: destinationNode.y
         }
 
         this.props.dispatch({
@@ -118,6 +132,10 @@ class AppCanvas extends Component {
         })
 
         this.setState({temporaryConnection: null, temporaryConnectionLine: null})
+    }
+
+    destinationIsCompatible(source, destination) {
+        return _.includes(NODE_COMPATIBILITY[source.type], destination.type)
     }
 
     render(props) {

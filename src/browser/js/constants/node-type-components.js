@@ -8,12 +8,15 @@ import AssociativeEntity from './../components/svg/node-types/node-associative-e
 import Relationship from './../components/svg/node-types/node-relationship'
 import WeakEntity from './../components/svg/node-types/node-weak-entity'
 
-const NODE_TYPE_COMPONENTS = {
-    [NODE_TYPE.ENTITY]: <Entity />,
-    [NODE_TYPE.ATTRIBUTE]: <Attribute />,
-    [NODE_TYPE.ASSOCIATIVE_ENTITY]: <AssociativeEntity />,
-    [NODE_TYPE.RELATIONSHIP]: <Relationship />,
-    [NODE_TYPE.WEAK_ENTITY]: <WeakEntity />
+function getNodeTypeComponent(type, props) {
+    // TODO filipv: refactor this shit somehow => dynamic props (because of color)
+    return {
+        [NODE_TYPE.ENTITY]: <Entity {...props} />,
+        [NODE_TYPE.ATTRIBUTE]: <Attribute {...props} />,
+        [NODE_TYPE.ASSOCIATIVE_ENTITY]: <AssociativeEntity {...props} />,
+        [NODE_TYPE.RELATIONSHIP]: <Relationship {...props} />,
+        [NODE_TYPE.WEAK_ENTITY]: <WeakEntity {...props} />
+    }[type]
 }
 
-export default NODE_TYPE_COMPONENTS
+export default getNodeTypeComponent

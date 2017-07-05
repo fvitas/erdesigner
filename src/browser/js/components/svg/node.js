@@ -2,7 +2,7 @@ import { h, Component } from 'preact'
 import { bind } from 'decko'
 import nodeStore from '../../redux/store'
 import {ACTION} from '../../redux/actions'
-import NODE_TYPE_COMPONENTS from './../../constants/node-type-components'
+import getNodeTypeComponent from './../../constants/node-type-components'
 
 class Node extends Component {
     constructor({nodeId, nodeName, x, y}) {
@@ -221,13 +221,13 @@ class Node extends Component {
                     {/* <circle cx='0' cy='0' r='14' fill='#ebebeb' stroke='#c8c8c8' style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);' /> */}
                     {/* <circle cx='0' cy='0' r='10' fill='#ef4836' stroke='none' style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);' onClick={this.removeNode} /> */}
                 </div>
-                <div id='svg-rect' style={{width: state.width, height: state.height, backgroundColor: props.color ? props.color : 'white'}}
+                <div id='svg-rect' style={{width: state.width, height: state.height}}
                     onMouseDown={this.onMouseDown}
                     onMouseEnter={this.onConnectionEnterDestination}
                     onMouseLeave={this.onConnectionLeaveDestination}
                 >
 
-                    { NODE_TYPE_COMPONENTS[props.type] }
+                    { getNodeTypeComponent(props.type, {color: props.color}) }
 
                     <div class='node-name' contentEditable={state.contentEditable}
                         onMouseDown={this.enableEdit}
