@@ -110,8 +110,8 @@ class AppCanvas extends Component {
         if (
             !sourceNode ||
             !destinationNode ||
-            !this.destinationIsCompatible(sourceNode, destinationNode)
-            // check if connection alreacy exists
+            !this.destinationIsCompatible(sourceNode, destinationNode) ||
+            this.connectionExist(sourceNode, destinationNode)
         ) {
             this.setState({temporaryConnection: null, temporaryConnectionLine: null})
             return
@@ -132,6 +132,10 @@ class AppCanvas extends Component {
         })
 
         this.setState({temporaryConnection: null, temporaryConnectionLine: null})
+    }
+
+    connectionExist(source, destination) {
+        return _.some(this.props.connections, connection => connection.sourceNodeId === source.nodeId && connection.destinationNodeId === destination.nodeId)
     }
 
     destinationIsCompatible(source, destination) {
