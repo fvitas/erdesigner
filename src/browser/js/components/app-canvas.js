@@ -149,16 +149,12 @@ class AppCanvas extends Component {
                     style='position: absolute'>
                     <defs id='svg-defs' />
 
-                    <g>{ props.connections.map(connection => <Connection {...connection} />) }</g>
+                    { props.connections.map(connection => <Connection {...connection} />) }
 
-                    <g>
-                        {
-                            this.state.temporaryConnectionLine && <Connection {...this.state.temporaryConnectionLine} />
-                        }
-                    </g>
+                    { this.state.temporaryConnectionLine && <Connection {...this.state.temporaryConnectionLine} /> }
                 </svg>
 
-                <div style='position: absolute; width:100vw; height: 100vh'>
+                <div>
                     {
                         props.nodes.map(value => (
                             <Node key={value.nodeId} {...value}
