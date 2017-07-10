@@ -3,12 +3,10 @@ import { bind } from 'decko'
 import _ from 'lodash'
 import { connect } from 'preact-redux'
 
-import NodePicker from './node-picker'
 import Node from './svg/node'
 import Connection from './svg/connection'
 
 import { ACTION } from '../redux/actions'
-import { IconTrash } from './svg/icon-trash'
 
 import NODE_COLORS from './../constants/node-colors'
 import NODE_COMPATIBILITY from './../constants/node-compatibility'
@@ -16,7 +14,7 @@ import NODE_COMPATIBILITY from './../constants/node-compatibility'
 @connect(
     state => ({ nodes: state.nodes, connections: state.connections })
 )
-class AppCanvas extends Component {
+class ERDiagramCanvas extends Component {
     componentWillMount() {
         this.updateCanvasDimensions()
     }
@@ -167,15 +165,9 @@ class AppCanvas extends Component {
                         ))
                     }
                 </div>
-
-                <NodePicker />
-
-                <div class='controls'>
-                    <IconTrash onClick={() => props.dispatch({type: ACTION.REMOVE_ALL_NODE})} />
-                </div>
             </div>
         )
     }
 }
 
-export default AppCanvas
+export default ERDiagramCanvas

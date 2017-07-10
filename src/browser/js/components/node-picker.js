@@ -68,9 +68,7 @@ class NodePicker extends Component {
 
     render() {
         return (
-            <div class='node-picker' style='position: absolute'>
-                <label class='toggle-label' htmlFor='toggle'>open/close</label>
-                <input class='toggle-button' id='toggle' type='checkbox' />
+            <div class='node-picker'>
                 <ul class='node-picker-list'>
                     <li class='node node-entity' draggable='true' onDragStart={this.dragStarted} onDragEnd={this.addNodeEntity} />
                     <li class='node node-weak-entity' draggable='true' onDragStart={this.dragStarted} onDragEnd={this.addNodeWeakEntity} />
