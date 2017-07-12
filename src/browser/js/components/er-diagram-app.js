@@ -2,7 +2,7 @@ import { h, Component } from 'preact'
 import { bind } from 'decko'
 
 import NodePicker from './node-picker'
-import { IconTrash } from './svg/icon-trash'
+import Controls from './controls'
 
 import ERDiagramCanvas from './er-diagram-canvas'
 
@@ -80,10 +80,8 @@ class ERDiagramApp extends Component {
         return (
             <div id='er-diagram-app' style='width: 100vw; height: 100vh;'>
 
-                <header>
-                    <div class='controls'>
-                        <IconTrash onClick />
-                    </div>
+                <header class='pane-header'>
+                    <Controls />
                 </header>
 
                 <div class='pane-split'>

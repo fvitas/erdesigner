@@ -40,6 +40,10 @@ li
   cursor: col-resize
   z-index: 1
 
+.pane-header
+  position: relative
+  z-index: 1
+
 .pane-split
   display: flex
   flex: 1 1 0%
@@ -84,19 +88,23 @@ li
     background-color: blue
 
 .controls
-  position: absolute
   display: flex
-  float: right
-  z-index: 10
-  right: 10px
-  top: 10px
+  justify-content: space-around
+  border-bottom: 1px solid #ccc
+  z-index: 1
 
-  & > *
+  & *
     margin: 5px
     cursor: pointer
 
   & svg
     vertical-align: middle
+
+.separator
+  width: 1px
+  height: 40px
+  background-color: #ccc
+  cursor: default
 
 .canvas-node
   position: absolute
@@ -120,4 +128,7 @@ li
   cursor: -webkit-grabbing
 
 
-  
+ label[for=select-nodes],
+ label[for=connect-nodes]
+   & input
+     display: none

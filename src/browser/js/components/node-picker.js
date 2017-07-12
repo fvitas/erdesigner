@@ -44,28 +44,6 @@ class NodePicker extends Component {
         this.addNode({type: NODE_TYPE.RELATIONSHIP, x: event.clientX, y: event.clientY})
     }
 
-    @bind
-    selectNodes() {
-        this.setState({connectNodes: false})
-        nodeStore.dispatch({type: ACTION.SELECT_NODE})
-    }
-
-    @bind
-    connectNodes() {
-        this.setState({connectNodes: true})
-        nodeStore.dispatch({type: ACTION.CONNECT_NODE})
-    }
-
-    @bind
-    undo() {
-        nodeStore.dispatch({type: ACTION.UNDO})
-    }
-
-    @bind
-    redo() {
-        nodeStore.dispatch({type: ACTION.REDO})
-    }
-
     render() {
         return (
             <div class='node-picker'>
@@ -79,22 +57,6 @@ class NodePicker extends Component {
 
                 {/* show dragging element tween / every node type should have own dragging tween */}
                 <div class='node' id='node-drag-tween' style='position:absolute;left: -1000px' />
-
-                <div style='
-                position: absolute;
-                top: 0;
-                left: 190px;
-                width: 130px;
-                margin: 10px;
-                '>
-                    <input class='' type='radio' name='choose' id='select-nodes' onClick={this.selectNodes} checked={!this.state.connectNodes} />
-                    <label htmlFor='select-nodes'>Select</label>
-                    <input class='' type='radio' name='choose' id='connect-nodes' onClick={this.connectNodes} checked={this.state.connectNodes} />
-                    <label htmlFor='connect-nodes'>Connect</label>
-
-                    <button onClick={this.undo} >Undo</button>
-                    <button onClick={this.redo} >Redo</button>
-                </div>
             </div>
         )
     }
