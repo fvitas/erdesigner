@@ -10,7 +10,7 @@ const actions = {
             nodeId: v4(),
             nodeName: action.value.type.replace(/-/, ' '),
             type: action.value.type,
-            x: action.value.x - 25,
+            x: action.value.x - 0,
             y: action.value.y - 50,
             width: 100,
             height: 50
