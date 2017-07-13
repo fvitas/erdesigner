@@ -3,7 +3,6 @@ import {ACTION} from '../redux/actions'
 import { connect } from 'preact-redux'
 
 import {IconTrash} from './control-items/icon-trash'
-// import {IconLink} from './control-items/icon-link'
 import {IconZoomIn} from './control-items/icon-zoom-in'
 import {IconZoomOut} from './control-items/icon-zoom-out'
 import {IconZoomCustom} from './control-items/icon-zoom-custom'
