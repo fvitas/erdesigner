@@ -8,7 +8,8 @@ import {IconZoomOut} from './control-items/icon-zoom-out'
 import {IconZoomCustom} from './control-items/icon-zoom-custom'
 import {IconUndo} from './control-items/icon-undo'
 import {IconRedo} from './control-items/icon-redo'
-import {IconSelect} from './control-items/icon-select-connect'
+import {IconSelect} from './control-items/icon-select'
+import {IconConnect} from './control-items/icon-connect'
 import {IconToFront} from './control-items/icon-to-front'
 import {IconToBack} from './control-items/icon-to-back'
 import {IconExport} from './control-items/icon-export'
@@ -37,6 +38,7 @@ class Controls extends Component {
                 <div class='separator' />
 
                 <IconSelect />
+                <IconConnect />
 
                 <div class='separator' />
 

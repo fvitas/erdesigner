@@ -74,7 +74,7 @@ li
   .node-picker-list
     position: relative
     display: flex
-    top: 50px
+    top: 20px
     overflow: hidden
     flex-wrap: wrap
     justify-content: center
@@ -82,10 +82,9 @@ li
   .node
     display: inline-block
     flex: 0 0 50px
-    width: 50px
+    width: auto
     height: 50px
     margin: 10px
-    background-color: blue
 
 .controls
   display: flex
@@ -93,9 +92,12 @@ li
   border-bottom: 1px solid #ccc
   z-index: 1
 
-  & *
+  .icon
     margin: 5px
     cursor: pointer
+    text-align: center
+    font-size: 10px
+    user-select: none
 
   & svg
     vertical-align: middle
@@ -128,7 +130,6 @@ li
   cursor: -webkit-grabbing
 
 
- label[for=select-nodes],
- label[for=connect-nodes]
-   & input
-     display: none
+label[for=select-nodes] input
+label[for=connect-nodes] input
+  display: none
