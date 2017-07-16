@@ -212,7 +212,7 @@ class Node extends Component {
 
     render(props, state) {
         let rootStyle = {
-            transform: `translate(${state.dragX}px, ${state.dragY}px)`
+            transform: `translate(${state.dragX}px, ${state.dragY}px) scale(${props.zoom})`
         }
 
         return (

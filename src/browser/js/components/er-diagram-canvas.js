@@ -12,7 +12,7 @@ import NODE_COLORS from './../constants/node-colors'
 import NODE_COMPATIBILITY from './../constants/node-compatibility'
 
 @connect(
-    state => ({ nodes: state.nodes, connections: state.connections })
+    state => ({ nodes: state.nodes, connections: state.connections, settings: state.settings })
 )
 class ERDiagramCanvas extends Component {
     componentWillMount() {
@@ -147,15 +147,16 @@ class ERDiagramCanvas extends Component {
                     style='position: absolute'>
                     <defs id='svg-defs' />
 
-                    { props.connections.map(connection => <Connection {...connection} />) }
+                    { props.connections.map(connection => <Connection {...connection} zoom={props.settings.zoom} />) }
 
-                    { this.state.temporaryConnectionLine && <Connection {...this.state.temporaryConnectionLine} /> }
+                    { this.state.temporaryConnectionLine && <Connection {...this.state.temporaryConnectionLine} zoom={props.settings.zoom} /> }
                 </svg>
 
                 <div>
                     {
                         props.nodes.map(value => (
                             <Node key={value.nodeId} {...value}
+                                zoom={props.settings.zoom}
                                 onDrawConnectionStart={this.drawConnectionStart}
                                 onDrawConnectionMove={this.drawConnection}
                                 onDrawConnectionEnd={this.drawConnectionEnd}

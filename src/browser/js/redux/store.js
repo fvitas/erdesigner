@@ -58,7 +58,9 @@ let historyStateActions = [
     ACTION.ADD_CONNECTION,
     ACTION.ADD_NODE,
     ACTION.UPDATE_NODE,
-    ACTION.NODE_CHANGE_NAME
+    ACTION.NODE_CHANGE_NAME,
+    ACTION.ZOOM_IN,
+    ACTION.ZOOM_OUT
 ]
 
 // const store = createStore(rootReducer, applyMiddleware(historyMiddleware))

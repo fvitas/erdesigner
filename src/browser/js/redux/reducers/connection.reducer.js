@@ -64,7 +64,7 @@ const actions = {
     }
 }
 
-export default function nodeReducer(state = [], action) {
+export default function connectionReducer(state = [], action) {
     switch (action.type) {
         case ACTION.REMOVE_NODE: return actions.removeNode(state, action)
         case ACTION.REMOVE_ALL_NODE: return actions.removeAllNode(state)

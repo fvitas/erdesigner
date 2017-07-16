@@ -6,7 +6,7 @@ import { bind } from 'decko'
 import { IconTrash } from './control-items/icon-trash'
 import { IconZoomIn } from './control-items/icon-zoom-in'
 import { IconZoomOut } from './control-items/icon-zoom-out'
-import { IconZoomCustom } from './control-items/icon-zoom-custom'
+// import { IconZoomCustom } from './control-items/icon-zoom-custom'
 import { IconUndo } from './control-items/icon-undo'
 import { IconRedo } from './control-items/icon-redo'
 import { IconSelect } from './control-items/icon-select'
@@ -22,12 +22,12 @@ import { IconOpenTool } from './control-items/icon-open-tool'
 class Controls extends Component {
     @bind
     zoomIn() {
-        console.log('tbd')
+        this.props.dispatch({type: ACTION.ZOOM_IN})
     }
 
     @bind
     zoomOut() {
-        console.log('tbd')
+        this.props.dispatch({type: ACTION.ZOOM_OUT})
     }
 
     @bind
@@ -89,9 +89,8 @@ class Controls extends Component {
         return (
             <div class='controls'>
 
-                <IconZoomCustom />
-
-                <div class='separator' />
+                {/* <IconZoomCustom /> */}
+                {/* <div class='separator' /> */}
 
                 <IconZoomIn onClick={this.zoomIn} />
                 <IconZoomOut onClick={this.zoomOut} />
