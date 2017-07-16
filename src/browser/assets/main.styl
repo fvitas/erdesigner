@@ -88,16 +88,31 @@ li
 
 .controls
   display: flex
-  justify-content: space-around
   border-bottom: 1px solid #ccc
   z-index: 1
 
   .icon
-    margin: 5px
+    align-self: center
+    margin: 0 5px
+    padding: 5px
+    border: 1px solid white
     cursor: pointer
     text-align: center
     font-size: 10px
     user-select: none
+
+    &:hover
+      background-color: transparent
+      border-radius: 5px
+      border: 1px solid #bbb
+
+    &:active
+    &.selected
+    &.connected
+      background-color: transparent
+      border-radius: 5px
+      border: 1px solid #bbb
+      box-shadow: inset 0px 0px 11px -3px grey
 
   & svg
     vertical-align: middle
@@ -105,6 +120,7 @@ li
 .separator
   width: 1px
   height: 40px
+  margin: 8px 10px
   background-color: #ccc
   cursor: default
 
@@ -133,3 +149,7 @@ li
 label[for=select-nodes] input
 label[for=connect-nodes] input
   display: none
+
+.icon.icon-open-tool
+  margin-left: auto
+
