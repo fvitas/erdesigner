@@ -56,6 +56,16 @@ const actions = {
             ...state,
             zoom: _.round(currentZoom, 2)
         }
+    },
+
+    importSettings(state, action) {
+        let newState = _.isObject(action.value.settings) ? action.value.settings : _.cloneDeep(state)
+
+        return {
+            ...newState,
+            isDrawingConnection: false,
+            shouldConnectNodes: false
+        }
     }
 }
 
@@ -67,6 +77,7 @@ export default function settingsReducer(state = INIT_STATE, action) {
         case ACTION.STOP_DRAWING: return actions.stopDrawing(state)
         case ACTION.ZOOM_IN: return actions.zoomIn(state)
         case ACTION.ZOOM_OUT: return actions.zoomOut(state)
+        case ACTION.IMPORT: return actions.importSettings(state, action)
         default: return state
     }
 }

@@ -15,6 +15,7 @@ const ACTION = {
     NODE_REMOVE_COLOR: 'NODE_REMOVE_COLOR',
     ZOOM_IN: 'ZOOM_IN',
     ZOOM_OUT: 'ZOOM_OUT',
+    IMPORT: 'IMPORT',
     UNDO: 'UNDO',
     REDO: 'REDO'
 }

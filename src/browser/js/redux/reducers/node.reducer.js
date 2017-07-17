@@ -63,6 +63,10 @@ const actions = {
         _.forEach(newState, node => { node.color = null })
 
         return newState
+    },
+
+    importNodes(state, action) {
+        return _.isArray(action.value.nodes) ? action.value.nodes : _.cloneDeep(state)
     }
 }
 
@@ -75,6 +79,7 @@ export default function nodeReducer(state = [], action) {
         case ACTION.NODE_CHANGE_NAME: return actions.updateNodeName(state, action)
         case ACTION.NODE_ADD_COLOR: return actions.addColorToNode(state, action)
         case ACTION.NODE_REMOVE_COLOR: return actions.removeColorFromNodes(state, action)
+        case ACTION.IMPORT: return actions.importNodes(state, action)
         default: return state
     }
 }

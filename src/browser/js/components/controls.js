@@ -1,4 +1,6 @@
 import { h, Component } from 'preact'
+import _ from 'lodash'
+import nodeStore from './../redux/store'
 import { ACTION } from '../redux/actions'
 import { connect } from 'preact-redux'
 import { bind } from 'decko'
@@ -67,12 +69,42 @@ class Controls extends Component {
 
     @bind
     importDiagram() {
-        console.log('tbd')
+        let fs = require('fs')
+        let { dialog } = require('electron').remote
+
+        dialog.showOpenDialog(filePaths => {
+            if (_.isEmpty(filePaths) || _.size(filePaths) > 1) {
+                return
+            }
+
+            let file = filePaths[0]
+            let importedData = JSON.parse(fs.readFileSync(file, 'utf8'))
+
+            nodeStore.dispatch({
+                type: ACTION.IMPORT,
+                value: importedData
+            })
+        })
     }
 
     @bind
     exportDiagram() {
-        console.log('tbd')
+        let fs = require('fs')
+        let { dialog } = require('electron').remote
+
+        dialog.showSaveDialog(fileName => {
+            if (!fileName) {
+                return
+            }
+
+            let jsonData = JSON.stringify(nodeStore.getState())
+
+            fs.writeFile(fileName + '.json', jsonData, err => {
+                if (err) {
+                    console.error(err)
+                }
+            })
+        })
     }
 
     @bind

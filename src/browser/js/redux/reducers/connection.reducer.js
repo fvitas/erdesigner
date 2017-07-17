@@ -61,6 +61,10 @@ const actions = {
         })
 
         return newConnections
+    },
+
+    importConnection(state, action) {
+        return _.isArray(action.value.connections) ? action.value.connections : _.cloneDeep(state)
     }
 }
 
@@ -71,6 +75,7 @@ export default function connectionReducer(state = [], action) {
         case ACTION.UPDATE_NODE: return actions.updateNodeConnection(state, action)
         case ACTION.ADD_CONNECTION: return actions.addConnection(state, action)
         case ACTION.UPDATE_CONNECTIONS: return actions.updateConnections(state, action)
+        case ACTION.IMPORT: return actions.importConnection(state, action)
         default: return state
     }
 }

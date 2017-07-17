@@ -31,8 +31,8 @@ const otherReducers = combineReducers({
 
 const historyReducer = (state, action) => {
     switch (action.type) {
-        case 'UNDO': return undo(state)
-        case 'REDO': return redo(state)
+        case ACTION.UNDO: return undo(state)
+        case ACTION.REDO: return redo(state)
         case ACTION.REDUX_INIT:
             let initState = otherReducers(state, action)
 
@@ -60,7 +60,8 @@ let historyStateActions = [
     ACTION.UPDATE_NODE,
     ACTION.NODE_CHANGE_NAME,
     ACTION.ZOOM_IN,
-    ACTION.ZOOM_OUT
+    ACTION.ZOOM_OUT,
+    ACTION.IMPORT
 ]
 
 // const store = createStore(rootReducer, applyMiddleware(historyMiddleware))
