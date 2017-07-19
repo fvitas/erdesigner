@@ -5,7 +5,7 @@ const NODE_TYPE = {
     ATTRIBUTE: 'attribute',
     RELATIONSHIP: 'relationship',
     ASSOCIATIVE_ENTITY: 'associative-entity',
-    SUBTYPE: 'subtype'
+    INHERITANCE: 'inheritance'
 }
 
 export default NODE_TYPE

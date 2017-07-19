@@ -11,7 +11,7 @@ import Attribute from './../components/svg/node-types/node-attribute'
 import AssociativeEntity from './../components/svg/node-types/node-associative-entity'
 import Relationship from './../components/svg/node-types/node-relationship'
 import WeakEntity from './../components/svg/node-types/node-weak-entity'
-import Subtype from './../components/svg/node-types/node-subtype'
+import Inheritance from './../components/svg/node-types/node-inheritance'
 
 class NodePicker extends Component {
     @bind
@@ -40,8 +40,8 @@ class NodePicker extends Component {
     }
 
     @bind
-    dragStartedSubtype(event) {
-        this.dragStarted(event, 'node-drag-tween-subtype')
+    dragStartedInheritance(event) {
+        this.dragStarted(event, 'node-drag-tween-inheritance')
     }
 
     dragStarted(event, id) {
@@ -81,8 +81,8 @@ class NodePicker extends Component {
     }
 
     @bind
-    addNodeSubtype(event) {
-        this.addNode({type: NODE_TYPE.SUBTYPE, x: event.clientX, y: event.clientY})
+    addNodeInheritance(event) {
+        this.addNode({type: NODE_TYPE.INHERITANCE, x: event.clientX, y: event.clientY})
     }
 
     render() {
@@ -104,8 +104,8 @@ class NodePicker extends Component {
                     <li class='node node-relationship' draggable='true' onDragStart={this.dragStartedRelationship} onDragEnd={this.addNodeRelationship}>
                         <Relationship />
                     </li>
-                    <li class='node node-relationship' draggable='true' onDragStart={this.dragStartedSubtype} onDragEnd={this.addNodeSubtype}>
-                        <Subtype />
+                    <li class='node node-relationship' draggable='true' onDragStart={this.dragStartedInheritance} onDragEnd={this.addNodeInheritance}>
+                        <Inheritance />
                     </li>
                 </ul>
 
@@ -115,7 +115,7 @@ class NodePicker extends Component {
                 <div class='node' id='node-drag-tween-associative-entity' style='position:absolute;left: -1200px'><AssociativeEntity /></div>
                 <div class='node' id='node-drag-tween-attribute' style='position:absolute;left: -1300px'><Attribute /></div>
                 <div class='node' id='node-drag-tween-relationship' style='position:absolute;left: -1400px'><Relationship /></div>
-                <div class='node' id='node-drag-tween-subtype' style='position:absolute;left: -1500px'><Subtype /></div>
+                <div class='node' id='node-drag-tween-inheritance' style='position:absolute;left: -1500px'><Inheritance /></div>
             </div>
         )
     }
