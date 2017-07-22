@@ -61,6 +61,8 @@ let historyStateActions = [
     ACTION.NODE_CHANGE_NAME,
     ACTION.ZOOM_IN,
     ACTION.ZOOM_OUT,
+    ACTION.NODE_TO_FRONT,
+    ACTION.NODE_TO_BACK,
     ACTION.IMPORT
 ]
 

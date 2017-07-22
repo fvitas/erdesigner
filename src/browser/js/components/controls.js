@@ -58,13 +58,13 @@ class Controls extends Component {
     }
 
     @bind
-    moveNodeToFront() {
-        console.log('tbd')
+    toFront() {
+        nodeStore.dispatch({ type: ACTION.NODE_TO_FRONT })
     }
 
     @bind
-    moveNodeToBack() {
-        console.log('tbd')
+    toBack() {
+        nodeStore.dispatch({ type: ACTION.NODE_TO_BACK })
     }
 
     @bind
@@ -143,8 +143,8 @@ class Controls extends Component {
 
                 <div class='separator' />
 
-                <IconToFront onClick={this.moveNodeToFront} />
-                <IconToBack onClick={this.moveNodeToBack} />
+                <IconToFront onClick={this.toFront} />
+                <IconToBack onClick={this.toBack} />
 
                 <div class='separator' />
 

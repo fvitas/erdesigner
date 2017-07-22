@@ -19,6 +19,8 @@ const ACTION = {
     ZOOM_IN: 'ZOOM_IN',
     ZOOM_OUT: 'ZOOM_OUT',
     IMPORT: 'IMPORT',
+    NODE_TO_FRONT: 'NODE_TO_FRONT',
+    NODE_TO_BACK: 'NODE_TO_BACK',
     UNDO: 'UNDO',
     REDO: 'REDO'
 }

@@ -98,6 +98,28 @@ const actions = {
         nodeForUpdate.height = action.value.height
 
         return newState
+    },
+
+    moveNodeToFront(state) {
+        let newState = _.cloneDeep(state)
+        let removedNodes = _.remove(newState, { selected: true })
+
+        if (removedNodes) {
+            newState.push(...removedNodes)
+        }
+
+        return newState
+    },
+
+    moveNodeToBack(state) {
+        let newState = _.cloneDeep(state)
+        let removedNodes = _.remove(newState, { selected: true })
+
+        if (removedNodes) {
+            newState.unshift(...removedNodes)
+        }
+
+        return newState
     }
 }
 
@@ -113,6 +135,8 @@ export default function nodeReducer(state = [], action) {
         case ACTION.NODE_SELECT: return actions.selectNode(state, action)
         case ACTION.NODE_DESELECT: return actions.deselectNodes(state, action)
         case ACTION.NODE_RESIZE_DONE: return actions.resizeNode(state, action)
+        case ACTION.NODE_TO_FRONT: return actions.moveNodeToFront(state, action)
+        case ACTION.NODE_TO_BACK: return actions.moveNodeToBack(state, action)
         case ACTION.IMPORT: return actions.importNodes(state, action)
         default: return state
     }
