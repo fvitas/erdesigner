@@ -1,9 +1,9 @@
 import { h } from 'preact'
 
-export default function NodeAttribute({color}) {
+export default function NodeAttribute({width = 100, height = 50, color = 'white'}) {
     return (
-        <svg width='100' height='50'>
-            <ellipse cx='50' cy='25' rx='49' ry='24' style={{fill: color || 'white', stroke: 'black'}} />
+        <svg width={`${width}`} height={`${height}`}>
+            <ellipse cx={`${width / 2}`} cy={`${height / 2}`} rx={`${width / 2 - 1}`} ry={`${height / 2 - 1}`} style={{fill: color, stroke: 'black'}} />
         </svg>
     )
 }

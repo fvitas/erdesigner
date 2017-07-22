@@ -1,9 +1,9 @@
 import { h } from 'preact'
 
-export default function NodeRelationship({color}) {
+export default function NodeRelationship({width = 100, height = 50, color = 'white'}) {
     return (
-        <svg width='100' height='50'>
-            <polygon points='50,1 99,25 50,49 1,25' style={{fill: color || 'white', stroke: 'black', strokeWidth: '1px'}} />
+        <svg width={`${width}`} height={`${height}`}>
+            <polygon points={`${width / 2},1 ${width - 1},${height / 2} ${width / 2},${height - 1} 1,${height / 2}`} style={{fill: color, stroke: 'black', strokeWidth: '1px'}} />
         </svg>
     )
 }

@@ -1,10 +1,10 @@
 import { h } from 'preact'
 
-export default function NodeWeakEntity({color}) {
+export default function NodeWeakEntity({width = 100, height = 50, color = 'white'}) {
     return (
-        <svg width='100' height='50'>
-            <polygon points='0,0 0,50 100,50 100,0' style={{fill: color || 'white', stroke: 'black', strokeWidth: '2px'}} />
-            <polygon points='3,3 3,47 97,47 97,3' style={{fill: color || 'white', stroke: 'black', strokeWidth: '1px'}} />
+        <svg width={`${width}`} height={`${height}`}>
+            <polygon points={`0,0 0,${height} ${width},${height} ${width},0`} style={{fill: color, stroke: 'black', strokeWidth: '2px'}} />
+            <polygon points={`3,3 3,${height - 3} ${width - 3},${height - 3} ${width - 3},3`} style={{fill: color, stroke: 'black', strokeWidth: '1px'}} />
         </svg>
     )
 }

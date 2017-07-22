@@ -3,6 +3,7 @@ import { bind } from 'decko'
 import nodeStore from '../../redux/store'
 import {ACTION} from '../../redux/actions'
 import getNodeTypeComponent from './../../constants/node-type-components'
+import NodeResize from './node-resize'
 
 class Node extends Component {
     constructor({nodeId, nodeName, x, y}) {
@@ -14,8 +15,8 @@ class Node extends Component {
             shouldMove: false,
             contentEditable: 'false',
             nodeName: nodeName,
-            x: x,
-            y: y,
+            x: x, // top left corner
+            y: y, // top left corner
             dragX: x,
             dragY: y,
             width: 100,
@@ -192,7 +193,9 @@ class Node extends Component {
 
     @bind
     onBlur(e) {
-        this.saveName(e.target.textContent)
+        if (e.target.textContent) {
+            this.saveName(e.target.textContent)
+        }
         this.setState({ contentEditable: 'false' })
     }
 
@@ -210,6 +213,95 @@ class Node extends Component {
         })
     }
 
+    @bind
+    startNodeResize(event, direction) {
+        window.addEventListener('mousemove', this.moveNodeResize)
+        window.addEventListener('mouseup', this.finishNodeResize)
+
+        this.direction = direction
+        this.startWidth = this.state.width
+        this.startHeight = this.state.height
+    }
+
+    @bind
+    moveNodeResize(event) {
+        let newWidth
+        let newHeight
+        let x = this.state.x
+        let y = this.state.y
+
+        switch (this.direction) {
+            case 'NW':
+                newWidth = this.startWidth + this.state.x - event.clientX
+                newHeight = this.startHeight + this.state.y - event.clientY
+                x = event.clientX
+                y = event.clientY
+                break
+            case 'NE':
+                newWidth = event.clientX - this.state.x
+                newHeight = this.startHeight + this.state.y - event.clientY
+                y = event.clientY
+                break
+            case 'SW':
+                newWidth = this.startWidth + this.state.x - event.clientX
+                newHeight = event.clientY - this.state.y
+                x = event.clientX
+                break
+            case 'SE':
+                newWidth = event.clientX - this.state.x
+                newHeight = event.clientY - this.state.y
+                break
+            default:
+        }
+
+        if (newWidth < 20) {
+            newWidth = 20
+            x = this.state.dragX
+        }
+
+        if (newHeight < 20) {
+            newHeight = 20
+            y = this.state.dragY
+        }
+
+        this.setState({
+            dragX: x,
+            dragY: y,
+            width: newWidth,
+            height: newHeight
+        })
+    }
+
+    @bind
+    finishNodeResize() {
+        window.removeEventListener('mousemove', this.moveNodeResize)
+        window.removeEventListener('mouseup', this.finishNodeResize)
+
+        nodeStore.dispatch({
+            type: ACTION.NODE_RESIZE_DONE,
+            value: {
+                nodeId: this.nodeId,
+                x: this.state.dragX,
+                y: this.state.dragY,
+                width: this.state.width,
+                height: this.state.height
+            }
+        })
+    }
+
+    @bind
+    selectNode() {
+        nodeStore.dispatch({
+            type: ACTION.NODE_SELECT,
+            value: {nodeId: this.nodeId}
+        })
+    }
+
+    @bind
+    preventDefault(event) {
+        event.preventDefault()
+    }
+
     render(props, state) {
         let rootStyle = {
             transform: `translate(${state.dragX}px, ${state.dragY}px) scale(${props.zoom})`
@@ -221,22 +313,30 @@ class Node extends Component {
                     {/* <circle cx='0' cy='0' r='14' fill='#ebebeb' stroke='#c8c8c8' style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);' /> */}
                     {/* <circle cx='0' cy='0' r='10' fill='#ef4836' stroke='none' style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);' onClick={this.removeNode} /> */}
                 </div>
+
+                { props.selected && <NodeResize onStartNodeResize={this.startNodeResize} /> }
+
                 <div id='svg-rect' style={{width: state.width, height: state.height}}
                     onMouseDown={this.onMouseDown}
                     onMouseEnter={this.onConnectionEnterDestination}
                     onMouseLeave={this.onConnectionLeaveDestination}
+                    onClick={this.selectNode}
                 >
 
-                    { getNodeTypeComponent(props.type, {color: props.color}) }
+                    { getNodeTypeComponent(props.type, {width: state.width, height: state.height, color: props.color}) }
 
-                    <div class='node-name' contentEditable={state.contentEditable}
-                        onMouseDown={this.enableEdit}
-                        onKeyDown={this.disableEnterKey}
-                        onKeyUp={this.makeNameChange}
-                        onBlur={this.onBlur}
-                    >
-                        { state.nodeName }
-                    </div>
+                    {
+                        props.type !== 'inheritance' &&
+                        <div class='node-name' contentEditable={state.contentEditable}
+                            onMouseDown={this.enableEdit}
+                            onKeyDown={this.disableEnterKey}
+                            onKeyUp={this.makeNameChange}
+                            onBlur={this.onBlur}
+                            onDragStart={this.preventDefault}
+                        >
+                            { state.nodeName }
+                        </div>
+                    }
                 </div>
             </div>
         )

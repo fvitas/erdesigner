@@ -93,7 +93,7 @@ class ERDiagramCanvas extends Component {
             }})
 
             // remove color from node
-            this.props.dispatch({type: ACTION.NODE_ADD_COLOR, value: {nodeId: destinationNode.nodeId, color: null}})
+            this.props.dispatch({type: ACTION.NODE_ADD_COLOR, value: {nodeId: destinationNode.nodeId, color: undefined}})
         }
     }
 
@@ -143,8 +143,10 @@ class ERDiagramCanvas extends Component {
     render(props) {
         return (
             <div>
-                <svg id='svg' width={this.state.canvasWidth} height={this.state.canvasHeight} onDragOver={event => event.preventDefault()} xmlns='http://www.w3.org/2000/svg'
-                    style='position: absolute'>
+                <svg id='canvas' width={this.state.canvasWidth} height={this.state.canvasHeight}
+                    onDragOver={event => event.preventDefault()}
+                    onMouseDown={() => props.dispatch({type: ACTION.NODE_DESELECT})}
+                >
                     <defs id='svg-defs' />
 
                     { props.connections.map(connection => <Connection {...connection} zoom={props.settings.zoom} />) }

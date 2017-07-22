@@ -131,6 +131,9 @@ li
 #svg-rect
   position: relative
 
+#svg-rect svg
+  position: absolute
+
 .node-name
   position: absolute
   top: 50%
@@ -153,3 +156,54 @@ label[for=connect-nodes] input
 .icon.icon-open-tool
   margin-left: auto
 
+
+//.circle
+//  position: absolute
+//  width: 10px
+//  height: 10px
+//  border: 1px solid black
+//  border-radius: 50%
+//  box-shadow: 0 0 0 3px white
+//  background-color: white
+//  z-index: 100
+//
+//  &.top
+//    top: -4px
+//  &.bottom
+//    bottom: -4px
+//  &.left
+//    left: -4px
+//  &.right
+//    right: -4px
+
+.node-resize
+  .top
+    top: -3px
+  .bottom
+    bottom: -3px
+  .left
+    left: -3px
+  .right
+    right: -3px
+
+  .bottom.left
+    transform: rotate(0deg)
+    cursor: nesw-resize
+  .top.left
+    transform: rotate(90deg)
+    cursor: nwse-resize
+  .top.right
+    transform: rotate(180deg)
+    cursor: nesw-resize
+  .bottom.right
+    transform: rotate(270deg)
+    cursor: nwse-resize
+
+  svg
+    position: absolute
+    z-index: 100
+
+    path
+      fill: #ffffff
+      stroke: #222222
+      stroke-width: 1
