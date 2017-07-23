@@ -142,7 +142,7 @@ class ERDiagramCanvas extends Component {
 
     @bind
     zoomOnScroll(event) {
-        if (event.wheelDelta > 0) {
+        if (event.wheelDelta < 0) {
             this.props.dispatch({type: ACTION.ZOOM_IN})
         } else {
             this.props.dispatch({type: ACTION.ZOOM_OUT})
