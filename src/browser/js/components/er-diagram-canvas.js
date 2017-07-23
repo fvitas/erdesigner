@@ -140,12 +140,22 @@ class ERDiagramCanvas extends Component {
         return _.includes(NODE_COMPATIBILITY[source.type], destination.type)
     }
 
+    @bind
+    zoomOnScroll(event) {
+        if (event.wheelDelta > 0) {
+            this.props.dispatch({type: ACTION.ZOOM_IN})
+        } else {
+            this.props.dispatch({type: ACTION.ZOOM_OUT})
+        }
+    }
+
     render(props) {
         return (
             <div>
                 <svg id='canvas' width={this.state.canvasWidth} height={this.state.canvasHeight}
                     onDragOver={event => event.preventDefault()}
                     onMouseDown={() => props.dispatch({type: ACTION.NODE_DESELECT})}
+                    // onWheel={_.throttle(this.zoomOnScroll, 100)} // problem with resizing after zoom in out
                 >
                     <defs id='svg-defs' />
 
