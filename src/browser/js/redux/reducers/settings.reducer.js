@@ -36,6 +36,13 @@ const actions = {
         }
     },
 
+    zoomNormal(state) {
+        return {
+            ...state,
+            zoom: 1
+        }
+    },
+
     zoomIn(state) {
         let currentZoom = state.zoom >= 3
             ? state.zoom
@@ -75,6 +82,7 @@ export default function settingsReducer(state = INIT_STATE, action) {
         case ACTION.CONNECT_NODE: return actions.connectNodes(state)
         case ACTION.START_DRAWING: return actions.startDrawing(state)
         case ACTION.STOP_DRAWING: return actions.stopDrawing(state)
+        case ACTION.ZOOM_NORMAL: return actions.zoomNormal(state)
         case ACTION.ZOOM_IN: return actions.zoomIn(state)
         case ACTION.ZOOM_OUT: return actions.zoomOut(state)
         case ACTION.IMPORT: return actions.importSettings(state, action)

@@ -8,6 +8,7 @@ import { bind } from 'decko'
 import { IconTrash } from './control-items/icon-trash'
 import { IconZoomIn } from './control-items/icon-zoom-in'
 import { IconZoomOut } from './control-items/icon-zoom-out'
+import { IconZoomNormal } from './control-items/icon-zoom-normal'
 // import { IconZoomCustom } from './control-items/icon-zoom-custom'
 import { IconUndo } from './control-items/icon-undo'
 import { IconRedo } from './control-items/icon-redo'
@@ -22,6 +23,11 @@ import { IconOpenTool } from './control-items/icon-open-tool'
 
 @connect()
 class Controls extends Component {
+    @bind
+    zoomNormal() {
+        this.props.dispatch({type: ACTION.ZOOM_NORMAL})
+    }
+
     @bind
     zoomIn() {
         this.props.dispatch({type: ACTION.ZOOM_IN})
@@ -124,6 +130,7 @@ class Controls extends Component {
                 {/* <IconZoomCustom /> */}
                 {/* <div class='separator' /> */}
 
+                <IconZoomNormal onClick={this.zoomNormal} />
                 <IconZoomIn onClick={this.zoomIn} />
                 <IconZoomOut onClick={this.zoomOut} />
 

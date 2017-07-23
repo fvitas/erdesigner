@@ -155,7 +155,7 @@ class ERDiagramCanvas extends Component {
                 <svg id='canvas' width={this.state.canvasWidth} height={this.state.canvasHeight}
                     onDragOver={event => event.preventDefault()}
                     onMouseDown={() => props.dispatch({type: ACTION.NODE_DESELECT})}
-                    // onWheel={_.throttle(this.zoomOnScroll, 100)} // problem with resizing after zoom in out
+                    onWheel={_.throttle(this.zoomOnScroll, 250)} // problem with resizing after zoom
                 >
                     <defs id='svg-defs' />
 
