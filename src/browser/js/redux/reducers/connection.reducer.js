@@ -18,12 +18,8 @@ const actions = {
 
         newState.push({
             connectionId: v4(),
-            sourceNodeId: action.value.sourceNodeId,
-            destinationNodeId: action.value.destinationNodeId,
-            x1: action.value.x1,
-            y1: action.value.y1,
-            x2: action.value.x2,
-            y2: action.value.y2
+            source: action.value.source,
+            destination: action.value.destination
         })
 
         return newState
@@ -33,13 +29,13 @@ const actions = {
         let newConnections = _.cloneDeep(state)
 
         newConnections.forEach(connection => {
-            if (connection.sourceNodeId === action.value.nodeId) {
-                connection.x1 = action.value.x + action.value.width / 2
-                connection.y1 = action.value.y + action.value.height / 2
+            if (connection.source.nodeId === action.value.nodeId) {
+                connection.source.x = action.value.x
+                connection.source.y = action.value.y
             }
-            if (connection.destinationNodeId === action.value.nodeId) {
-                connection.x2 = action.value.x + action.value.width / 2
-                connection.y2 = action.value.y + action.value.height / 2
+            if (connection.destination.nodeId === action.value.nodeId) {
+                connection.destination.x = action.value.x
+                connection.destination.y = action.value.y
             }
         })
 
@@ -50,13 +46,13 @@ const actions = {
         let newConnections = _.cloneDeep(state)
 
         newConnections.forEach(connection => {
-            if (connection.sourceNodeId === action.value.nodeId) {
-                connection.x1 = action.value.x + action.value.width / 2
-                connection.y1 = action.value.y + action.value.height / 2
+            if (connection.source.nodeId === action.value.nodeId) {
+                connection.source.x = action.value.x
+                connection.source.y = action.value.y
             }
-            if (connection.destinationNodeId === action.value.nodeId) {
-                connection.x2 = action.value.x + action.value.width / 2
-                connection.y2 = action.value.y + action.value.height / 2
+            if (connection.destination.nodeId === action.value.nodeId) {
+                connection.destination.x = action.value.x
+                connection.destination.y = action.value.y
             }
         })
 

@@ -5,6 +5,7 @@ import { connect } from 'preact-redux'
 
 import Node from './svg/node'
 import Connection from './svg/connection'
+import MouseConnection from './svg/mouse-connection'
 
 import { ACTION } from '../redux/actions'
 
@@ -37,43 +38,58 @@ class ERDiagramCanvas extends Component {
 
     @bind
     drawConnectionStart(sourceNode) {
-        let x = sourceNode.x + sourceNode.width / 2
-        let y = sourceNode.y + sourceNode.height / 2
-
-        this.setState({ temporaryConnection: {source: {nodeId: sourceNode.nodeId, type: sourceNode.type, x, y}} })
+        this.setState({
+            temporaryConnection: {
+                source: {
+                    nodeId: sourceNode.nodeId,
+                    type: sourceNode.type,
+                    x: sourceNode.x,
+                    y: sourceNode.y
+                }
+            }
+        })
 
         this.props.dispatch({type: ACTION.NODE_ADD_COLOR, value: {nodeId: sourceNode.nodeId, color: NODE_COLORS.GREEN}})
     }
 
     @bind
     drawConnection(mouseDestination) {
-        let line = {}
-        line.x1 = this.state.temporaryConnection.source.x
-        line.y1 = this.state.temporaryConnection.source.y
-
-        if (this.state.temporaryConnection.destination) {
-            line.x2 = this.state.temporaryConnection.destination.x
-            line.y2 = this.state.temporaryConnection.destination.y
-        } else {
-            line.x2 = mouseDestination.clientX
-            line.y2 = mouseDestination.clientY
+        let temporaryConnection = {
+            source: this.state.temporaryConnection.source
         }
 
-        this.setState({temporaryConnectionLine: line})
+        if (this.state.temporaryConnection.destination && this.state.temporaryConnection.destination.nodeId) {
+            temporaryConnection.destination = this.state.temporaryConnection.destination
+        } else {
+            temporaryConnection.destination = {
+                x: mouseDestination.clientX,
+                y: mouseDestination.clientY
+            }
+        }
+
+        this.setState({ temporaryConnection: temporaryConnection })
     }
 
     @bind
     addConnectionDestination(destinationNode) {
+        if (!this.state.temporaryConnection || !destinationNode) {
+            return
+        }
+
         let sourceNode = this.state.temporaryConnection.source
 
         if (sourceNode && sourceNode.nodeId !== destinationNode.nodeId) {
-            let x = destinationNode.x + destinationNode.width / 2
-            let y = destinationNode.y + destinationNode.height / 2
-
-            this.setState({ temporaryConnection: {
-                source: sourceNode,
-                destination: {nodeId: destinationNode.nodeId, type: destinationNode.type, x, y}
-            }})
+            this.setState({
+                temporaryConnection: {
+                    source: sourceNode,
+                    destination: {
+                        nodeId: destinationNode.nodeId,
+                        type: destinationNode.type,
+                        x: destinationNode.x,
+                        y: destinationNode.y
+                    }
+                }
+            })
 
             // set color to destination
             if (this.destinationIsCompatible(sourceNode, destinationNode)) {
@@ -87,10 +103,12 @@ class ERDiagramCanvas extends Component {
     @bind
     removeConnectionDestination(destinationNode) {
         if (!!this.state.temporaryConnection.destination && this.state.temporaryConnection.destination.nodeId === destinationNode.nodeId) {
-            this.setState({ temporaryConnection: {
-                source: this.state.temporaryConnection.source,
-                destination: null
-            }})
+            this.setState({
+                temporaryConnection: {
+                    source: this.state.temporaryConnection.source,
+                    destination: null
+                }
+            })
 
             // remove color from node
             this.props.dispatch({type: ACTION.NODE_ADD_COLOR, value: {nodeId: destinationNode.nodeId, color: undefined}})
@@ -108,20 +126,25 @@ class ERDiagramCanvas extends Component {
         if (
             !sourceNode ||
             !destinationNode ||
+            (destinationNode && !destinationNode.nodeId) ||
             !this.destinationIsCompatible(sourceNode, destinationNode) ||
             this.connectionExist(sourceNode, destinationNode)
         ) {
-            this.setState({temporaryConnection: null, temporaryConnectionLine: null})
+            this.setState({temporaryConnection: null})
             return
         }
 
         let connection = {
-            sourceNodeId: sourceNode.nodeId,
-            destinationNodeId: destinationNode.nodeId,
-            x1: sourceNode.x,
-            y1: sourceNode.y,
-            x2: destinationNode.x,
-            y2: destinationNode.y
+            source: {
+                nodeId: sourceNode.nodeId,
+                x: sourceNode.x,
+                y: sourceNode.y
+            },
+            destination: {
+                nodeId: destinationNode.nodeId,
+                x: destinationNode.x,
+                y: destinationNode.y
+            }
         }
 
         this.props.dispatch({
@@ -129,7 +152,7 @@ class ERDiagramCanvas extends Component {
             value: {...connection}
         })
 
-        this.setState({temporaryConnection: null, temporaryConnectionLine: null})
+        this.setState({temporaryConnection: null})
     }
 
     connectionExist(source, destination) {
@@ -161,7 +184,7 @@ class ERDiagramCanvas extends Component {
 
                     { props.connections.map(connection => <Connection {...connection} zoom={props.settings.zoom} />) }
 
-                    { this.state.temporaryConnectionLine && <Connection {...this.state.temporaryConnectionLine} zoom={props.settings.zoom} /> }
+                    { this.state.temporaryConnection && <MouseConnection {...this.state.temporaryConnection} zoom={props.settings.zoom} /> }
                 </svg>
 
                 <div>
