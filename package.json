@@ -8,7 +8,8 @@
     "electron": "./node_modules/.bin/electron .",
     "clean:out": "rimraf out",
     "make:folder:assets": "./node_modules/.bin/mkdirp out/browser/assets",
-    "build": "npm run clean:out && npm run make:folder:assets && npm run build:styles && npm run build:js",
+    "copy:server": "cpx './src/**/*.{html,js}' out",
+    "build": "npm run clean:out && npm run make:folder:assets && npm run build:styles && npm run build:js && npm run copy:server",
     "build:js": "NODE_ENV=development rollup -c",
     "build:styles": "stylus src/browser/assets/main.styl -m -c -o out/browser/assets",
     "watch:js": "onchange 'src/**/*.js' -- npm run build:js",
@@ -16,6 +17,11 @@
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
     "precommit": "npm run lint",
+    "postinstall": "install-app-deps",
+    "electron:build:all": "build -mwl",
+    "electron:build:mac": "build --mac",
+    "electron:build:win": "build --win",
+    "electron:build:linux": "build --linux",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Filip Vitas",
@@ -28,10 +34,9 @@
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-register": "^6.24.1",
-    "decko": "^1.2.0",
+    "cpx": "^1.5.0",
     "electron": "^1.7.2",
-    "electron-builder": "^18.2.2",
-    "electron-packager": "^8.7.0",
+    "electron-builder": "^19.6.3",
     "eslint": "^3.19.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-config-standard-jsx": "^4.0.1",
@@ -51,11 +56,12 @@
   },
   "dependencies": {
     "bluebird": "^3.5.0",
+    "decko": "^1.2.0",
     "linkstate": "^1.0.1",
     "lodash": "^4.17.4",
-    "preact": "^8.1.0",
-    "preact-redux": "^2.0.1",
-    "redux": "^3.6.0",
-    "uuid": "^3.0.1"
+    "preact": "^8.2.1",
+    "preact-redux": "^2.0.2",
+    "redux": "^3.7.2",
+    "uuid": "^3.1.0"
   }
 }

@@ -1,0 +1,57 @@
+{
+    "appId": "com.electron.er-designer",
+    "productName": "ER Designer",
+    "copyright": "Copyright © 2017 ${author}. All rights reserved.",
+    "files": [
+      "out/",
+      "node_modules/",
+      "main.js",
+      "package.json"
+    ],
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 400,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "window": {
+        "width": 500,
+        "height": 500
+      }
+    },
+    "mac": {
+      "asar": true,
+      "target": [
+        "dmg"
+      ],
+      "category": "public.app-category.productivity"
+    },
+    "linux": {
+      "target": ["deb", "tar.gz"],
+      "description": "An open-source ER Diagram tool that is available for ALL platforms.",
+      "synopsis": "An open-source ER Diagram tool that is available for ALL platforms.",
+      "maintainer": "Filip Vitas <vitasfilip90@gmail.com>",
+      "category": "Graphics",
+      "packageCategory": "graphics"
+    },
+    "win": {
+      "target": ["nsis"],
+      "icon": ""
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "directories": {
+      "buildResources": "resources",
+      "output": "release"
+    }
+  }
