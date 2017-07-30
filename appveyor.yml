@@ -1,0 +1,58 @@
+os: unstable
+
+version: '{build}'
+
+environment:
+  nodejs_version: 7
+  CSC_LINK: '%WINDOWS_CSC_LINK%'
+  CSC_KEY_PASSWORD: '%WINDOWS_CSC_KEY_PASSWORD%'
+
+matrix:
+  fast_finish: true
+
+cache:
+  - node_modules -> package.json
+  - '%APPDATA%\npm-cache'
+  - '%USERPROFILE%\.electron'
+
+init:
+  - git config --global core.autocrlf input
+
+shallow_clone: true
+
+clone_depth: 1
+
+# build platform, i.e. x86, x64, Any CPU. This setting is optional.
+platform: x64
+
+install:
+  - ps: Install-Product node $env:nodejs_version
+  - set CI=true
+  - set PATH=%APPDATA%\npm;%PATH%
+  - npm install
+
+test: off
+build: off
+
+skip_non_tags: false
+
+branches:
+  only:
+    - master
+
+before_deploy:
+  - npm run release
+
+deploy:
+  description: ''
+  provider: GitHub
+#  api_key: $GITHUB_TOKEN
+  auth_token:
+    secure: 123
+  artifact: release/**/*.*
+  draft: false
+  prerelease: false
+  on:
+    branch: master
+#    appveyor_repo_tag: true
+
