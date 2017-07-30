@@ -3,29 +3,38 @@ osx_image: xcode8.3
 sudo: required
 dist: trusty
 
-language: c
-
-matrix:
-  include:
-  - os: osx
-  - os: linux
-    env: CC=clang CXX=clang++ npm_config_clang=1
-    compiler: clang
+language: node_js
 
 node_js:
   - 7
 
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      env: CC=clang CXX=clang++ npm_config_clang=1
+      compiler: clang
+      env:
+        - PLATFORM=linux
+    - os: osx
+      env:
+        - PLATFORM=mac
+#        - CSC_LINK=$MAC_CSC_LINK
+#        - CSC_KEY_PASSWORD=$MAC_CSC_KEY_PASSWORD
+
 cache:
   directories:
   - node_modules
-  - "$HOME/.electron"
-  - "$HOME/.cache"
+  - $HOME/.electron
+  - $HOME/.cache
 
 addons:
   apt:
     packages:
     - libgnome-keyring-dev
     - icnsutils
+    - graphicsmagick
+    - xz-utils
 
 before_install:
 - mkdir -p /tmp/git-lfs && curl -L https://github.com/github/git-lfs/releases/download/v1.2.1/git-lfs-$([
@@ -34,12 +43,24 @@ before_install:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install --no-install-recommends -y icnsutils graphicsmagick xz-utils; fi
 
 install:
-- nvm install 7
-- npm install electron-builder@next
 - npm install
 
-script:
+before_deploy:
+#- npm run electron:build:$PLATFORM
 - npm run electron:build
+
+deploy:
+  provider: releases
+  api_key: $GITHUB_TOKEN
+  skip_cleanup: true
+  file_glob: true
+  file:
+    - release/**/*.zip
+    - release/**/*.deb
+    - release/**/*.tar.gz
+    - release/**/*.dmg
+#  on:
+#      tags: true
 
 branches:
   only:
