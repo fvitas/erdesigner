@@ -1,1 +1,1 @@
-require('./out/server/main')
+require('./app/server/main')
