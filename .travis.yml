@@ -39,7 +39,7 @@ install:
 - npm install
 
 script:
-- npm run electron:build:all
+- npm run electron:build
 
 branches:
   only:

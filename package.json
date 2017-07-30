@@ -18,7 +18,7 @@
     "lint:fix": "eslint src/ --fix",
     "precommit": "npm run lint",
     "postinstall": "install-app-deps",
-    "electron:build:all": "build -mwl",
+    "electron:build": "build -p 'always'",
     "electron:build:mac": "build --mac",
     "electron:build:win": "build --win",
     "electron:build:linux": "build --linux",
