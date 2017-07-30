@@ -22,7 +22,7 @@
     "electron:build:mac": "build --mac",
     "electron:build:win": "build --win",
     "electron:build:linux": "build --linux",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\""
   },
   "author": "Filip Vitas",
   "license": "MIT",
