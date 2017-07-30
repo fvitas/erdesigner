@@ -27,7 +27,7 @@
       }
     },
     "mac": {
-      "asar": false,
+      "asar": true,
       "target": [
         "dmg"
       ],

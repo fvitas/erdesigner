@@ -46,8 +46,7 @@ install:
 - npm install
 
 before_deploy:
-- npm run electron:build
-#- npm run electron:build:$PLATFORM
+- npm run release
 
 deploy:
   provider: releases
