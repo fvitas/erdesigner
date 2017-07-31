@@ -32,6 +32,7 @@ install:
   - npm install
 
 test: off
+build: off
 
 skip_non_tags: false
 
