@@ -45,11 +45,6 @@
       "target": ["portable"],
       "icon": ""
     },
-    "nsis": {
-      "oneClick": false,
-      "perMachine": false,
-      "allowToChangeInstallationDirectory": true
-    },
     "directories": {
       "buildResources": "resources",
       "output": "release"
