@@ -42,7 +42,7 @@
       "packageCategory": "graphics"
     },
     "win": {
-      "target": ["nsis"],
+      "target": ["portable"],
       "icon": ""
     },
     "nsis": {
