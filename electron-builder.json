@@ -41,6 +41,11 @@
       "category": "Graphics",
       "packageCategory": "graphics"
     },
+    "win": {
+      "target": ["portable"],
+      "icon": "",
+      "verifyUpdateCodeSignature": false
+    },
     "directories": {
       "buildResources": "resources",
       "output": "release"
