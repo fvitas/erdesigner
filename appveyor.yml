@@ -4,8 +4,8 @@ version: '{build}'
 
 environment:
   nodejs_version: 7
-  CSC_LINK: '%WINDOWS_CSC_LINK%'
-  CSC_KEY_PASSWORD: '%WINDOWS_CSC_KEY_PASSWORD%'
+#  CSC_LINK: '%WINDOWS_CSC_LINK%'
+#  CSC_KEY_PASSWORD: '%WINDOWS_CSC_KEY_PASSWORD%'
 
 matrix:
   fast_finish: true
@@ -32,7 +32,6 @@ install:
   - npm install
 
 test: off
-build: off
 
 skip_non_tags: false
 
