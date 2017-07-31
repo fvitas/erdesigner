@@ -19,7 +19,7 @@
     "precommit": "npm run lint",
     "postinstall": "install-app-deps",
     "electron:build": "build",
-    "electron:release": "build -p 'always'",
+    "electron:release": "build -p \"always\"",
     "release": "npm run build && npm run electron:release",
     "test": "echo \"Error: no test specified\""
   },
