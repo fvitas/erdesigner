@@ -43,6 +43,8 @@ before_install:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install --no-install-recommends -y icnsutils graphicsmagick xz-utils; fi
 
 install:
+- npm config set progress=false
+- npm config set spin=false
 - npm install
 
 before_deploy:

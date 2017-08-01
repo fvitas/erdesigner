@@ -29,6 +29,8 @@ install:
   - ps: Install-Product node $env:nodejs_version
   - set CI=true
   - set PATH=%APPDATA%\npm;%PATH%
+  - npm config set progress=false
+  - npm config set spin=false
   - npm install
 
 test: off
@@ -47,7 +49,7 @@ deploy:
   description: ''
   provider: GitHub
   auth_token:
-    secure: '%GITHUB_TOKEN%'
+    secure: $env:GITHUB_TOKEN
   artifact: release/**/*.*
   draft: false
   prerelease: false
