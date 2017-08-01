@@ -49,7 +49,7 @@ deploy:
   description: ''
   provider: GitHub
   auth_token:
-    secure: $env:GITHUB_TOKEN
+    secure: 33YFa7Si4BBeojw89zyjXle6jXa2D559TygsIJzNsCGKyGqJmiwKQF3OXY2Ts6ok
   artifact: release/**/*.*
   draft: false
   prerelease: false
