@@ -45,7 +45,7 @@ branches:
 before_deploy:
   - npm run release
   - dir
-  - cd 'C:/programs/erdiagram'
+  - cd release
   - dir
 
 
