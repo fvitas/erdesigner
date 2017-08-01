@@ -32,6 +32,7 @@ install:
   - npm config set progress=false
   - npm config set spin=false
   - npm install
+  - npm run release
 
 test: off
 build: off
@@ -43,18 +44,20 @@ branches:
     - master
 
 before_deploy:
-  - npm run release
   - dir
   - cd release
   - dir
 
+artifacts:
+  - path: release\*.exe
+#  - path: dist\*exe
 
 deploy:
-  description: 'Deployed release binaries by Travis CI and AppVeyor'
   provider: GitHub
+  description: 'Deployed release binaries by Travis CI and AppVeyor'
   auth_token:
     secure: 33YFa7Si4BBeojw89zyjXle6jXa2D559TygsIJzNsCGKyGqJmiwKQF3OXY2Ts6ok
-  artifact: 'release\ER Designer 1.0.0.exe'
+  artifact:
   draft: false
   prerelease: false
   on:
