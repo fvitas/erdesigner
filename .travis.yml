@@ -21,9 +21,6 @@ matrix:
         - PLATFORM=mac
 #        - CSC_LINK=$MAC_CSC_LINK
 #        - CSC_KEY_PASSWORD=$MAC_CSC_KEY_PASSWORD
-    - os: osx
-      env:
-        - PLATFORM=windows
 
 cache:
   directories:
@@ -52,8 +49,6 @@ install:
 
 before_deploy:
 - npm run release
-- if [[ "$PLATFORM" == "windows" ]]; then npm run electron:build:win fi
-
 
 deploy:
   provider: releases
@@ -61,7 +56,6 @@ deploy:
   skip_cleanup: true
   file_glob: true
   file:
-    - release/**/*.exe
     - release/**/*.zip
     - release/**/*.deb
     - release/**/*.tar.gz
