@@ -1,3 +1,7 @@
+platform:
+  - x86
+  - x64
+
 os: unstable
 
 version: '{build}'
@@ -22,9 +26,6 @@ shallow_clone: true
 
 clone_depth: 1
 
-# build platform, i.e. x86, x64, Any CPU. This setting is optional.
-platform: x64
-
 install:
   - ps: Install-Product node $env:nodejs_version
   - set CI=true
@@ -32,7 +33,7 @@ install:
   - npm config set progress=false
   - npm config set spin=false
   - npm install
-  - npm run release
+  - npm run release:win
 
 test: off
 build: off
@@ -49,8 +50,8 @@ before_deploy:
   - dir
 
 artifacts:
-  - path: release\*.exe
-#  - path: dist\*exe
+  - path: release\win-unpacked\*.exe
+  - path: release\win-ia32-unpacked\*.exe
 
 deploy:
   provider: GitHub

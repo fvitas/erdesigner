@@ -42,9 +42,14 @@
       "packageCategory": "graphics"
     },
     "win": {
-      "target": ["portable"],
+      "target": ["nsis"],
       "icon": "",
       "verifyUpdateCodeSignature": false
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true
     },
     "directories": {
       "buildResources": "resources",
