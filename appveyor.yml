@@ -54,7 +54,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure: 33YFa7Si4BBeojw89zyjXle6jXa2D559TygsIJzNsCGKyGqJmiwKQF3OXY2Ts6ok
-  artifact: 'release\*.exe'
+  artifact: 'release\ER Designer 1.0.0.exe'
   draft: false
   prerelease: false
   on:
