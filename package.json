@@ -19,7 +19,7 @@
     "precommit": "npm run lint",
     "postinstall": "install-app-deps",
     "electron:build": "./node_modules/.bin/build",
-    "electron:build:win": "./node_modules/.bin/build --win --ia32 --x64",
+    "electron:build:win": "./node_modules/.bin/build --win",
     "release": "npm run build && npm run electron:build",
     "release:win": "npm run build && npm run electron:build:win",
     "test": "echo \"Error: no test specified\""
