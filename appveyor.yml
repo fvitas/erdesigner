@@ -45,16 +45,12 @@ branches:
 before_deploy:
   - npm run release
 
-artifacts:
-- path: release/*.exe
-  name: release
-
 deploy:
   description: 'Deployed release binaries by Travis CI and AppVeyor'
   provider: GitHub
   auth_token:
     secure: 33YFa7Si4BBeojw89zyjXle6jXa2D559TygsIJzNsCGKyGqJmiwKQF3OXY2Ts6ok
-  artifact: release
+  artifact: **\*.exe
   draft: false
   prerelease: false
   on:
