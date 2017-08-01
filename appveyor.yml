@@ -50,7 +50,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure: 33YFa7Si4BBeojw89zyjXle6jXa2D559TygsIJzNsCGKyGqJmiwKQF3OXY2Ts6ok
-  artifact: 'C:\projects\erdesigner\**\*.exe'
+  artifact: 'release\**\*.exe'
   draft: false
   prerelease: false
   on:
