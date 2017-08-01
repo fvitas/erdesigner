@@ -43,7 +43,7 @@ branches:
     - master
 
 artifacts:
-  - path: '**\*.exe'
+  - path: 'erdesigner\release\**\*.exe'
     name: release
 
 before_deploy:
