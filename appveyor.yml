@@ -1,5 +1,4 @@
 platform:
-  - x86
   - x64
 
 os: unstable
@@ -52,6 +51,7 @@ before_deploy:
 artifacts:
   - path: release\win-unpacked\*.exe
   - path: release\win-ia32-unpacked\*.exe
+  - path: release\*.exe
 
 deploy:
   provider: GitHub
