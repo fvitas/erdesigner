@@ -43,7 +43,7 @@ branches:
     - master
 
 artifacts:
-  - path: release\**\*.exe
+  - path: **\*.exe
     name: release
 
 before_deploy:
