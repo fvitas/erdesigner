@@ -1,5 +1,5 @@
 platform:
-  - x64
+  - x86
 
 os: unstable
 
@@ -49,8 +49,6 @@ before_deploy:
   - dir
 
 artifacts:
-  - path: release\win-unpacked\*.exe
-  - path: release\win-ia32-unpacked\*.exe
   - path: release\*.exe
 
 deploy:

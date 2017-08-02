@@ -1,7 +1,7 @@
 {
     "appId": "com.electron.er-designer",
     "productName": "ER Designer",
-    "copyright": "Copyright © 2017 ${author}. All rights reserved.",
+    "copyright": "Copyright © 2017 Filip Vitas",
     "files": [
       "app/",
       "node_modules/",
@@ -42,7 +42,7 @@
       "packageCategory": "graphics"
     },
     "win": {
-      "target": ["nsis"],
+      "target": ["nsis", "portable"],
       "icon": "",
       "verifyUpdateCodeSignature": false
     },
