@@ -20,10 +20,9 @@
     "lint:fix": "eslint src/ --fix",
     "precommit": "npm run lint",
     "postinstall": "install-app-deps",
-    "electron:build": "./node_modules/.bin/build --ia32 --x64",
-    "electron:build:win": "./node_modules/.bin/build --win --ia32",
-    "release": "npm run build && npm run electron:build",
-    "release:win": "npm run build && npm run electron:build:win",
+    "electron:build:mac": "./node_modules/.bin/build --mac",
+    "electron:build:linux": "./node_modules/.bin/build --linux --ia32 --x64",
+    "electron:build:win": "./node_modules/.bin/build --win --ia32 --x64",
     "test": "echo \"Error: no test specified\""
   },
   "author": "Filip Vitas",

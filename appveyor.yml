@@ -1,5 +1,5 @@
 platform:
-  - x86
+  - x64
 
 os: unstable
 
@@ -32,7 +32,8 @@ install:
   - npm config set progress=false
   - npm config set spin=false
   - npm install
-  - npm run release:win
+  - npm run build
+  - npm run electron:build:win
 
 test: off
 build: off
@@ -42,11 +43,6 @@ skip_non_tags: false
 branches:
   only:
     - master
-
-before_deploy:
-  - dir
-  - cd release
-  - dir
 
 artifacts:
   - path: release\*.exe
