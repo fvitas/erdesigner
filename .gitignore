@@ -21,7 +21,6 @@ jspm_packages/
 
 .idea/
 dist/
-build/
 app/
 release/
 out/

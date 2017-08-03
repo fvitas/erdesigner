@@ -17,6 +17,7 @@ cache:
   - node_modules -> package.json
   - '%APPDATA%\npm-cache'
   - '%USERPROFILE%\.electron'
+#  - '%USERPROFILE%\.electron-cache'
 
 init:
   - git config --global core.autocrlf input

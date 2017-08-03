@@ -8,35 +8,17 @@
       "main.js",
       "package.json"
     ],
-    "dmg": {
-      "contents": [
-        {
-          "x": 130,
-          "y": 220
-        },
-        {
-          "x": 400,
-          "y": 220,
-          "type": "link",
-          "path": "/Applications"
-        }
-      ],
-      "window": {
-        "width": 500,
-        "height": 500
-      }
-    },
     "mac": {
-      "artifactName": "${name}-${os}-${arch}.${ext}",
+      "artifactName": "${name}-mac-${arch}.${ext}",
       "asar": true,
-      "target": [
-        "dmg"
-      ],
+      "target": ["dmg"],
+      "icon": "build/icon.icns",
       "category": "public.app-category.productivity"
     },
     "linux": {
       "target": ["deb", "AppImage"],
-      "executableName": "${name}-${os}-${arch}.${ext}",
+      "executableName": "${name}-linux-${arch}.${ext}",
+      "icon": "build/",
       "description": "An open-source ER Diagram tool that is available for ALL platforms.",
       "synopsis": "An open-source ER Diagram tool that is available for ALL platforms.",
       "maintainer": "Filip Vitas <vitasfilip90@gmail.com>",
@@ -45,14 +27,36 @@
     },
     "win": {
       "target": ["nsis", "portable"],
-      "icon": "",
+      "icon": "build/icon.ico",
       "verifyUpdateCodeSignature": false
     },
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 180
+        },
+        {
+          "x": 410,
+          "y": 180,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "background": "build/background-mac.png",
+      "window": {
+        "width": 540,
+        "height": 380
+      }
+    },
     "nsis": {
-      "artifactName": "${name}-${os}-setup-${arch}.${ext}"
+      "artifactName": "${name}-windows-setup-${arch}.${ext}"
     },
     "portable": {
-      "artifactName": "${name}-${os}-portable-${arch}.${ext}"
+      "artifactName": "${name}-windows-portable-${arch}.${ext}"
+    },
+    "electronDownload": {
+      "cache": ".electron-cache"
     },
     "directories": {
       "buildResources": "resources",
