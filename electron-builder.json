@@ -1,7 +1,7 @@
 {
     "appId": "com.electron.er-designer",
-    "productName": "ER Designer",
     "copyright": "Copyright © 2017 Filip Vitas",
+    "compression": "maximum",
     "files": [
       "app/",
       "node_modules/",
@@ -27,6 +27,7 @@
       }
     },
     "mac": {
+      "artifactName": "${name}-${env.ENV_NAME}-${arch}.${ext}",
       "asar": true,
       "target": [
         "dmg"
@@ -35,7 +36,7 @@
     },
     "linux": {
       "target": ["deb", "AppImage"],
-      "executableName": "${productName} ${arch} ${version}.${ext}",
+      "executableName": "${name}-${env.ENV_NAME}-${arch}.${ext}",
       "description": "An open-source ER Diagram tool that is available for ALL platforms.",
       "synopsis": "An open-source ER Diagram tool that is available for ALL platforms.",
       "maintainer": "Filip Vitas <vitasfilip90@gmail.com>",
@@ -48,10 +49,10 @@
       "verifyUpdateCodeSignature": false
     },
     "nsis": {
-      "artifactName": "${productName} Setup ${arch} ${version}.${ext}"
+      "artifactName": "${name}-${env.ENV_NAME}-setup-${arch}.${ext}"
     },
     "portable": {
-      "artifactName": "${productName} ${arch} ${version}.${ext}"
+      "artifactName": "${name}-${env.ENV_NAME}-portable-${arch}.${ext}"
     },
     "directories": {
       "buildResources": "resources",
