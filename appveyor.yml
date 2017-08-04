@@ -7,10 +7,9 @@ os: unstable
 
 version: '{build}'
 
-package_json_version: '1.0.0'
-
 environment:
   nodejs_version: 7
+  package_json_version: '1.0.0'
 #  CSC_LINK: '%WINDOWS_CSC_LINK%'
 #  CSC_KEY_PASSWORD: '%WINDOWS_CSC_KEY_PASSWORD%'
 
