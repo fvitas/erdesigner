@@ -29,8 +29,7 @@ clone_depth: 1
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - FOR /F "delims=" %%a IN ('node -e "console.log(require('./package.json').version)"') DO SET $env:package_version=%%~a
-  - echo "$(env:package_version)"
+  - ps: $env:package_version = (Get-Content -Raw -Path package.json | ConvertFrom-Json).version
   - set PATH=%APPDATA%\npm;%PATH%
   - npm config set progress=false
   - npm config set spin=false
@@ -54,7 +53,7 @@ deploy:
   auth_token:
     secure: 33YFa7Si4BBeojw89zyjXle6jXa2D559TygsIJzNsCGKyGqJmiwKQF3OXY2Ts6ok
   artifact:
-  release: "$(env:package_version)"
+  release: $env:package_version
   force_update: true
   draft: false
   prerelease: false
