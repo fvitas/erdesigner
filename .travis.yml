@@ -27,6 +27,7 @@ cache:
   - node_modules
   - $HOME/.electron
   - $HOME/.cache
+  - .electron-cache
 
 addons:
   apt:
