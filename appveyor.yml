@@ -1,9 +1,11 @@
 platform:
   - x64
 
+skip_tags: true
+
 os: unstable
 
-version: '{build}'
+version: '{version}.{build}'
 
 environment:
   nodejs_version: 7
@@ -38,8 +40,6 @@ install:
 test: off
 build: off
 
-skip_non_tags: false
-
 branches:
   only:
     - master
@@ -53,9 +53,9 @@ deploy:
   auth_token:
     secure: 33YFa7Si4BBeojw89zyjXle6jXa2D559TygsIJzNsCGKyGqJmiwKQF3OXY2Ts6ok
   artifact:
+  release: '{version}'
+  force_update: true
   draft: false
   prerelease: false
   on:
     branch: master
-#    appveyor_repo_tag: true
-

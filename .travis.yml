@@ -60,13 +60,15 @@ deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
   skip_cleanup: true
+  overwrite: true
   file_glob: true
   file:
     - release/**/*.dmg
     - release/**/*.AppImage
     - release/**/*.deb
-#  on:
-#      tags: true
+
+after_deploy:
+- "echo 'Deploy successful, go get some sleep.'"
 
 branches:
   only:
