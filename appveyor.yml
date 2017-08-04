@@ -16,8 +16,7 @@ matrix:
 cache:
   - node_modules -> package.json
   - '%APPDATA%\npm-cache'
-  - '%USERPROFILE%\.electron'
-  - '.electron-cache'
+  - '%USERPROFILE%\.electron-cache'
 
 init:
   - git config --global core.autocrlf input
