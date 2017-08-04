@@ -5,7 +5,7 @@ skip_tags: true
 
 os: unstable
 
-version: '{version}.{build}'
+version: '{build}'
 
 environment:
   nodejs_version: 7
@@ -29,7 +29,7 @@ clone_depth: 1
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - set CI=true
+  - FOR /F "delims=" %%a IN ('node -e "console.log(require('./package.json').version)"') DO SET $env:package_version=%%~a
   - set PATH=%APPDATA%\npm;%PATH%
   - npm config set progress=false
   - npm config set spin=false
@@ -53,7 +53,7 @@ deploy:
   auth_token:
     secure: 33YFa7Si4BBeojw89zyjXle6jXa2D559TygsIJzNsCGKyGqJmiwKQF3OXY2Ts6ok
   artifact:
-  release: '{version}'
+  release: $env:package_version
   force_update: true
   draft: false
   prerelease: false
