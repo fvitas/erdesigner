@@ -53,7 +53,7 @@ deploy:
   auth_token:
     secure: 33YFa7Si4BBeojw89zyjXle6jXa2D559TygsIJzNsCGKyGqJmiwKQF3OXY2Ts6ok
   artifact:
-  release: $env:package_version
+  release: $(env:package_version)
   force_update: true
   draft: false
   prerelease: false
