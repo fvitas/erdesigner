@@ -6,6 +6,7 @@ skip_tags: true
 os: unstable
 
 version: '{build}'
+package_json_version: '1.0.0'
 
 environment:
   nodejs_version: 7
@@ -30,7 +31,7 @@ clone_depth: 1
 install:
   - ps: Install-Product node $env:nodejs_version
   - ps: $env:package_version = (Get-Content -Raw -Path package.json | ConvertFrom-Json).version
-  - ps: Update-AppveyorBuild -Version "$env:package_version"
+  - ps: Set-AppveyorBuildVariable "package_json_version" "$env:package_version"
   - set PATH=%APPDATA%\npm;%PATH%
   - npm config set progress=false
   - npm config set spin=false
@@ -54,7 +55,7 @@ deploy:
   auth_token:
     secure: 33YFa7Si4BBeojw89zyjXle6jXa2D559TygsIJzNsCGKyGqJmiwKQF3OXY2Ts6ok
   artifact:
-  release: $(version)
+  release: $package_json_version
   force_update: true
   draft: false
   prerelease: false
