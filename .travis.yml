@@ -50,6 +50,8 @@ before_deploy:
     else
       npm run electron:build:linux;
     fi
+  - PACKAGE_VERSION=$(node -p -e "require('./package.json').version")
+
 
 deploy:
   provider: releases
