@@ -58,8 +58,11 @@ deploy:
   api_key: $GITHUB_TOKEN
   tag_name: $PACKAGE_VERSION
   name: $PACKAGE_VERSION
+  description: 'Deployed release binaries by Travis CI and AppVeyor'
   skip_cleanup: true
   overwrite: true
+  draft: false
+  prerelease: false
   file_glob: true
   file:
     - release/**/*.dmg
