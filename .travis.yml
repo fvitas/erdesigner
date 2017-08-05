@@ -54,6 +54,8 @@ before_deploy:
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
+  tag_name: $PACKAGE_VERSION
+  name: $PACKAGE_VERSION
   skip_cleanup: true
   overwrite: true
   file_glob: true
