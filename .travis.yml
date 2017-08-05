@@ -11,9 +11,6 @@ node_js:
 matrix:
   include:
     - os: linux
-      dist: trusty
-      env: CC=clang CXX=clang++ npm_config_clang=1
-      compiler: clang
       env:
         - PLATFORM=linux
     - os: osx
