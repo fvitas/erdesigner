@@ -19,24 +19,24 @@ matrix:
 
 cache:
   directories:
-  - node_modules
-  - $HOME/.electron
-  - $HOME/.cache
-  - .electron-cache
+    - node_modules
+    - $HOME/.electron
+    - $HOME/.cache
+    - .electron-cache
 
 install:
-- npm config set progress=false
-- npm config set spin=false
-- npm install
+  - npm config set progress=false
+  - npm config set spin=false
+  - npm install
 
 before_deploy:
-- npm run build
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-    npm run electron:build:mac;
-  else
-    npm run electron:build:linux;
-  fi
-- PACKAGE_VERSION=$(node -p -e "require('./package.json').version")
+  - npm run build
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      npm run electron:build:mac;
+    else
+      npm run electron:build:linux;
+    fi
+  - PACKAGE_VERSION=$(node -p -e "require('./package.json').version")
 
 deploy:
   provider: releases
@@ -51,8 +51,8 @@ deploy:
     - release/**/*.deb
 
 after_deploy:
-- "echo 'Deploy successful, go get some sleep.'"
+  - "echo 'Deploy successful, go get some sleep.'"
 
 branches:
   only:
-  - master
+    - master
