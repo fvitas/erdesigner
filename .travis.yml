@@ -36,11 +36,9 @@ before_deploy:
     else
       npm run electron:build:linux;
     fi
-  - PACKAGE_VERSION=$(node -p -e "require('./package.json').version")
 
 deploy:
   provider: releases
-  name: $PACKAGE_VERSION
   api_key: $GITHUB_TOKEN
   skip_cleanup: true
   overwrite: true
