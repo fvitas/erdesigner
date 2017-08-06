@@ -1,0 +1,189 @@
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+body {
+    padding: 50px 0;
+    font-family: "Ubuntu", sans-serif;
+    text-rendering: optimizeSpeed;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    /*background: linear-gradient(45deg, #ffc3a0, #FFAFBD);*/
+    /*background: linear-gradient(45deg, #3a1c71, #d76d77, #ffaf7b); !* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ *!*/
+    background-image: url('./triangulated.svg');
+    background-size: cover;
+}
+
+/*--------------------------------------------------*/
+
+/*html {*/
+/*font-size: 75%;*/
+/*font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;*/
+/*}*/
+/**/
+/*body {*/
+/*font-family: Optima, Segoe, "Segoe UI", Candara, Calibri, Arial, sans-serif;*/
+/*margin: 110px auto 0 auto;*/
+/*width: 100%;*/
+/*max-width: 260px;*/
+/*text-align: center;*/
+/*}*/
+
+a {
+    text-decoration: none;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    text-align: left;
+    width: 132px;
+}
+
+.dropdown-text {
+    cursor: pointer;
+    position: absolute;
+    text-indent: 10px;
+    line-height: 32px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 1px 3px rgba(0, 0, 0, .1);
+    width: 100%;
+}
+
+.dropdown-text:after {
+    position: absolute;
+    right: 6px;
+    top: 15px;
+    content: '';
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    border-width: 5px 4px 0 4px;
+    border-color: #555 transparent transparent transparent;
+}
+
+.dropdown-text,
+.dropdown-content a {
+    color: #333;
+    text-shadow: 0 1px #fff;
+}
+
+.dropdown-toggle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0 0 0 1px;
+    border: none;
+    font-size: 0;
+    cursor: pointer;
+    text-indent: -10px;
+    background: transparent;
+    z-index: 1;
+}
+
+.dropdown-toggle:focus {
+    outline: 0;
+}
+
+.dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    padding: 0;
+    width: 100%;
+    margin: 0;
+    border: 1px solid #ccc;
+    visibility: hidden;
+    opacity: 0;
+    list-style-type: none;
+    border-radius: 3px;
+    text-indent: 10px;
+    line-height: 32px;
+    background-color: #eee;
+    text-align: right;
+    transition: all .25s ease;
+}
+
+.dropdown-content a {
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background: #e8e8e8;
+}
+
+.dropdown-toggle:hover ~ .dropdown-text,
+.dropdown-toggle:focus ~ .dropdown-text {
+    background-color: #e8e8e8;
+}
+
+.dropdown-toggle:focus ~ .dropdown-text {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .2) inset, 0 1px 0 rgba(255, 255, 255, 0.8);
+    z-index: 2;
+}
+
+.dropdown-toggle:focus ~ .dropdown-text:after {
+    border-width: 0 4px 5px 4px;
+    border-color: transparent transparent #555 transparent;
+}
+
+.dropdown-content:hover,
+.dropdown-toggle:focus ~ .dropdown-content {
+    opacity: 1;
+    visibility: visible;
+    top: 110%;
+}
+
+
+
+
+.icon {
+    /*display: inline-block;*/
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+
+.download-btn {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 190px;
+    height: 60px;
+    margin: 10px;
+    padding: 15px;
+    border-radius: 3px;
+    color: #333;
+    background-color: #eee;
+    cursor: pointer;
+    text-align: center;
+    user-select: none;
+}
+
+.download-btn:hover {
+    background-color: #ddd;
+}
+
+.download-btn--mac .download-text {
+    vertical-align: super;
+}
+
+.download-btn--windows .download-text {
+    vertical-align: super;
+}
+
+.download-btn--linux .download-text {
+    vertical-align: super;
+}
