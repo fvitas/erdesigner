@@ -151,7 +151,7 @@ class Node extends Component {
     }
 
     componentWillReceiveProps({nodeName, x, y}) {
-        if (this.state.nodeName !== nodeName || this.state.x !== x || this.state.y !== y) {
+        if ((nodeName && this.state.nodeName !== nodeName) || this.state.x !== x || this.state.y !== y) {
             this.setState({
                 ...this.state,
                 nodeName: nodeName,
@@ -178,10 +178,13 @@ class Node extends Component {
         let ENTER = 13
         let ESCAPE = 27
 
+        this.tempName = e.target.textContent
+
         if (pressedKey === ENTER) {
             this.saveName(e.target.textContent)
         }
         if (pressedKey === ENTER || pressedKey === ESCAPE) {
+            this.tempName = null
             this.setState({ contentEditable: 'false' })
         }
     }
@@ -192,10 +195,13 @@ class Node extends Component {
     }
 
     @bind
-    onBlur(e) {
-        if (e.target.textContent) {
-            this.saveName(e.target.textContent)
+    onBlur() {
+        if (this.tempName) {
+            this.saveName(this.tempName)
         }
+
+        this.tempName = null
+
         this.setState({ contentEditable: 'false' })
     }
 
