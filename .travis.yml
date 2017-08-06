@@ -49,16 +49,12 @@ before_deploy:
     else
       npm run electron:build:linux;
     fi
-  - PACKAGE_VERSION=$(node -p -e "require('./package.json').version")
+  - TRAVIS_TAG=$(node -p -e "require('./package.json').version")
 
 
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
-  release_number: "latest"
-#  tag_name: $PACKAGE_VERSION
-#  name: $PACKAGE_VERSION
-#  description: 'Deployed release binaries by Travis CI and AppVeyor'
   skip_cleanup: true
   overwrite: true
   draft: false
