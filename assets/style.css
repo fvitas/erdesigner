@@ -14,8 +14,20 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    background: url('./triangulated.svg'), linear-gradient(45deg, #3a1c71, #d76d77, #ffaf7b);
+}
+
+body:before {
+    content: '';
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: url(./triangulated.svg), linear-gradient(45deg, #3a1c71, #d76d77, #ffaf7b);
     background-size: cover;
+    filter: contrast(1.5) sepia(30%);
+    z-index: -1;
 }
 
 h1 {
@@ -119,11 +131,12 @@ a {
 @media (max-width: 700px) {
     body {
         width: 90vw;
-        height: 100vh;
         padding-top: 50px;
         margin: 0 auto;
         overflow-x: hidden;
-        background-size: 220vh;
+    }
+    body:before {
+        height: 120vmax;
     }
 
     h1 { font-size: calc(10vh) }
