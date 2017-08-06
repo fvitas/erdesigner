@@ -5,8 +5,6 @@ skip_tags: true
 
 os: unstable
 
-version: '{build}'
-
 environment:
   nodejs_version: 7
   package_json_version: '1.0.0'
