@@ -7,7 +7,8 @@ html {
 }
 
 body {
-    padding: 50px 0;
+    padding: 100px 0;
+    margin: 0;
     font-family: "Ubuntu", sans-serif;
     text-rendering: optimizeSpeed;
     -webkit-font-smoothing: antialiased;
@@ -17,80 +18,39 @@ body {
     background-size: cover;
 }
 
-/*--------------------------------------------------*/
-
-/*html {*/
-/*font-size: 75%;*/
-/*font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;*/
-/*}*/
-/**/
-/*body {*/
-/*font-family: Optima, Segoe, "Segoe UI", Candara, Calibri, Arial, sans-serif;*/
-/*margin: 110px auto 0 auto;*/
-/*width: 100%;*/
-/*max-width: 260px;*/
-/*text-align: center;*/
-/*}*/
+h1 {
+    font-size: 90px;
+    font-weight: normal;
+}
+h3 {
+    font-size: 30px;
+    font-weight: normal;
+}
 
 a {
     text-decoration: none;
 }
 
-.dropdown {
-    position: relative;
-    display: inline-block;
-    text-align: left;
-    width: 132px;
-}
-
-.dropdown-text {
-    cursor: pointer;
-    position: absolute;
-    text-indent: 10px;
-    line-height: 32px;
-    background-color: #eee;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    box-shadow: 0 1px 0 rgba(255, 255, 255, .9) inset, 0 1px 3px rgba(0, 0, 0, .1);
-    width: 100%;
-}
-
-.dropdown-text:after {
-    position: absolute;
-    right: 6px;
-    top: 15px;
-    content: '';
-    width: 0px;
-    height: 0px;
-    border-style: solid;
-    border-width: 5px 4px 0 4px;
-    border-color: #555 transparent transparent transparent;
-}
-
-.dropdown-text,
 .dropdown-content a {
     color: #333;
-    text-shadow: 0 1px #fff;
+}
+
+.dropdown-content a span {
+    padding: 0 10px;
 }
 
 .dropdown-toggle {
     position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     padding: 0;
-    margin: 0 0 0 1px;
+    margin: 0;
     border: none;
-    font-size: 0;
+    outline: 0;
     cursor: pointer;
-    text-indent: -10px;
+    opacity: 0;
     background: transparent;
     z-index: 1;
-}
-
-.dropdown-toggle:focus {
-    outline: 0;
 }
 
 .dropdown-content {
@@ -120,38 +80,23 @@ a {
     background: #e8e8e8;
 }
 
-.dropdown-toggle:hover ~ .dropdown-text,
-.dropdown-toggle:focus ~ .dropdown-text {
-    background-color: #e8e8e8;
-}
-
-.dropdown-toggle:focus ~ .dropdown-text {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, .2) inset, 0 1px 0 rgba(255, 255, 255, 0.8);
-    z-index: 2;
-}
-
-.dropdown-toggle:focus ~ .dropdown-text:after {
-    border-width: 0 4px 5px 4px;
-    border-color: transparent transparent #555 transparent;
-}
-
 .dropdown-content:hover,
-.dropdown-toggle:focus ~ .dropdown-content {
+.dropdown-toggle:hover ~ .dropdown-content {
     opacity: 1;
     visibility: visible;
     top: 110%;
+    z-index: 1;
 }
 
-
-
-
 .icon {
-    /*display: inline-block;*/
     width: 30px;
     height: 30px;
     margin-right: 10px;
 }
 
+.download-group {
+    margin-top: 120px
+}
 
 .download-btn {
     position: relative;
@@ -170,18 +115,22 @@ a {
     user-select: none;
 }
 
-.download-btn:hover {
-    background-color: #ddd;
-}
 
-.download-btn--mac .download-text {
-    vertical-align: super;
-}
+@media (max-width: 700px) {
+    body {
+        width: 90vw;
+        height: 100vh;
+        padding-top: 50px;
+        margin: 0 auto;
+        overflow-x: hidden;
+        background-size: 220vh;
+    }
 
-.download-btn--windows .download-text {
-    vertical-align: super;
-}
+    h1 { font-size: calc(10vh) }
+    h3 { font-size: calc(10px + 2vh) }
 
-.download-btn--linux .download-text {
-    vertical-align: super;
+    .download-group {
+        width: 290px;
+        margin: 10px auto;
+    }
 }
