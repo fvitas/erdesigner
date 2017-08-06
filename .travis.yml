@@ -51,15 +51,16 @@ before_deploy:
       npm run electron:build:linux;
     fi
   - PACKAGE_VERSION=$(node -p -e "require('./package.json').version")
+  - echo $PACKAGE_VERSION
 
 
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
   release_number: $PACKAGE_VERSION
-#  tag_name: $PACKAGE_VERSION
-#  name: $PACKAGE_VERSION
-#  description: 'Deployed release binaries by Travis CI and AppVeyor'
+  tag_name: $PACKAGE_VERSION
+  name: $PACKAGE_VERSION
+  description: 'Deployed release binaries by Travis CI and AppVeyor'
   skip_cleanup: true
   overwrite: true
   draft: false
