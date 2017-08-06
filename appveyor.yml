@@ -5,6 +5,8 @@ skip_tags: true
 
 os: unstable
 
+version: '{build}'
+
 environment:
   nodejs_version: 7
   package_json_version: '1.0.0'
@@ -27,7 +29,6 @@ shallow_clone: true
 clone_depth: 1
 
 install:
-  - echo %APPVEYOR_BUILD_VERSION%
   - ps: Install-Product node $env:nodejs_version
   - ps: $env:package_version = (Get-Content -Raw -Path package.json | ConvertFrom-Json).version
   - ps: Set-AppveyorBuildVariable "package_json_version" "$env:package_version"
