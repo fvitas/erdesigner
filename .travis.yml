@@ -1,4 +1,3 @@
-osx_image: xcode8.3
 sudo: required
 
 language: node_js
@@ -12,6 +11,7 @@ matrix:
       env:
         - PLATFORM=linux
     - os: osx
+      osx_image: xcode8.3
       env:
         - PLATFORM=mac
 #        - CSC_LINK=$MAC_CSC_LINK
@@ -56,6 +56,10 @@ before_deploy:
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
+  release_number: $PACKAGE_VERSION
+#  tag_name: $PACKAGE_VERSION
+#  name: $PACKAGE_VERSION
+#  description: 'Deployed release binaries by Travis CI and AppVeyor'
   skip_cleanup: true
   overwrite: true
   draft: false
