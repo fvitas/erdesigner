@@ -13,9 +13,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    /*background: linear-gradient(45deg, #ffc3a0, #FFAFBD);*/
-    /*background: linear-gradient(45deg, #3a1c71, #d76d77, #ffaf7b); !* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ *!*/
-    background-image: url('./triangulated.svg');
+    background: url('./triangulated.svg'), linear-gradient(45deg, #3a1c71, #d76d77, #ffaf7b);
     background-size: cover;
 }
 
