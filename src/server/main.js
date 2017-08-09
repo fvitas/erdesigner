@@ -150,11 +150,7 @@ app.on('ready', () => {
     mainWindow.on('closed', () => { mainWindow = null })
 })
 
-app.on('window-all-closed', function() {
-    if (process.platform !== 'darwin') {
-        app.quit()
-    }
-})
+app.on('window-all-closed', app.quit)
 
 ipcMain.on('show-sql', (event, sql) => {
     if (!sqlWindow) {
