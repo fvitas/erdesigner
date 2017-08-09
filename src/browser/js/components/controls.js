@@ -5,7 +5,8 @@ import { ACTION } from '../redux/actions'
 import { connect } from 'preact-redux'
 import { bind } from 'decko'
 
-import { IconTrash } from './control-items/icon-trash'
+import { IconDelete } from './control-items/icon-delete'
+import { IconDeleteAll } from './control-items/icon-delete-all'
 import { IconZoomIn } from './control-items/icon-zoom-in'
 import { IconZoomOut } from './control-items/icon-zoom-out'
 import { IconZoomNormal } from './control-items/icon-zoom-normal'
@@ -61,8 +62,18 @@ class Controls extends Component {
     }
 
     @bind
+    deleteSelectedNode() {
+        let selectedNode = _.find(nodeStore.getState().nodes, {selected: true})
+
+        this.props.dispatch({
+            type: ACTION.DELETE_NODE,
+            value: {nodeId: selectedNode.nodeId}
+        })
+    }
+
+    @bind
     deleteAllNodes() {
-        this.props.dispatch({type: ACTION.REMOVE_ALL_NODE})
+        this.props.dispatch({type: ACTION.DELETE_ALL_NODES})
     }
 
     @bind
@@ -151,7 +162,8 @@ class Controls extends Component {
 
                 <div class='separator' />
 
-                <IconTrash onClick={this.deleteAllNodes} />
+                <IconDelete onClick={this.deleteSelectedNode} />
+                <IconDeleteAll onClick={this.deleteAllNodes} />
 
                 <div class='separator' />
 

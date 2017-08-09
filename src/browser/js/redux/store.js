@@ -53,8 +53,8 @@ const historyReducer = (state, action) => {
 }
 
 let historyStateActions = [
-    ACTION.REMOVE_NODE,
-    ACTION.REMOVE_ALL_NODE,
+    ACTION.DELETE_NODE,
+    ACTION.DELETE_ALL_NODES,
     ACTION.ADD_CONNECTION,
     ACTION.ADD_NODE,
     ACTION.UPDATE_NODE,

@@ -104,7 +104,7 @@ class Node extends Component {
     @bind
     removeNode() {
         nodeStore.dispatch({
-            type: ACTION.REMOVE_NODE,
+            type: ACTION.DELETE_NODE,
             value: {nodeId: this.nodeId}
         })
     }

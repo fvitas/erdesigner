@@ -126,8 +126,8 @@ const actions = {
 export default function nodeReducer(state = [], action) {
     switch (action.type) {
         case ACTION.ADD_NODE: return actions.addNode(state, action)
-        case ACTION.REMOVE_NODE: return actions.removeNode(state, action)
-        case ACTION.REMOVE_ALL_NODE: return actions.removeAllNode(state)
+        case ACTION.DELETE_NODE: return actions.removeNode(state, action)
+        case ACTION.DELETE_ALL_NODES: return actions.removeAllNode(state)
         case ACTION.UPDATE_NODE: return actions.updateNode(state, action)
         case ACTION.NODE_CHANGE_NAME: return actions.updateNodeName(state, action)
         case ACTION.NODE_ADD_COLOR: return actions.addColorToNode(state, action)
