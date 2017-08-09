@@ -10,7 +10,8 @@
     "make:folder:assets": "./node_modules/.bin/mkdirp app/browser/assets",
     "copy:server": "cpx \"./src/server/**/*.js\" ./app/server",
     "copy:index": "cpx \"./src/**/*.html\" ./app",
-    "copy": "npm run copy:server && npm run copy:index",
+    "copy:vendor": "cpx \"./src/browser/vendor/**/*.*\" ./app/browser/vendor",
+    "copy": "npm run copy:server && npm run copy:index && npm run copy:vendor",
     "build": "npm run clean:app && npm run make:folder:assets && npm run build:styles && npm run build:js && npm run copy",
     "build:js": "rollup -c",
     "build:styles": "stylus src/browser/assets/main.styl -m -c -o app/browser/assets",
@@ -58,7 +59,7 @@
   "dependencies": {
     "bluebird": "^3.5.0",
     "decko": "^1.2.0",
-    "linkstate": "^1.0.1",
+    "highlight.js": "^9.12.0",
     "lodash": "^4.17.4",
     "preact": "^8.2.1",
     "preact-redux": "^2.0.2",

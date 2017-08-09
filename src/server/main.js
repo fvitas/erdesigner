@@ -1,9 +1,13 @@
 const electron = require('electron')
 const path = require('path')
 
+// In main process.
+const ipcMain = require('electron').ipcMain
+
 const {app, BrowserWindow, Menu} = electron
 
 let mainWindow = null
+let sqlWindow = null
 
 const template = [
     {
@@ -148,3 +152,28 @@ app.on('ready', () => {
 })
 
 app.on('window-all-closed', app.quit)
+
+ipcMain.on('show-sql', (event, sql) => {
+    if (!sqlWindow) {
+        sqlWindow = new BrowserWindow({
+            width: 700,
+            height: 500,
+            alwaysOnTop: true,
+            useContentSize: true,
+            nodeIntegration: true,
+            webPreferences: {
+                experimentalFeatures: true
+            }
+        })
+    }
+
+    sqlWindow.loadURL('file://' + path.join(__dirname, '/../sql-window.html'))
+
+    // sqlWindow.webContents.openDevTools()
+
+    sqlWindow.sql = sql
+
+    sqlWindow.on('closed', () => {
+        sqlWindow = null
+    })
+})

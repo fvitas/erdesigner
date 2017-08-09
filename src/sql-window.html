@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SQL Code</title>
+        
+        <script src="./browser/vendor/highlight.site.pack.js"></script>
+    
+        <link class="codestyle" rel="stylesheet" href="./../node_modules/highlight.js/styles/default.css">
+        <link class="codestyle" rel="stylesheet" href="./../node_modules/highlight.js/styles/solarized-dark.css">
+        <link class="codestyle" rel="stylesheet" href="./../node_modules/highlight.js/styles/solarized-light.css">
+        <link class="codestyle" rel="stylesheet" href="./../node_modules/highlight.js/styles/github.css">
+        <link class="codestyle" rel="stylesheet" href="./../node_modules/highlight.js/styles/railscasts.css">
+        <link class="codestyle" rel="stylesheet" href="./../node_modules/highlight.js/styles/monokai-sublime.css">
+        <link class="codestyle" rel="stylesheet" href="./../node_modules/highlight.js/styles/mono-blue.css">
+        <link class="codestyle" rel="stylesheet" href="./../node_modules/highlight.js/styles/tomorrow.css">
+        <link class="codestyle" rel="stylesheet" href="./../node_modules/highlight.js/styles/color-brewer.css">
+        <link class="codestyle" rel="stylesheet" href="./../node_modules/highlight.js/styles/zenburn.css">
+        <link class="codestyle" rel="stylesheet" href="./../node_modules/highlight.js/styles/agate.css">
+        <link class="codestyle" rel="stylesheet" href="./../node_modules/highlight.js/styles/androidstudio.css">
+        <link class="codestyle" rel="stylesheet" href="./../node_modules/highlight.js/styles/dracula.css">
+        <link class="codestyle" rel="stylesheet" href="./../node_modules/highlight.js/styles/rainbow.css">
+        <link class="codestyle" rel="stylesheet" href="./../node_modules/highlight.js/styles/vs.css">
+        <link class="codestyle" rel="stylesheet" href="./../node_modules/highlight.js/styles/atom-one-dark.css">
+        <link class="codestyle" rel="stylesheet" href="./../node_modules/highlight.js/styles/atom-one-light.css">
+    
+    </head>
+    <body>
+        <style>
+            * {
+                box-sizing:border-box;
+            }
+            
+            body {
+                padding:0;
+                margin:0;
+                font-family: sans-serif;
+                color: white;
+                background:#2d2d2d;
+            }
+    
+            .select {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                width: 250px;
+                height: 40px;
+                margin: 20px 5vw;
+                user-select: none;
+            }
+    
+            .option {
+                position:absolute;
+                top:0;
+                display:flex;
+                align-items:center;
+                order:2;
+                width: 100%;
+                min-height:40px;
+                padding:0 30px 0 10px;
+                border-top:#222 solid 1px;
+                background:#333;
+                pointer-events:none;
+                transition:background .3s ease-in-out;
+                overflow:hidden;
+                white-space:nowrap;
+                z-index:1;
+            }
+    
+            .option:hover {
+                background:#666;
+            }
+    
+            .select:focus .option {
+                position:relative;
+                pointer-events:all;
+            }
+    
+            input {
+                position:absolute;
+                left:-99999px;
+                opacity:0;
+            }
+    
+            input:checked + label {
+                position:relative;
+                order: 1;
+                border-top:none;
+                background:#666;
+                z-index:2;
+            }
+    
+            input:checked + label:after {
+                content:'';
+                position:absolute;
+                top:calc(50% - 2px);
+                right:10px;
+                width: 0;
+                height: 0;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-top: 5px solid white;
+                pointer-events:none;
+                z-index:3;
+            }
+    
+            input:checked + label:before {
+                content: '';
+                position:absolute;
+                right:0;
+                width: 40px;
+                height: 40px;
+            }
+            
+            #snippet {
+                margin: 0 5vw;
+            }
+            
+            pre {
+                margin: 0;
+            }
+            
+            pre code {
+                font: normal 14px Consolas, Monaco, monospace;
+            }
+        </style>
+        
+        <div class="select" tabindex="1">
+            <input type="radio" class="selectopt" id="default" name="pick-style">
+            <label class="option" for="default">Default</label>
+            
+            <input type="radio" class="selectopt" id="solarized-dark" name="pick-style">
+            <label class="option" for="solarized-dark">Solarized Dark</label>
+            
+            <input type="radio" class="selectopt" id="solarized-light" name="pick-style">
+            <label class="option" for="solarized-light">Solarized Light</label>
+            
+            <input type="radio" class="selectopt" id="github" name="pick-style">
+            <label class="option" for="github">Github</label>
+            
+            <input type="radio" class="selectopt" id="railscasts" name="pick-style">
+            <label class="option" for="railscasts">Railscasts</label>
+            
+            <input type="radio" class="selectopt" id="monokai-sublime" name="pick-style">
+            <label class="option" for="monokai-sublime">Monokai Sublime</label>
+            
+            <input type="radio" class="selectopt" id="mono-blue" name="pick-style">
+            <label class="option" for="mono-blue">Mono Blue</label>
+            
+            <input type="radio" class="selectopt" id="tomorrow" name="pick-style">
+            <label class="option" for="tomorrow">Tomorrow</label>
+            
+            <input type="radio" class="selectopt" id="color-brewer" name="pick-style">
+            <label class="option" for="color-brewer">Color Brewer</label>
+            
+            <input type="radio" class="selectopt" id="zenburn" name="pick-style">
+            <label class="option" for="zenburn">Zenburn</label>
+            
+            <input type="radio" class="selectopt" id="agate" name="pick-style" checked>
+            <label class="option" for="agate">Agate</label>
+            
+            <input type="radio" class="selectopt" id="androidstudio" name="pick-style">
+            <label class="option" for="androidstudio">Androidstudio</label>
+            
+            <input type="radio" class="selectopt" id="dracula" name="pick-style">
+            <label class="option" for="dracula">Dracula</label>
+            
+            <input type="radio" class="selectopt" id="rainbow" name="pick-style">
+            <label class="option" for="rainbow">Rainbow</label>
+            
+            <input type="radio" class="selectopt" id="vs" name="pick-style">
+            <label class="option" for="vs">VS</label>
+            
+            <input type="radio" class="selectopt" id="atom-one-dark" name="pick-style">
+            <label class="option" for="atom-one-dark">Atom One Dark</label>
+            
+            <input type="radio" class="selectopt" id="atom-one-light" name="pick-style">
+            <label class="option" for="atom-one-light">Atom One Light</label>
+        </div>
+        
+        <div id="snippet">
+            <pre>
+                <code class="sql" id="sql-code">
+                </code>
+            </pre>
+        </div>
+        
+        <script>
+            function enableStyleCSS(currentStyle) {
+                var links = document.querySelectorAll('.codestyle')
+                
+                Array.prototype.forEach.call(links, function(link) {
+                    link.disabled = !link.href.match(currentStyle + '\\.css$')
+                })
+            }
+            
+            function initSnippet() {
+                var snippet = document.querySelector('#snippet pre code')
+                hljs.highlightBlock(snippet)
+
+                enableStyleCSS('agate')
+
+                var controls = document.querySelectorAll('.selectopt')
+                
+                Array.prototype.forEach.call(controls, function(control) {
+                    control.addEventListener('click', function(e) {
+                        enableStyleCSS(e.target.id)
+                    })
+                })
+            }
+
+            addEventListener('load', () => {
+                var electron = require('electron')
+                var currentWindow = electron.remote.getCurrentWindow()
+
+                document.getElementById('sql-code').innerHTML = currentWindow.sql
+                
+                initSnippet()
+            });
+        </script>
+        
+    </body>
+</html>

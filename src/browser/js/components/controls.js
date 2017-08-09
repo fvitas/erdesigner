@@ -19,7 +19,9 @@ import { IconToBack } from './control-items/icon-to-back'
 import { IconExport } from './control-items/icon-export'
 import { IconImport } from './control-items/icon-import'
 import { IconGenerateSQL } from './control-items/icon-generate-sql'
-import { IconOpenTool } from './control-items/icon-open-tool'
+// import { IconOpenTool } from './control-items/icon-open-tool'
+
+import sqlGenerator from './sql-generator'
 
 @connect()
 class Controls extends Component {
@@ -115,7 +117,10 @@ class Controls extends Component {
 
     @bind
     generateSQL() {
-        console.log('tbd')
+        let sqltext = sqlGenerator.generateSQL()
+
+        const ipc = require('electron').ipcRenderer
+        ipc.send('show-sql', sqltext)
     }
 
     @bind
@@ -161,7 +166,7 @@ class Controls extends Component {
                 <div class='separator' />
 
                 <IconGenerateSQL onClick={this.generateSQL} />
-                <IconOpenTool onClick={this.openSideTool} />
+                {/* <IconOpenTool onClick={this.openSideTool} /> */}
             </div>
         )
     }
