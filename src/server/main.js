@@ -132,8 +132,8 @@ app.on('ready', () => {
     console.log('Application is ready for start.')
 
     mainWindow = new BrowserWindow({
-        width: 1000,
-        height: 600,
+        width: 1100,
+        height: 700,
         useContentSize: true,
         nodeIntegration: true,
         webPreferences: {
@@ -146,12 +146,15 @@ app.on('ready', () => {
     const menu = Menu.buildFromTemplate(template)
     Menu.setApplicationMenu(menu)
 
-    mainWindow.on('closed', () => {
-        mainWindow = null
-    })
+    mainWindow.once('ready-to-show', () => { mainWindow.show() })
+    mainWindow.on('closed', () => { mainWindow = null })
 })
 
-app.on('window-all-closed', app.quit)
+app.on('window-all-closed', function() {
+    if (process.platform !== 'darwin') {
+        app.quit()
+    }
+})
 
 ipcMain.on('show-sql', (event, sql) => {
     if (!sqlWindow) {
