@@ -65,6 +65,10 @@ class Controls extends Component {
     deleteSelectedNode() {
         let selectedNode = _.find(nodeStore.getState().nodes, {selected: true})
 
+        if (!selectedNode) {
+            return
+        }
+
         this.props.dispatch({
             type: ACTION.DELETE_NODE,
             value: {nodeId: selectedNode.nodeId}
