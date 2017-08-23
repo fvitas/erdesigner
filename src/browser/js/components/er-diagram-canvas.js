@@ -172,35 +172,72 @@ class ERDiagramCanvas extends Component {
         }
     }
 
+    @bind
+    onCanvasMouseDown(event) {
+        this.props.dispatch({type: ACTION.NODE_DESELECT})
+
+        this.prevX = event.clientX
+        this.prevY = event.clientY
+        this.dragging = true
+
+        window.addEventListener('mousemove', this.onCanvasMouseMove)
+        window.addEventListener('mouseup', this.onCanvasMouseUp)
+    }
+
+    @bind
+    onCanvasMouseMove(event) {
+        this.props.dispatch({
+            type: ACTION.MOVE_CANVAS,
+            value: {
+                x: event.clientX - this.prevX,
+                y: event.clientY - this.prevY
+            }
+        })
+
+        this.prevX = event.clientX
+        this.prevY = event.clientY
+    }
+
+    @bind
+    onCanvasMouseUp() {
+        this.props.dispatch({
+            type: ACTION.MOVE_CANVAS,
+            value: { x: 0, y: 0 }
+        })
+
+        this.dragging = false
+
+        window.removeEventListener('mousemove', this.onCanvasMouseMove)
+        window.removeEventListener('mouseup', this.onCanvasMouseUp)
+    }
+
     render(props) {
+        let cursorStyle = { cursor: this.dragging ? '-webkit-grabbing' : '-webkit-grab' }
+
         return (
             <div>
                 <svg id='canvas' width={this.state.canvasWidth} height={this.state.canvasHeight}
-                    onDragOver={event => event.preventDefault()}
-                    onMouseDown={() => props.dispatch({type: ACTION.NODE_DESELECT})}
+                    onMouseDown={this.onCanvasMouseDown}
                     onWheel={_.throttle(this.zoomOnScroll, 250)} // problem with resizing after zoom
+                    style={cursorStyle}
                 >
-                    <defs id='svg-defs' />
-
                     { props.connections.map(connection => <Connection {...connection} zoom={props.settings.zoom} />) }
 
                     { this.state.temporaryConnection && <MouseConnection {...this.state.temporaryConnection} zoom={props.settings.zoom} /> }
                 </svg>
 
-                <div>
-                    {
-                        props.nodes.map(value => (
-                            <Node key={value.nodeId} {...value}
-                                zoom={props.settings.zoom}
-                                onDrawConnectionStart={this.drawConnectionStart}
-                                onDrawConnectionMove={this.drawConnection}
-                                onDrawConnectionEnd={this.drawConnectionEnd}
-                                onNodeEnter={this.addConnectionDestination}
-                                onNodeLeave={this.removeConnectionDestination}
-                            />
-                        ))
-                    }
-                </div>
+                {
+                    props.nodes.map(value => (
+                        <Node key={value.nodeId} {...value}
+                            zoom={props.settings.zoom}
+                            onDrawConnectionStart={this.drawConnectionStart}
+                            onDrawConnectionMove={this.drawConnection}
+                            onDrawConnectionEnd={this.drawConnectionEnd}
+                            onNodeEnter={this.addConnectionDestination}
+                            onNodeLeave={this.removeConnectionDestination}
+                        />
+                    ))
+                }
             </div>
         )
     }

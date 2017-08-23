@@ -120,6 +120,17 @@ const actions = {
         }
 
         return newState
+    },
+
+    moveNodesOnCanvas(state, action) {
+        let newState = _.cloneDeep(state)
+
+        _.forEach(newState, node => {
+            node.x += action.value.x
+            node.y += action.value.y
+        })
+
+        return newState
     }
 }
 
@@ -138,6 +149,7 @@ export default function nodeReducer(state = [], action) {
         case ACTION.NODE_TO_FRONT: return actions.moveNodeToFront(state, action)
         case ACTION.NODE_TO_BACK: return actions.moveNodeToBack(state, action)
         case ACTION.IMPORT: return actions.importNodes(state, action)
+        case ACTION.MOVE_CANVAS: return actions.moveNodesOnCanvas(state, action)
         default: return state
     }
 }
