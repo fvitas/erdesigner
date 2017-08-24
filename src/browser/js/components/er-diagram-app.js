@@ -10,7 +10,7 @@ class ERDiagramApp extends Component {
     componentDidMount() {
         this.setState({
             shouldClose: false,
-            width: 180
+            width: 164
         })
     }
 
