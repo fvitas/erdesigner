@@ -89,6 +89,11 @@ class NodePicker extends Component {
         return (
             <div class='node-picker'>
                 <ul class='node-picker-list'>
+                    <li class='node-entity'>
+                        <div>Drag Items</div>
+                    </li>
+                </ul>
+                <ul class='node-picker-list'>
                     <li class='node node-entity' draggable='true' onDragStart={this.dragStartedEntity} onDragEnd={this.addNodeEntity}>
                         <Entity />
                     </li>

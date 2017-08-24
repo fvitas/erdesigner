@@ -29,6 +29,11 @@ class ERDiagramCanvas extends Component {
     }
 
     @bind
+    preventDefault(event) {
+        event.preventDefault()
+    }
+
+    @bind
     updateCanvasDimensions() {
         this.setState({
             canvasWidth: window.innerWidth,
@@ -216,7 +221,11 @@ class ERDiagramCanvas extends Component {
 
         return (
             <div>
-                <svg id='canvas' width={this.state.canvasWidth} height={this.state.canvasHeight}
+                <svg id='canvas'
+                    width={this.state.canvasWidth}
+                    height={this.state.canvasHeight}
+                    onDragStart={this.preventDefault}
+                    onDragOver={this.preventDefault}
                     onMouseDown={this.onCanvasMouseDown}
                     onWheel={_.throttle(this.zoomOnScroll, 250)} // problem with resizing after zoom
                     style={cursorStyle}
@@ -228,7 +237,8 @@ class ERDiagramCanvas extends Component {
 
                 {
                     props.nodes.map(value => (
-                        <Node key={value.nodeId} {...value}
+                        <Node
+                            key={value.nodeId} {...value}
                             zoom={props.settings.zoom}
                             onDrawConnectionStart={this.drawConnectionStart}
                             onDrawConnectionMove={this.drawConnection}
