@@ -32,6 +32,8 @@ li
 
 .resizer
   width: 5px
+  // hide resizer for now
+  width: 0
   height: 100%
   background-color: #eee
   overflow: hidden
@@ -63,6 +65,17 @@ li
   flex: 0 0 auto
   z-index: 1
 
+  ////////////////////////////////
+  // prettier layout
+  width: 164px
+  height: 70vh
+  position: absolute
+  left: -1px
+  top: 50vh
+  transform: translateY(-50%)
+  border: 1px solid #ccc
+  ////////////////////////////////
+
 .pane-2
   position: absolute
   top: 0
@@ -73,11 +86,12 @@ li
   right: 0
   height: 100%
   padding: 10px
-  background-color: #eeeeee
+  background-color: #eee
 
 
 .node-picker
-  height: 100vh
+  height: 100%
+  overflow: auto
   background-color: $white
 
   .node-picker-list
@@ -100,6 +114,17 @@ li
   border-bottom: 1px solid #ccc
   background-color: $white
   z-index: 1
+
+  ////////////////////////////////
+  // prettier layout
+  position: absolute
+  top: -1px
+  left: 50vw
+  width: 845px
+  justify-content: center
+  transform: translateX(-50%)
+  border: 1px solid #ccc
+  ////////////////////////////////
 
   .icon
     align-self: center
@@ -130,7 +155,7 @@ li
 .separator
   width: 1px
   height: 40px
-  margin: 8px 10px
+  margin: 8px
   background-color: #ccc
   cursor: default
 

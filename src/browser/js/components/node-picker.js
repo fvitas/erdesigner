@@ -48,41 +48,45 @@ class NodePicker extends Component {
         event.dataTransfer.setDragImage(document.getElementById(id), 50, 25)
     }
 
-    addNode({type, x, y}) {
+    addNode(event, type) {
+        if (event.dataTransfer.dropEffect === 'none') {
+            return
+        }
+
         nodeStore.dispatch({
             type: ACTION.ADD_NODE,
-            value: {type, x, y}
+            value: { type: type, x: event.clientX, y: event.clientY }
         })
     }
 
     @bind
     addNodeEntity(event) {
-        this.addNode({type: NODE_TYPE.ENTITY, x: event.clientX, y: event.clientY})
+        this.addNode(event, NODE_TYPE.ENTITY)
     }
 
     @bind
     addNodeWeakEntity(event) {
-        this.addNode({type: NODE_TYPE.WEAK_ENTITY, x: event.clientX, y: event.clientY})
+        this.addNode(event, NODE_TYPE.WEAK_ENTITY)
     }
 
     @bind
     addNodeAssociativeEntity(event) {
-        this.addNode({type: NODE_TYPE.ASSOCIATIVE_ENTITY, x: event.clientX, y: event.clientY})
+        this.addNode(event, NODE_TYPE.ASSOCIATIVE_ENTITY)
     }
 
     @bind
     addNodeAttribute(event) {
-        this.addNode({type: NODE_TYPE.ATTRIBUTE, x: event.clientX, y: event.clientY})
+        this.addNode(event, NODE_TYPE.ATTRIBUTE)
     }
 
     @bind
     addNodeRelationship(event) {
-        this.addNode({type: NODE_TYPE.RELATIONSHIP, x: event.clientX, y: event.clientY})
+        this.addNode(event, NODE_TYPE.RELATIONSHIP)
     }
 
     @bind
     addNodeInheritance(event) {
-        this.addNode({type: NODE_TYPE.INHERITANCE, x: event.clientX, y: event.clientY})
+        this.addNode(event, NODE_TYPE.INHERITANCE)
     }
 
     render() {

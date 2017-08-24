@@ -132,7 +132,7 @@ app.on('ready', () => {
     console.log('Application is ready for start.')
 
     mainWindow = new BrowserWindow({
-        width: 1100,
+        width: 1150,
         height: 700,
         useContentSize: true,
         nodeIntegration: true,
