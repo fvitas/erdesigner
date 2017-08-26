@@ -11,7 +11,7 @@ export default {
         uuid: 'uuid',
         lodash: 'lodash',
         'preact-redux': 'preact-redux',
-        linkState: 'linkState'
+        'preact-portal': 'preact-portal'
     },
     external: [
         'preact',
@@ -20,7 +20,7 @@ export default {
         'uuid',
         'lodash',
         'preact-redux',
-        'linkState'
+        'preact-portal'
     ],
     plugins: [
         babel()

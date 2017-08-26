@@ -12,6 +12,7 @@ const actions = {
             nodeId: v4(),
             nodeName: action.value.type.replace(/-/, ' '),
             type: action.value.type,
+            attributes: [],
             x: action.value.x - 0,
             y: action.value.y - 50,
             selected: true,
@@ -131,6 +132,15 @@ const actions = {
         })
 
         return newState
+    },
+
+    addAttributeToNode(state, action) {
+        let newState = _.cloneDeep(state)
+
+        let nodeForUpdate = _.find(newState, { nodeId: action.value.nodeId })
+        nodeForUpdate.attributes.push(action.value.attribute)
+
+        return newState
     }
 }
 
@@ -150,6 +160,7 @@ export default function nodeReducer(state = [], action) {
         case ACTION.NODE_TO_BACK: return actions.moveNodeToBack(state, action)
         case ACTION.IMPORT: return actions.importNodes(state, action)
         case ACTION.MOVE_CANVAS: return actions.moveNodesOnCanvas(state, action)
+        case ACTION.ADD_ATTRIBUTE: return actions.addAttributeToNode(state, action)
         default: return state
     }
 }

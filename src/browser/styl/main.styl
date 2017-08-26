@@ -68,7 +68,7 @@ li
   ////////////////////////////////
   // prettier layout
   width: 164px
-  height: 70vh
+  height: 60vh
   position: absolute
   left: -1px
   top: 50vh
@@ -242,3 +242,114 @@ label[for=connect-nodes] input
       fill: #ffffff
       stroke: #222222
       stroke-width: 1
+
+
+.attributes-wrapper
+  width: 100%
+  position: absolute
+  overflow: hidden
+
+.button-add-attribute
+  bottom: -30px
+  width: 100%
+  height: 25px
+  margin: 0
+  margin-top: 5px
+  outline: none
+  box-shadow: none
+  border: 1px solid black
+
+.modal-form
+  position: absolute
+  left: 50%
+  top: 50%
+  transform: translate(-50%, -50%)
+  padding: 10px
+  box-shadow: 0 3px 10px 2px rgba(0, 0, 0, 0.42)
+  background: #fff
+  border-radius: 3px
+  overflow: auto
+  text-align: center
+  cursor: pointer
+  animation: zoom .4s forwards ease 1
+
+  input[type=text]
+  select
+    width: 91%
+    height: 25px
+    padding: 6px 12px
+    color: #555
+    background-color: #fff
+    border: 1px solid #ccc
+    border-radius: 4px
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075)
+    margin: 5px
+
+.label--checkbox
+  display: block
+  text-align: left
+  margin: 5px 14px
+  user-select: none
+
+  span
+    margin-left: 15px
+
+
+  .checkbox
+    position: relative
+    cursor: pointer
+
+    &:before
+      content: ""
+      position: absolute
+      left: 0
+      top: -1px
+      width: .75rem
+      height: .375rem
+      border: 2px solid #17ad3e
+      border-top-style: none
+      border-right-style: none
+      transition: transform 0.4s cubic-bezier(0.45, 1.8, 0.5, 0.75)
+      transform: rotate(-45deg) scale(0,0)
+      z-index: 1
+
+    &:checked
+      &:before
+        transform: rotate(-45deg) scale(1, 1)
+
+    &:after
+      content: ""
+      position: absolute
+      top: -4px
+      left: -2px
+      width: 16px
+      height: 16px
+      background: #fff
+      border: 1px solid #ccc
+      border-radius: 3px
+      cursor: pointer
+
+
+.node-attribute
+  padding: 3px
+  border-right: 1px solid black
+  border-left: 1px solid black
+  border-top: 1px dashed black
+  background-color: $white
+  user-select: none
+
+  &:first-child
+    margin-top: -1px
+    border-top: 1px solid black
+
+  &:last-child
+    border-bottom: 1px solid black
+
+
+  .primary-key
+    border-bottom: 1px solid black
+
+  span
+    text-overflow: ellipsis
+    overflow: hidden
+    white-space: nowrap

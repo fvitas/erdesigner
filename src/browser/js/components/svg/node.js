@@ -1,9 +1,12 @@
 import { h, Component } from 'preact'
 import { bind } from 'decko'
+import _ from 'lodash'
 import nodeStore from '../../redux/store'
 import {ACTION} from '../../redux/actions'
 import getNodeTypeComponent from './../../constants/node-type-components'
 import NodeResize from './node-resize'
+import Attributes from './attributes'
+import Portal from 'preact-portal'
 
 class Node extends Component {
     constructor({nodeId, nodeName, x, y}) {
@@ -308,6 +311,43 @@ class Node extends Component {
         event.preventDefault()
     }
 
+    @bind
+    open() {
+        this.setState({ open: true })
+    }
+
+    @bind
+    close() {
+        this.setState({ open: false })
+    }
+
+    @bind
+    submit(event) {
+        event.preventDefault()
+
+        let attributeName = event.target[0].value
+        let attributeType = event.target[1].value
+        let attributeIsPrimary = event.target[2].checked
+
+        if (_.isEmpty(attributeName)) {
+            this.close()
+            return
+        }
+
+        nodeStore.dispatch({type: ACTION.ADD_ATTRIBUTE,
+            value: {
+                nodeId: this.nodeId,
+                attribute: {
+                    name: attributeName,
+                    type: attributeType,
+                    isPrimary: attributeIsPrimary
+                }
+            }
+        })
+
+        this.close()
+    }
+
     render(props, state) {
         let rootStyle = {
             transform: `translate(${state.dragX}px, ${state.dragY}px) scale(${props.zoom})`
@@ -320,7 +360,7 @@ class Node extends Component {
                     {/* <circle cx='0' cy='0' r='10' fill='#ef4836' stroke='none' style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);' onClick={this.removeNode} /> */}
                 </div>
 
-                { props.selected && <NodeResize onStartNodeResize={this.startNodeResize} /> }
+                { <NodeResize onStartNodeResize={this.startNodeResize} ng-if='props.selected' /> }
 
                 <div id='svg-rect' style={{width: state.width, height: state.height}}
                     onMouseDown={this.onMouseDown}
@@ -328,7 +368,6 @@ class Node extends Component {
                     onMouseLeave={this.onConnectionLeaveDestination}
                     onClick={this.selectNode}
                 >
-
                     { getNodeTypeComponent(props.type, {width: state.width, height: state.height, color: props.color}) }
 
                     {
@@ -344,6 +383,50 @@ class Node extends Component {
                         </div>
                     }
                 </div>
+
+                <div class='attributes-wrapper'>
+                    <Attributes attributes={props.attributes} />
+
+                    { props.selected && props.type !== 'inheritance' && <button class='button-add-attribute' onClick={this.open}>Add property</button> }
+                </div>
+
+                {
+                    state.open &&
+                    <Portal into='body'>
+                        <div class='modal' >
+                            <form class='modal-form' name='attributeForm' onSubmit={this.submit} style='z-index: 101'>
+                                {/* <input value='' onInput={this.linkState('text')} placeholder='New ToDo...' /> */}
+                                <input type='text' value='' name='attributeName' onChange={this.preventDefault} placeholder='type name...' />
+
+                                <select name='attributeType'>
+                                    <option value='CHAR'>CHAR</option>
+                                    <option value='INTEGER'>INTEGER</option>
+                                    <option value='FLOAT'>FLOAT</option>
+                                    <option value='TIMESTAMP'>TIMESTAMP</option>
+                                </select>
+
+                                <label class='label--checkbox'>
+                                    <input type='checkbox' class='checkbox' name='attributeIsKey' />
+                                    <span>Is primary key</span>
+                                </label>
+
+                                <div style='text-align: right;    margin: 30px 5px 0px;'>
+                                    <input type='submit' value='Submit' />
+                                    <input type='button' value='Cancel' onClick={this.close} />
+                                </div>
+                            </form>
+
+                            <div class='modal-mask' style='
+                                width: 100vw;
+                                height: 100vh;
+                                position: absolute;
+                                top: 0;
+                                background: rgba(21, 21, 21, 0.32);
+                                z-index: 100;
+                            ' />
+                        </div>
+                    </Portal>
+                }
             </div>
         )
     }

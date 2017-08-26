@@ -107,7 +107,7 @@ class ERDiagramCanvas extends Component {
 
     @bind
     removeConnectionDestination(destinationNode) {
-        if (!!this.state.temporaryConnection.destination && this.state.temporaryConnection.destination.nodeId === destinationNode.nodeId) {
+        if (this.state.temporaryConnection && this.state.temporaryConnection.destination && this.state.temporaryConnection.destination.nodeId === destinationNode.nodeId) {
             this.setState({
                 temporaryConnection: {
                     source: this.state.temporaryConnection.source,

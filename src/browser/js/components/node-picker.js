@@ -7,7 +7,7 @@ import nodeStore from '../redux/store'
 import NODE_TYPE from './../constants/node-type'
 
 import Entity from './../components/svg/node-types/node-entity'
-import Attribute from './../components/svg/node-types/node-attribute'
+// import Attribute from './../components/svg/node-types/node-attribute'
 import AssociativeEntity from './../components/svg/node-types/node-associative-entity'
 import Relationship from './../components/svg/node-types/node-relationship'
 import WeakEntity from './../components/svg/node-types/node-weak-entity'
@@ -107,9 +107,9 @@ class NodePicker extends Component {
                     <li class='node node-associative-entity' draggable='true' onDragStart={this.dragStartedAssociativeEntity} onDragEnd={this.addNodeAssociativeEntity}>
                         <AssociativeEntity />
                     </li>
-                    <li class='node node-attribute' draggable='true' onDragStart={this.dragStartedAttribute} onDragEnd={this.addNodeAttribute}>
-                        <Attribute />
-                    </li>
+                    {/* <li class='node node-attribute' draggable='true' onDragStart={this.dragStartedAttribute} onDragEnd={this.addNodeAttribute}> */}
+                    {/* <Attribute /> */}
+                    {/* </li> */}
                     <li class='node node-relationship' draggable='true' onDragStart={this.dragStartedRelationship} onDragEnd={this.addNodeRelationship}>
                         <Relationship />
                     </li>
@@ -122,7 +122,7 @@ class NodePicker extends Component {
                 <div class='node' id='node-drag-tween-entity' style='position:absolute;left: -1000px'><Entity /></div>
                 <div class='node' id='node-drag-tween-weak-entity' style='position:absolute;left: -1100px'><WeakEntity /></div>
                 <div class='node' id='node-drag-tween-associative-entity' style='position:absolute;left: -1200px'><AssociativeEntity /></div>
-                <div class='node' id='node-drag-tween-attribute' style='position:absolute;left: -1300px'><Attribute /></div>
+                {/* <div class='node' id='node-drag-tween-attribute' style='position:absolute;left: -1300px'><Attribute /></div> */}
                 <div class='node' id='node-drag-tween-relationship' style='position:absolute;left: -1400px'><Relationship /></div>
                 <div class='node' id='node-drag-tween-inheritance' style='position:absolute;left: -1500px'><Inheritance /></div>
             </div>
