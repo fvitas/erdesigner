@@ -360,7 +360,7 @@ class Node extends Component {
                     {/* <circle cx='0' cy='0' r='10' fill='#ef4836' stroke='none' style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);' onClick={this.removeNode} /> */}
                 </div>
 
-                { <NodeResize onStartNodeResize={this.startNodeResize} ng-if='props.selected' /> }
+                { props.selected && <NodeResize onStartNodeResize={this.startNodeResize} /> }
 
                 <div id='svg-rect' style={{width: state.width, height: state.height}}
                     onMouseDown={this.onMouseDown}
