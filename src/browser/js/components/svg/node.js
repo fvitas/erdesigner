@@ -385,7 +385,7 @@ class Node extends Component {
                 </div>
 
                 <div class='attributes-wrapper'>
-                    <Attributes attributes={props.attributes} />
+                    <Attributes attributes={props.attributes} nodeId={this.nodeId} />
 
                     { props.selected && props.type !== 'inheritance' && <button class='button-add-attribute' onClick={this.open}>Add property</button> }
                 </div>

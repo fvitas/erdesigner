@@ -138,7 +138,20 @@ const actions = {
         let newState = _.cloneDeep(state)
 
         let nodeForUpdate = _.find(newState, { nodeId: action.value.nodeId })
-        nodeForUpdate.attributes.push(action.value.attribute)
+        let attributeExists = _.find(nodeForUpdate.attributes, { name: action.value.attribute.name })
+
+        if (!attributeExists) {
+            nodeForUpdate.attributes.push(action.value.attribute)
+        }
+
+        return newState
+    },
+
+    deleteAttributeToNode(state, action) {
+        let newState = _.cloneDeep(state)
+
+        let nodeForUpdate = _.find(newState, { nodeId: action.value.nodeId })
+        _.remove(nodeForUpdate.attributes, { name: action.value.attributeName })
 
         return newState
     }
@@ -161,6 +174,7 @@ export default function nodeReducer(state = [], action) {
         case ACTION.IMPORT: return actions.importNodes(state, action)
         case ACTION.MOVE_CANVAS: return actions.moveNodesOnCanvas(state, action)
         case ACTION.ADD_ATTRIBUTE: return actions.addAttributeToNode(state, action)
+        case ACTION.DELETE_ATTRIBUTE: return actions.deleteAttributeToNode(state, action)
         default: return state
     }
 }
