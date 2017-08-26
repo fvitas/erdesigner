@@ -6,7 +6,7 @@ const actions = {
     removeNode(state, action) {
         let newState = _.cloneDeep(state)
 
-        return newState.filter(connection => connection.sourceNodeId !== action.value.nodeId && connection.destinationNodeId !== action.value.nodeId)
+        return newState.filter(connection => connection.source.nodeId !== action.value.nodeId && connection.destination.nodeId !== action.value.nodeId)
     },
 
     removeAllNode() {
