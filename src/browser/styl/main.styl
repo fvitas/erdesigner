@@ -350,19 +350,23 @@ label[for=connect-nodes] input
   .primary-key
     border-bottom: 1px solid black
 
-  span
+  .node-attribute-wrapper
+    display: block
     text-overflow: ellipsis
     overflow: hidden
     white-space: nowrap
 
-.delete-attribute
-  position: absolute
-  right: 5px
-  width: 20px
-  height: 20px
-  opacity: 0
-  z-index: 1
+    span
+      display: initial
 
-.node-attribute:hover .delete-attribute
-  opacity: 1
-  transition: opacity 1s cubic-bezier(0.22, 0.61, 0.36, 1)
+.node-attribute
+  .delete-attribute
+    position: absolute
+    right: 5px
+    width: 20px
+    height: 20px
+    opacity: 0
+    z-index: 1
+
+  &:hover .delete-attribute
+    opacity: 1
