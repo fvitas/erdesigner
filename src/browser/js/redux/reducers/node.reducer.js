@@ -1,6 +1,12 @@
 import { v4 } from 'uuid'
 import { ACTION } from './../actions'
 import _ from 'lodash'
+import NODE_TYPE from './../../constants/node-type'
+
+// check if source or destination is inheritance node, and if it is check if contains parent
+function inheritanceNodeContainsParent(source, destination) {
+    return (source.type !== NODE_TYPE.INHERITANCE && destination.type !== NODE_TYPE.INHERITANCE) || source.parent || destination.parent
+}
 
 const actions = {
     addNode(state, action) {
@@ -25,6 +31,14 @@ const actions = {
 
     removeNode(state, action) {
         let newState = _.cloneDeep(state)
+
+        let inheritanceNodes = newState.filter(node => node.type === NODE_TYPE.INHERITANCE)
+
+        _.forEach(inheritanceNodes, node => {
+            if (node.parent === action.value.nodeId) {
+                delete node.parent
+            }
+        })
 
         return newState.filter(node => node.nodeId !== action.value.nodeId)
     },
@@ -154,6 +168,26 @@ const actions = {
         _.remove(nodeForUpdate.attributes, { name: action.value.attributeName })
 
         return newState
+    },
+
+    addConnection(state, action) {
+        let sourceNode      = _.find(state, { nodeId: action.value.source.nodeId })
+        let destinationNode = _.find(state, { nodeId: action.value.destination.nodeId })
+
+        if (inheritanceNodeContainsParent(sourceNode, destinationNode)) {
+            return state
+        }
+
+        let newState = _.cloneDeep(state)
+
+        let inheritanceNode = sourceNode.type === NODE_TYPE.INHERITANCE ? sourceNode : destinationNode
+        let parentNode      = sourceNode.type !== NODE_TYPE.INHERITANCE ? sourceNode : destinationNode
+
+        let nodeForUpdate = _.find(newState, { nodeId: inheritanceNode.nodeId })
+
+        nodeForUpdate.parent = parentNode.nodeId
+
+        return newState
     }
 }
 
@@ -175,6 +209,7 @@ export default function nodeReducer(state = [], action) {
         case ACTION.MOVE_CANVAS: return actions.moveNodesOnCanvas(state, action)
         case ACTION.ADD_ATTRIBUTE: return actions.addAttributeToNode(state, action)
         case ACTION.DELETE_ATTRIBUTE: return actions.deleteAttributeToNode(state, action)
+        case ACTION.ADD_CONNECTION: return actions.addConnection(state, action)
         default: return state
     }
 }
