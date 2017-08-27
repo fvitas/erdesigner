@@ -9,6 +9,14 @@ const {app, BrowserWindow, Menu} = electron
 let mainWindow = null
 let sqlWindow = null
 
+function isDev() {
+    return process.mainModule.filename.indexOf('app.asar') === -1
+}
+
+function isMac() {
+    return process.platform === 'darwin'
+}
+
 const template = [
     {
         label: 'File',
@@ -16,17 +24,12 @@ const template = [
             {
                 label: 'Open...',
                 accelerator: 'CmdOrCtrl+O',
-                click() {}
+                click() { mainWindow.webContents.send('import-file') }
             },
             {
                 label: 'Save...',
                 accelerator: 'CmdOrCtrl+S',
-                click() {
-                    // We can't call saveFile(content) directly because we need to get
-                    // the content from the renderer process. So, send a message to the
-                    // renderer, telling it we want to save the file.
-                    mainWindow.webContents.send('save-file')
-                }
+                click() { mainWindow.webContents.send('export-file') }
             }
         ]
     },
@@ -36,74 +39,66 @@ const template = [
             {
                 label: 'Undo',
                 accelerator: 'CmdOrCtrl+Z',
-                role: 'undo'
+                click() { mainWindow.webContents.send('undo') }
             },
             {
                 label: 'Redo',
-                accelerator: 'Shift+CmdOrCtrl+Z',
-                role: 'redo'
+                accelerator: 'CmdOrCtrl+Shift+Z',
+                click() { mainWindow.webContents.send('redo') }
             },
             {
                 type: 'separator'
             },
             {
-                label: 'Cut',
-                accelerator: 'CmdOrCtrl+X',
-                role: 'cut'
+                label: 'Delete Node',
+                accelerator: 'Backspace',
+                click() { mainWindow.webContents.send('delete-node') }
             },
             {
-                label: 'Copy',
-                accelerator: 'CmdOrCtrl+C',
-                role: 'copy'
-            },
-            {
-                label: 'Paste',
-                accelerator: 'CmdOrCtrl+V',
-                role: 'paste'
-            },
-            {
-                label: 'Select All',
-                accelerator: 'CmdOrCtrl+A',
-                role: 'selectall'
+                label: 'Delete Node',
+                accelerator: 'Delete',
+                click() { mainWindow.webContents.send('delete-node') }
             }
         ]
     },
     {
-        label: 'Developer',
+        label: 'View',
         submenu: [
             {
-                label: 'Toggle Developer Tools',
-                accelerator: process.platform === 'darwin'
-                    ? 'Alt+Command+I'
-                    : 'Ctrl+Shift+I',
-                click() { mainWindow.webContents.toggleDevTools() }
+                label: 'Toggle Fullscreen',
+                accelerator: 'CmdOrCtrl+F',
+                role: 'togglefullscreen'
             }
         ]
     }
 ]
 
-if (process.platform === 'darwin') {
-    const name = app.getName()
-    template.unshift({
-        label: name,
+if (isDev()) {
+    template.push({
+        label: 'Developer',
         submenu: [
             {
-                label: 'About ' + name,
+                label: 'Toggle Developer Tools',
+                accelerator: isMac() ? 'Alt+Command+I' : 'Ctrl+Shift+I',
+                click() { mainWindow.webContents.toggleDevTools() }
+            }
+        ]
+    })
+}
+
+if (isMac()) {
+    template.unshift({
+        label: 'ER Designer',
+        submenu: [
+            {
+                label: 'About ER Designer',
                 role: 'about'
             },
             {
                 type: 'separator'
             },
             {
-                label: 'Services',
-                role: 'services',
-                submenu: []
-            },
-            {
-                type: 'separator'
-            },
-            {
-                label: 'Hide ' + name,
+                label: 'Hide ER Designer',
                 accelerator: 'Command+H',
                 role: 'hide'
             },
@@ -146,6 +141,10 @@ app.on('ready', () => {
     const menu = Menu.buildFromTemplate(template)
     Menu.setApplicationMenu(menu)
 
+    if (isDev()) {
+        mainWindow.webContents.openDevTools()
+    }
+
     mainWindow.once('ready-to-show', () => { mainWindow.show() })
     mainWindow.on('closed', () => { mainWindow = null })
 })
@@ -168,9 +167,11 @@ ipcMain.on('show-sql', (event, sql) => {
 
     sqlWindow.loadURL('file://' + path.join(__dirname, '/../sql-window.html'))
 
-    // sqlWindow.webContents.openDevTools()
-
     sqlWindow.sql = sql
+
+    if (isDev()) {
+        sqlWindow.webContents.openDevTools()
+    }
 
     sqlWindow.on('closed', () => {
         sqlWindow = null
