@@ -50,6 +50,29 @@ const template = [
                 type: 'separator'
             },
             {
+                label: 'Cut',
+                accelerator: 'CmdOrCtrl+X',
+                role: 'cut'
+            },
+            {
+                label: 'Copy',
+                accelerator: 'CmdOrCtrl+C',
+                role: 'copy'
+            },
+            {
+                label: 'Paste',
+                accelerator: 'CmdOrCtrl+V',
+                role: 'paste'
+            },
+            {
+                label: 'Select All',
+                accelerator: 'CmdOrCtrl+A',
+                role: 'selectall'
+            },
+            {
+                type: 'separator'
+            },
+            {
                 label: 'Delete Node',
                 accelerator: 'Backspace',
                 click() { mainWindow.webContents.send('delete-node') }
@@ -154,7 +177,7 @@ app.on('window-all-closed', app.quit)
 ipcMain.on('show-sql', (event, sql) => {
     if (!sqlWindow) {
         sqlWindow = new BrowserWindow({
-            width: 700,
+            width: 1000,
             height: 500,
             alwaysOnTop: true,
             useContentSize: true,
