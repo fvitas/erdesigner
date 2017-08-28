@@ -13,56 +13,74 @@ class SQLGenerator {
         return sqlText
     }
 
-    generateTables(nodes, connections) {
+    generateTables(stateNodes, stateConnections) {
+        let nodes = _.cloneDeep(stateNodes)
+        let connections = _.cloneDeep(stateConnections)
+
         // generate tables from nodes
         let tables = _(nodes)
-            .filter(node => _.includes([NODE_TYPES.ENTITY, NODE_TYPES.WEAK_ENTITY], node.type))
+            .filter(node => _.includes([NODE_TYPES.ENTITY, NODE_TYPES.RELATIONSHIP, NODE_TYPES.WEAK_ENTITY], node.type))
             .map(node => {
                 return {
                     nodeId: node.nodeId,
                     name: _.camelCase(node.nodeName),
                     type: node.type,
-                    attributes: []
+                    attributes: node.attributes
                 }
             })
             .value()
 
-        // generate attributes for every table
-        _.forEach(tables, function(table) {
-            table.attributes = _(connections)
-                .filter(connection => connection.source.nodeId === table.nodeId || connection.destination.nodeId === table.nodeId)
-                .map(connection => {
-                    let attribute
+        // NODE_TYPES.INHERITANCE
+        let inheritanceNodes = _.filter(tables, { type: NODE_TYPES.INHERITANCE })
 
-                    if (connection.source.nodeId !== table.nodeId) {
-                        // attribute is source
-                        attribute = _.find(nodes, node => node.nodeId === connection.source.nodeId)
-                    } else {
-                        // attribute is destination
-                        attribute = _.find(nodes, node => node.nodeId === connection.destination.nodeId)
-                    }
+        _.forEach(inheritanceNodes, inheritance => {
+            if (!inheritance.parent) {
+                return
+            }
 
-                    if (attribute.type !== NODE_TYPES.ATTRIBUTE) {
-                        return
-                    }
+            let parentNode = _.find(tables, { nodeId: inheritance.parent })
 
-                    return {
-                        name: attribute.nodeName,
-                        type: 'VARCHAR',
-                        nullable: false,
-                        unique: false,
-                        autoIncrement: false
-                    }
+            let children = _(connections)
+                .filter(connection => {
+                    return (inheritance.nodeId === connection.source.nodeId || inheritance.nodeId === connection.destination.nodeId) &&
+                           (connection.source.nodeId !== parentNode.nodeId && connection.destination.nodeId !== parentNode.nodeId)
                 })
-                .filter(attribute => !!attribute)
+                .map(connection => _.find(tables, { nodeId: connection.source.nodeId !== inheritance.nodeId ? connection.source.nodeId : connection.destination.nodeId }))
                 .value()
+
+            _.forEach(children, child => {
+                child.attributes.push(...parentNode.attributes)
+            })
+
+            _.remove(tables, { nodeId: parentNode.nodeId })
+        })
+
+        // NODE_TYPES.RELATIONSHIP
+        let relationshipNodes = _.filter(tables, { type: NODE_TYPES.RELATIONSHIP })
+
+        _.forEach(relationshipNodes, relationship => {
+            let connectedNodes = _(connections)
+                .filter(connection => connection.source.nodeId === relationship.nodeId || connection.destination.nodeId === relationship.nodeId)
+                .map(connection => _.find(tables, { nodeId: connection.source.nodeId !== relationship.nodeId ? connection.source.nodeId : connection.destination.nodeId }))
+                .value()
+
+            relationship.foreignKeys = _.flatMap(connectedNodes, node => {
+                return _(node.attributes)
+                    .filter({ isPrimary: true })
+                    .map(attribute => {
+                        return {
+                            name: attribute.name,
+                            reference: node.name,
+                            type: attribute.type
+                        }
+                    })
+                    .value()
+            })
         })
 
         // TODO filipv: generate SQL for all cases
         // add tables that are represented with
-        // NODE_TYPES.RELATIONSHIP, NODE_TYPES.ASSOCIATIVE_ENTITY
-
-        // add / propagate all attributes from parent to children of inheritance and delete parent ???
+        // , NODE_TYPES.ASSOCIATIVE_ENTITY
 
         return tables
     }
@@ -74,39 +92,60 @@ class SQLGenerator {
 
         let sqlText = ''
 
-        _.forEach(tables, function(table, tableIndex, c) {
-            console.log(table, tableIndex, c)
+        _.forEach(tables, function(table, tableIndex) {
             if (tableIndex !== 0) {
                 sqlText += '\n'
             }
 
             sqlText += 'CREATE TABLE `' + table.name + '` (\n'
 
-            _.forEach(table.attributes, function(attribute, attributeIndex) {
-                sqlText += '  ' + '`' + attribute.name + '` ' + attribute.type + ' '
+            _.forEach(table.attributes, function(attribute) {
+                sqlText += '  `' + attribute.name + '` ' + attribute.type
 
-                if (attribute.nullable) {
-                    sqlText += 'NULL'
-                } else {
-                    sqlText += 'NOT NULL'
+                // if (attribute.nullable) {
+                //     sqlText += 'NULL'
+                // } else {
+                //     sqlText += 'NOT NULL'
+                // }
+                //
+                // if (attribute.unique) {
+                //     sqlText += ' ' + 'UNIQUE'
+                // }
+                //
+                // if (attribute.autoIncrement) {
+                //     sqlText += ' ' + 'AUTO_INCREMENT'
+                // }
+
+                if (attribute.isPrimary) {
+                    sqlText += ' NOT NULL'
                 }
 
-                if (attribute.unique) {
-                    sqlText += ' ' + 'UNIQUE'
-                }
-
-                if (attribute.autoIncrement) {
-                    sqlText += ' ' + 'AUTO_INCREMENT'
-                }
-
-                if (attributeIndex !== table.attributes.length - 1) {
-                    sqlText += ','
-                }
-
-                sqlText += '\n'
+                sqlText += ',\n'
             })
 
-            sqlText += ');\n'
+            if (table.foreignKeys && !_.isEmpty(table.foreignKeys)) {
+                _.forEach(table.foreignKeys, key => {
+                    sqlText += '  `' + key.name + '` ' + key.type + ' NOT NULL,\n'
+                })
+
+                sqlText += `  PRIMARY KEY (${_.join(table.foreignKeys.map(x => x.name), ', ')}),\n`
+
+                let references = _.groupBy(table.foreignKeys, 'reference')
+
+                _.forEach(references, (keys, reference) => {
+                    sqlText += `  FOREIGN KEY (${_.join(keys.map(x => x.name), ', ')}) REFERENCES ${reference}(${_.join(keys.map(x => x.name), ', ')}),\n`
+                })
+            } else {
+                let primaryKeys = _.filter(table.attributes, { isPrimary: true })
+
+                if (!_.isEmpty(primaryKeys)) {
+                    sqlText += `  PRIMARY KEY (${_.join(primaryKeys.map(x => x.name), ', ')}),\n`
+                }
+            }
+
+            sqlText = _.trimEnd(sqlText, ',\n')
+
+            sqlText += '\n);\n'
         })
 
         return sqlText
