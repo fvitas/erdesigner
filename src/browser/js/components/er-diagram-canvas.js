@@ -161,7 +161,10 @@ class ERDiagramCanvas extends Component {
     }
 
     connectionExist(source, destination) {
-        return _.some(this.props.connections, connection => connection.source.nodeId === source.nodeId && connection.destination.odeId === destination.nodeId)
+        return _.some(this.props.connections, connection => {
+            return (connection.source.nodeId === source.nodeId && connection.destination.nodeId === destination.nodeId) ||
+                   (connection.source.nodeId === destination.nodeId && connection.destination.nodeId === source.nodeId)
+        })
     }
 
     destinationIsCompatible(source, destination) {
