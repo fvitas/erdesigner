@@ -177,7 +177,7 @@ app.on('window-all-closed', app.quit)
 ipcMain.on('show-sql', (event, sql) => {
     if (!sqlWindow) {
         sqlWindow = new BrowserWindow({
-            width: 1000,
+            width: 700,
             height: 500,
             alwaysOnTop: true,
             useContentSize: true,
