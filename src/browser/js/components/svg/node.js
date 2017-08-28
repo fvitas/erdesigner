@@ -7,6 +7,7 @@ import getNodeTypeComponent from './../../constants/node-type-components'
 import NodeResize from './node-resize'
 import Attributes from './attributes'
 import Portal from 'preact-portal'
+import NODE_TYPE from '../../constants/node-type'
 
 class Node extends Component {
     constructor({nodeId, nodeName, x, y}) {
@@ -387,7 +388,7 @@ class Node extends Component {
                 <div class='attributes-wrapper'>
                     <Attributes attributes={props.attributes} nodeId={this.nodeId} />
 
-                    { props.selected && props.type !== 'inheritance' && <button class='button-add-attribute' onClick={this.open}>Add property</button> }
+                    { props.selected && props.type !== NODE_TYPE.INHERITANCE && <button class='button-add-attribute' onClick={this.open}>Add property</button> }
                 </div>
 
                 {
@@ -395,7 +396,6 @@ class Node extends Component {
                     <Portal into='body'>
                         <div class='modal' >
                             <form class='modal-form' name='attributeForm' onSubmit={this.submit} style='z-index: 101'>
-                                {/* <input value='' onInput={this.linkState('text')} placeholder='New ToDo...' /> */}
                                 <input type='text' value='' name='attributeName' onChange={this.preventDefault} placeholder='type name...' />
 
                                 <select name='attributeType'>
@@ -405,7 +405,7 @@ class Node extends Component {
                                     <option value='TIMESTAMP'>TIMESTAMP</option>
                                 </select>
 
-                                <label class='label--checkbox'>
+                                <label class='label--checkbox' style={props.type === NODE_TYPE.RELATIONSHIP ? 'display: none' : ''}>
                                     <input type='checkbox' class='checkbox' name='attributeIsKey' />
                                     <span>Is primary key</span>
                                 </label>
@@ -416,14 +416,7 @@ class Node extends Component {
                                 </div>
                             </form>
 
-                            <div class='modal-mask' style='
-                                width: 100vw;
-                                height: 100vh;
-                                position: absolute;
-                                top: 0;
-                                background: rgba(21, 21, 21, 0.32);
-                                z-index: 100;
-                            ' />
+                            <div class='modal-mask' />
                         </div>
                     </Portal>
                 }
