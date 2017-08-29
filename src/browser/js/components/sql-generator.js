@@ -196,7 +196,7 @@ class SQLGenerator {
             sqlText += '\n);\n'
         })
 
-        return sqlText
+        return _.escape(sqlText)
     }
 }
 
