@@ -19,19 +19,20 @@ class SQLGenerator {
 
         // generate tables from nodes
         let tables = _(nodes)
-            .filter(node => _.includes([NODE_TYPES.ENTITY, NODE_TYPES.RELATIONSHIP, NODE_TYPES.WEAK_ENTITY], node.type))
+            .filter(node => _.includes([NODE_TYPES.ENTITY, NODE_TYPES.WEAK_ENTITY, NODE_TYPES.RELATIONSHIP, NODE_TYPES.ASSOCIATIVE_ENTITY, NODE_TYPES.INHERITANCE], node.type))
             .map(node => {
                 return {
                     nodeId: node.nodeId,
                     name: _.camelCase(node.nodeName),
                     type: node.type,
+                    parent: node.parent,
                     attributes: node.attributes
                 }
             })
             .value()
 
         // NODE_TYPES.INHERITANCE
-        let inheritanceNodes = _.filter(tables, { type: NODE_TYPES.INHERITANCE })
+        let inheritanceNodes = _.remove(tables, { type: NODE_TYPES.INHERITANCE })
 
         _.forEach(inheritanceNodes, inheritance => {
             if (!inheritance.parent) {
@@ -55,16 +56,23 @@ class SQLGenerator {
             _.remove(tables, { nodeId: parentNode.nodeId })
         })
 
-        // NODE_TYPES.RELATIONSHIP
-        let relationshipNodes = _.filter(tables, { type: NODE_TYPES.RELATIONSHIP })
+        // NODE_TYPES.ASSOCIATIVE_ENTITY
+        let associativeNodes = _.filter(tables, { type: NODE_TYPES.ASSOCIATIVE_ENTITY })
 
-        _.forEach(relationshipNodes, relationship => {
+        _.forEach(associativeNodes, associative => {
             let connectedNodes = _(connections)
-                .filter(connection => connection.source.nodeId === relationship.nodeId || connection.destination.nodeId === relationship.nodeId)
-                .map(connection => _.find(tables, { nodeId: connection.source.nodeId !== relationship.nodeId ? connection.source.nodeId : connection.destination.nodeId }))
+                .filter(connection => connection.source.nodeId === associative.nodeId || connection.destination.nodeId === associative.nodeId)
+                .map(connection => _.find(tables, { nodeId: connection.source.nodeId !== associative.nodeId ? connection.source.nodeId : connection.destination.nodeId }))
                 .value()
 
-            relationship.foreignKeys = _.flatMap(connectedNodes, node => {
+            // must be connected with at least one RELATIONSHIP
+            if (!_.some(connectedNodes, { type: NODE_TYPES.RELATIONSHIP })) {
+                return
+            }
+
+            connectedNodes = _.filter(connectedNodes, node => node.type !== NODE_TYPES.RELATIONSHIP)
+
+            associative.foreignKeys = _.flatMap(connectedNodes, node => {
                 return _(node.attributes)
                     .filter({ isPrimary: true })
                     .map(attribute => {
@@ -78,9 +86,49 @@ class SQLGenerator {
             })
         })
 
-        // TODO filipv: generate SQL for all cases
-        // add tables that are represented with
-        // , NODE_TYPES.ASSOCIATIVE_ENTITY
+        // NODE_TYPES.RELATIONSHIP
+        let relationshipNodes = _.filter(tables, { type: NODE_TYPES.RELATIONSHIP })
+
+        _.forEach(relationshipNodes, relationship => {
+            let connectedNodes = _(connections)
+                .filter(connection => connection.source.nodeId === relationship.nodeId || connection.destination.nodeId === relationship.nodeId)
+                .map(connection => _.find(tables, { nodeId: connection.source.nodeId !== relationship.nodeId ? connection.source.nodeId : connection.destination.nodeId }))
+                .value()
+
+            relationship.foreignKeys = []
+
+            let associativeNodes = _.remove(connectedNodes, { type: NODE_TYPES.ASSOCIATIVE_ENTITY })
+
+            if (!_.isEmpty(associativeNodes)) {
+                let associativeForeignKeys =
+                    _.flatMap(associativeNodes, associative => {
+                        return _.map(associative.foreignKeys, key => {
+                            return {
+                                name: key.name,
+                                type: key.type,
+                                reference: associative.name
+                            }
+                        })
+                    })
+
+                relationship.foreignKeys.push(...associativeForeignKeys)
+            }
+
+            let foreignKeys = _.flatMap(connectedNodes, node => {
+                return _(node.attributes)
+                    .filter({ isPrimary: true })
+                    .map(attribute => {
+                        return {
+                            name: attribute.name,
+                            reference: node.name,
+                            type: attribute.type
+                        }
+                    })
+                    .value()
+            })
+
+            relationship.foreignKeys.push(...foreignKeys)
+        })
 
         return tables
     }
