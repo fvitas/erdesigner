@@ -148,7 +148,7 @@ class SQLGenerator {
             sqlText += 'CREATE TABLE `' + table.name + '` (\n'
 
             _.forEach(table.attributes, function(attribute) {
-                sqlText += '  `' + attribute.name + '` ' + attribute.type
+                sqlText += '  `' + attribute.name + '` ' + (attribute.type === 'CHAR' ? 'CHAR(50)' : attribute.type)
 
                 // if (attribute.nullable) {
                 //     sqlText += 'NULL'
