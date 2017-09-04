@@ -173,7 +173,7 @@ class SQLGenerator {
 
             if (table.foreignKeys && !_.isEmpty(table.foreignKeys)) {
                 _.forEach(table.foreignKeys, key => {
-                    sqlText += '  `' + key.name + '` ' + key.type + ' NOT NULL,\n'
+                    sqlText += '  `' + key.name + '` ' + (key.type === 'CHAR' ? 'CHAR(50)' : key.type) + ' NOT NULL,\n'
                 })
 
                 sqlText += `  PRIMARY KEY (${_.join(table.foreignKeys.map(x => x.name), ', ')}),\n`
