@@ -70,6 +70,11 @@ const template = [
                 role: 'selectall'
             },
             {
+                label: 'Duplicate Node',
+                accelerator: 'CmdOrCtrl+D',
+                click() { mainWindow.webContents.send('duplicate-node') }
+            },
+            {
                 type: 'separator'
             },
             {

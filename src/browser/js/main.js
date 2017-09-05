@@ -71,7 +71,20 @@ function deleteNode() {
         value: {nodeId: selectedNode.nodeId}
     })
 }
+function duplicateNode() {
+    let selectedNode = _.find(store.getState().nodes, { selected: true })
+
+    if (!selectedNode) {
+        return
+    }
+
+    store.dispatch({
+        type: ACTION.DUPLICATE_NODE,
+        value: {nodeId: selectedNode.nodeId}
+    })
+}
 
 require('electron').ipcRenderer.on('undo', undo)
 require('electron').ipcRenderer.on('redo', redo)
 require('electron').ipcRenderer.on('delete-node', deleteNode)
+require('electron').ipcRenderer.on('duplicate-node', duplicateNode)

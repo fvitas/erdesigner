@@ -29,6 +29,28 @@ const actions = {
         return newState
     },
 
+    duplicateNode(state, action) {
+        let newState = _.cloneDeep(state)
+
+        let nodeForDuplication = _.find(newState, { nodeId: action.value.nodeId })
+
+        nodeForDuplication.selected = false
+
+        newState.push({
+            nodeId: v4(),
+            nodeName: nodeForDuplication.nodeName,
+            type: nodeForDuplication.type,
+            attributes: _.cloneDeep(nodeForDuplication.attributes),
+            x: nodeForDuplication.x + 25,
+            y: nodeForDuplication.y + 12,
+            selected: true,
+            width: nodeForDuplication.width,
+            height: nodeForDuplication.height
+        })
+
+        return newState
+    },
+
     removeNode(state, action) {
         let newState = _.cloneDeep(state)
 
@@ -210,6 +232,7 @@ export default function nodeReducer(state = [], action) {
         case ACTION.ADD_ATTRIBUTE: return actions.addAttributeToNode(state, action)
         case ACTION.DELETE_ATTRIBUTE: return actions.deleteAttributeToNode(state, action)
         case ACTION.ADD_CONNECTION: return actions.addConnection(state, action)
+        case ACTION.DUPLICATE_NODE: return actions.duplicateNode(state, action)
         default: return state
     }
 }
