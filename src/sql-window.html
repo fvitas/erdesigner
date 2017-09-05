@@ -41,7 +41,7 @@
     
             .select {
                 position: relative;
-                display: flex;
+                display: inline-flex;
                 flex-direction: column;
                 width: 250px;
                 height: 40px;
@@ -178,6 +178,8 @@
             <label class="option" for="atom-one-light">Atom One Light</label>
         </div>
         
+        <button onclick="copySQLCodeToClipBoard()">Copy SQL to clipboard</button>
+        
         <div id="snippet">
             <pre>
                 <code class="sql" id="sql-code"></code>
@@ -185,6 +187,11 @@
         </div>
         
         <script>
+            function copySQLCodeToClipBoard () {
+                const clipboard = require('electron').clipboard
+                clipboard.writeText(document.querySelector('code').textContent)
+            }
+            
             function enableStyleCSS(currentStyle) {
                 var links = document.querySelectorAll('.codestyle')
                 
@@ -215,7 +222,7 @@
                 document.getElementById('sql-code').innerHTML = currentWindow.sql
                 
                 initSnippet()
-            });
+            })
         </script>
         
     </body>
