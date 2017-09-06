@@ -20,6 +20,7 @@ import { IconToBack } from './control-items/icon-to-back'
 import { IconExport } from './control-items/icon-export'
 import { IconImport } from './control-items/icon-import'
 import { IconGenerateSQL } from './control-items/icon-generate-sql'
+import { IconScreenshot } from './control-items/icon-screenshot'
 // import { IconOpenTool } from './control-items/icon-open-tool'
 
 import sqlGenerator from './sql-generator'
@@ -131,6 +132,28 @@ class Controls extends Component {
     }
 
     @bind
+    takeScreenshot() {
+        let fs = require('fs')
+        let { dialog, getCurrentWindow } = require('electron').remote
+
+        dialog.showSaveDialog(fileName => {
+            if (!fileName) {
+                return
+            }
+
+            let currentWindow = getCurrentWindow()
+
+            currentWindow.capturePage(function handleCapture(img) {
+                fs.writeFile(fileName + '.png', img.toPng(), err => {
+                    if (err) {
+                        console.error(err)
+                    }
+                })
+            })
+        })
+    }
+
+    @bind
     generateSQL() {
         let sqltext = sqlGenerator.generateSQL()
 
@@ -178,6 +201,10 @@ class Controls extends Component {
 
                 <IconImport onClick={this.importDiagram} />
                 <IconExport onClick={this.exportDiagram} />
+
+                <div class='separator' />
+
+                <IconScreenshot onClick={this.takeScreenshot} />
 
                 <div class='separator' />
 
