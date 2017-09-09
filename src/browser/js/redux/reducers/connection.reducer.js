@@ -25,23 +25,6 @@ const actions = {
         return newState
     },
 
-    updateConnections(state, action) {
-        let newConnections = _.cloneDeep(state)
-
-        newConnections.forEach(connection => {
-            if (connection.source.nodeId === action.value.nodeId) {
-                connection.source.x = action.value.x
-                connection.source.y = action.value.y
-            }
-            if (connection.destination.nodeId === action.value.nodeId) {
-                connection.destination.x = action.value.x
-                connection.destination.y = action.value.y
-            }
-        })
-
-        return newConnections
-    },
-
     updateNodeConnection(state, action) {
         let newConnections = _.cloneDeep(state)
 
@@ -59,7 +42,7 @@ const actions = {
         return newConnections
     },
 
-    importConnection(state, action) {
+    importConnections(state, action) {
         return _.isArray(action.value.connections) ? action.value.connections : _.cloneDeep(state)
     },
 
@@ -96,9 +79,11 @@ export default function connectionReducer(state = [], action) {
         case ACTION.DELETE_ALL_NODES: return actions.removeAllNode(state)
         case ACTION.UPDATE_NODE: return actions.updateNodeConnection(state, action)
         case ACTION.ADD_CONNECTION: return actions.addConnection(state, action)
-        case ACTION.UPDATE_CONNECTIONS: return actions.updateConnections(state, action)
-        case ACTION.IMPORT: return actions.importConnection(state, action)
+        case ACTION.UPDATE_CONNECTIONS: return actions.updateNodeConnection(state, action)
+        case ACTION.IMPORT: return actions.importConnections(state, action)
         case ACTION.MOVE_CANVAS: return actions.moveNodesOnCanvas(state, action)
+        case ACTION.GENERATE_GRAPH_FROM_DB: return actions.importConnections(state, action)
+        case ACTION.NODE_MOVE: return actions.updateNodeConnection(state, action)
         default: return state
     }
 }

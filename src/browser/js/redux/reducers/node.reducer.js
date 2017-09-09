@@ -233,6 +233,8 @@ export default function nodeReducer(state = [], action) {
         case ACTION.DELETE_ATTRIBUTE: return actions.deleteAttributeToNode(state, action)
         case ACTION.ADD_CONNECTION: return actions.addConnection(state, action)
         case ACTION.DUPLICATE_NODE: return actions.duplicateNode(state, action)
+        case ACTION.GENERATE_GRAPH_FROM_DB: return actions.importNodes(state, action)
+        case ACTION.NODE_MOVE: return actions.updateNode(state, action)
         default: return state
     }
 }

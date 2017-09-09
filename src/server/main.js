@@ -1,5 +1,7 @@
 const electron = require('electron')
 const path = require('path')
+const _ = require('lodash')
+const uuid = require('uuid')
 
 // In main process.
 const ipcMain = require('electron').ipcMain
@@ -155,7 +157,7 @@ app.on('ready', () => {
     console.log('Application is ready for start.')
 
     mainWindow = new BrowserWindow({
-        width: 1150,
+        width: 1300,
         height: 700,
         useContentSize: true,
         nodeIntegration: true,
@@ -204,4 +206,103 @@ ipcMain.on('show-sql', (event, sql) => {
     sqlWindow.on('closed', () => {
         sqlWindow = null
     })
+})
+
+ipcMain.on('fetch-from-db', async (event, connection) => {
+    if (/;|drop|--/.test(connection.database)) {
+        connection.database = ''
+    }
+
+    try {
+        let knex = require('knex')({
+            client: 'mysql',
+            connection: {
+                host: connection.host,
+                user: connection.user,
+                password: connection.password,
+                database: connection.database
+            }
+        })
+
+        let informationShema = require('knex')({
+            client: 'mysql',
+            connection: {
+                host: connection.host,
+                user: connection.user,
+                password: connection.password,
+                database: 'information_schema'
+            }
+        })
+
+        let tablesResponse = await knex.raw('show tables')
+
+        let tables = _.map(_.first(tablesResponse), x => ({name: _.values(x)[0]}))
+
+        let nodes = []
+
+        for (let table of tables) {
+            let tableDetails = await knex.raw(`describe ${table.name}`)
+
+            nodes.push({
+                nodeId: uuid.v4(),
+                nodeName: table.name,
+                type: 'entity',
+                selected: false,
+                x: 400,
+                y: 300,
+                width: 100,
+                height: 50,
+                attributes: _.map(_.first(tableDetails), function(details) {
+                    let detailsType = details.Type.toLocaleLowerCase()
+                    let attributeType =
+                        _.includes(detailsType, 'int') ? 'INTEGER' : _.includes(detailsType, 'char') ? 'CHAR' : _.includes(detailsType, 'float') ? 'FLOAT' : _.includes(detailsType, 'timestamp') ? 'TIMESTAMP' : ''
+
+                    return {
+                        name: details.Field,
+                        type: attributeType,
+                        isPrimary: _.isEqual(details.Key, 'PRI')
+                        // Null: "YES" / "NO"
+                        // Extra: "auto_increment"
+                        // Default: null | value
+                    }
+                })
+            })
+        }
+
+        let foreignKeysResponse = await informationShema.raw(`
+            SELECT CONSTRAINT_NAME, TABLE_NAME, COLUMN_NAME, REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME
+            FROM KEY_COLUMN_USAGE 
+            WHERE TABLE_SCHEMA = '${connection.database}' AND CONSTRAINT_NAME LIKE '%fk%'`
+        )
+
+        let foreignKeys = _.first(foreignKeysResponse)
+        let connections = []
+
+        _.forEach(foreignKeys, fk => {
+            let source = _.find(nodes, {nodeName: fk.TABLE_NAME})
+            source.type = 'relationship'
+
+            let destination = _.find(nodes, {nodeName: fk.REFERENCED_TABLE_NAME})
+            connections.push({
+                connectionId: uuid.v4(),
+                source: {
+                    nodeId: source.nodeId,
+                    x: source.x,
+                    y: source.y
+                },
+                destination: {
+                    nodeId: destination.nodeId,
+                    x: destination.x,
+                    y: destination.y
+                }
+            })
+        })
+
+        mainWindow.webContents.send('generate-graph-from-db', nodes, connections)
+
+        knex.destroy()
+        informationShema.destroy()
+    } catch (error) {
+        console.error(error)
+    }
 })

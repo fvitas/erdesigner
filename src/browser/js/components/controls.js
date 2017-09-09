@@ -21,6 +21,7 @@ import { IconExport } from './control-items/icon-export'
 import { IconImport } from './control-items/icon-import'
 import { IconGenerateSQL } from './control-items/icon-generate-sql'
 import { IconScreenshot } from './control-items/icon-screenshot'
+import { IconGenerateGraph } from './control-items/icon-generate-graph'
 // import { IconOpenTool } from './control-items/icon-open-tool'
 
 import sqlGenerator from './sql-generator'
@@ -205,6 +206,10 @@ class Controls extends Component {
                 <div class='separator' />
 
                 <IconScreenshot onClick={this.takeScreenshot} />
+
+                <div class='separator' />
+
+                <IconGenerateGraph> onClick={this.generateGraph}</IconGenerateGraph>
 
                 <div class='separator' />
 
