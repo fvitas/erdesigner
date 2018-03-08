@@ -22,6 +22,8 @@ WIP tool for creating ER diagrams
   </tbody>
 </table>
 
+<img src="https://i.imgur.com/HJNEBvv.png">
+
 
 ## License
 
